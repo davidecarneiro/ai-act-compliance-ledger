@@ -1,0 +1,816 @@
+{
+  "assessment-results": {
+    "uuid": "482c0ed3-5e5b-5ef1-89f1-df166235342d",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results \u2014 Compliance Oracle prototype",
+      "last-modified": "2026-09-14T22:18:05.928356+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d",
+          "type": "organization",
+          "name": "Compliance Oracle issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Oracle execution",
+        "description": "6 evidence records produced by the Compliance Oracle prototype across 6 distinct scenario identifiers.",
+        "start": "2026-09-14T22:17:55.609621+00:00",
+        "end": "2026-09-14T22:17:55.614561+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "ecbea869-4b56-5c26-ab4a-9d0a8a66f730",
+            "title": "Pipeline event: approved_model",
+            "description": "Compliance Oracle decision 'approved' for artifact credit-scoring-v2.0 at stage validation. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "796b0f08-a6dd-565d-8c41-2c9c1542535e",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-929e21f0-4590-4f3b-8619-d6a24b62969b",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=d418d508b1de76441415a825204fe681b5c654ef0e5cd0af4aee6cc00600032a; chain_hash=42f58b6e01ceed8d6e746a3af92b0c03033b2cbe67602f4851fae6e4c0960f22; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-09-14T22:17:55.609621+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "870b716a-fcf7-5f00-9f8a-8852b9003fef",
+            "title": "Pipeline event: low_precision_rejected",
+            "description": "Compliance Oracle decision 'rejected' for artifact credit-scoring-v2.1 at stage validation. Reason: precision 0.74 below threshold 0.8.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c780fef3-9d71-5013-b0d8-7af7fea8385c",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-e3035736-2c95-4da0-bd06-e8edd8b5be18",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=ee3b8542ecdb01a0410d0b8b7b807a651ab7b8dd119d88267a999799544a77f4; chain_hash=b0ccf19bdc0a76b5ac7df41cc24a8368ba26a0220ff5fbc36ea3f61a2717f8fb; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-09-14T22:17:55.610946+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "precision 0.74 below threshold 0.8"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "9de7d21f-55c6-5ce7-8d05-e1bf6dd59668",
+            "title": "Pipeline event: fairness_rejected",
+            "description": "Compliance Oracle decision 'rejected' for artifact credit-scoring-v2.2 at stage validation. Reason: demographic parity diff 0.09 above threshold 0.05.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "f78bc161-2d4b-510a-b90d-e583e9db48e4",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-7bc8e6a9-40c6-4382-ae7d-d6165729eae9",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=ce1b8c476ff987e492171677904244e1964451d9383b8ab09313de36c90ef33c; chain_hash=ae3273c000ef7e5e5cb7b0ff3318f8c03506ac36f888f207f7a5eea154ff6b98; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-09-14T22:17:55.611722+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "demographic parity diff 0.09 above threshold 0.05"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "94b78897-a382-5e6e-b96c-e912e2e560c0",
+            "title": "Pipeline event: missing_human_approval_rejected",
+            "description": "Compliance Oracle decision 'rejected' for artifact credit-scoring-v2.3 at stage deployment. Reason: missing human approval for high-risk event.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c8806061-1825-5926-abe9-555aef623f31",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-8ea0a6b7-1204-4100-9667-56210cd2bee2",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=3cfec33139e2ed87ecbfba14007e4758ae30911fb9d5c367bb52e91b12473046; chain_hash=f52ac4ddc46630289b814de4451d43c21c3461cb0138bea68d77e51458610d35; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-09-14T22:17:55.612680+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "missing human approval for high-risk event"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "99dcdf07-717c-5e74-a9da-602dc30f4b85",
+            "title": "Pipeline event: drift_detected",
+            "description": "Compliance Oracle decision 'escalated' for artifact credit-scoring-v2.4 at stage post_deploy_monitoring. Reason: drift score 0.22 above threshold 0.15.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "2931599d-7db0-5d8f-a7ef-2fdeab07bce6",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-8b088b56-b0fd-4cd6-bcd8-47dcec036e2a",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=dc9bd1e938794adf3f976285501f2a4ec0c4771691ceaf2e927acae758a8acdc; chain_hash=5fd0a632f14038e95b7464fc13c507fb6b9026bd1e3cd17a8023feadb195f051; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-09-14T22:17:55.613568+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "drift score 0.22 above threshold 0.15"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "9f6d67f7-5715-5ea9-a21c-a264f9c40b22",
+            "title": "Pipeline event: audit_query",
+            "description": "Compliance Oracle decision 'verified' for artifact audit-bundle-2026-04 at stage audit. Reason: audit query: integrity check requested.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "79544078-0375-5e10-b04b-b242a749e951",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-4750ef4e-64be-4401-8374-667e05835975",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=e3445de3ec0c806b17f266c63903e178d973b9de6350f124b3db571acc2a386b; chain_hash=77760bb60f55ab893a69b53eef6ebd38593e27ca18b47f2f0d64e377f9442673; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-09-14T22:17:55.614561+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "verified"
+              },
+              {
+                "name": "reason",
+                "value": "audit query: integrity check requested"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "0819f453-d0f5-59be-8ed0-35d8f53e8c4f",
+            "title": "Technical objective obj-thresholds-met: approved for approved_model",
+            "description": "The Compliance Oracle rendered decision 'approved' on 2026-09-14T22:17:55.609621+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-c3d1fc49f36e",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "ecbea869-4b56-5c26-ab4a-9d0a8a66f730"
+              }
+            ]
+          },
+          {
+            "uuid": "10a589da-30eb-5360-a67a-6f31c97a7763",
+            "title": "Technical objective obj-precision-threshold: rejected for low_precision_rejected",
+            "description": "The Compliance Oracle rendered decision 'rejected' on 2026-09-14T22:17:55.610946+00:00. Technical objective: The declared precision met the configured minimum. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared precision met the configured minimum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.precision",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-c3d1fc49f36e",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-precision-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "870b716a-fcf7-5f00-9f8a-8852b9003fef"
+              }
+            ]
+          },
+          {
+            "uuid": "832d5df3-a027-528c-911d-dc6d26d85898",
+            "title": "Technical objective obj-fairness-threshold: rejected for fairness_rejected",
+            "description": "The Compliance Oracle rendered decision 'rejected' on 2026-09-14T22:17:55.611722+00:00. Technical objective: The declared demographic parity difference stayed within the configured maximum. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-c3d1fc49f36e",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "9de7d21f-55c6-5ce7-8d05-e1bf6dd59668"
+              }
+            ]
+          },
+          {
+            "uuid": "87ba754d-1cd5-52a8-9973-2f3d023ddf98",
+            "title": "Technical objective obj-human-approval-recorded: rejected for missing_human_approval_rejected",
+            "description": "The Compliance Oracle rendered decision 'rejected' on 2026-09-14T22:17:55.612680+00:00. Technical objective: A human approval was recorded for a high-risk event. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A human approval was recorded for a high-risk event.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "oversight.approval_missing",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-c3d1fc49f36e",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-human-approval-recorded",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "94b78897-a382-5e6e-b96c-e912e2e560c0"
+              }
+            ]
+          },
+          {
+            "uuid": "62ccef60-ae33-560b-8814-8088404f3dd5",
+            "title": "Technical objective obj-drift-alert-raised: escalated for drift_detected",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-09-14T22:17:55.613568+00:00. Technical objective: A drift indicator above threshold raised an alert and was recorded. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-c3d1fc49f36e",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "99dcdf07-717c-5e74-a9da-602dc30f4b85"
+              }
+            ]
+          },
+          {
+            "uuid": "e18b23da-61ae-5611-9d4c-7a9d69e15817",
+            "title": "Technical objective obj-audit-query-recorded: verified for audit_query",
+            "description": "The Compliance Oracle rendered decision 'verified' on 2026-09-14T22:17:55.614561+00:00. Technical objective: An integrity-verification request was recorded on the chain. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72, Art.73.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "An integrity-verification request was recorded on the chain.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "audit.query_recorded",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-c3d1fc49f36e",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-audit-query-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "9f6d67f7-5715-5ea9-a21c-a264f9c40b22"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Ledger integrity verification",
+              "description": "verify_chain_structure() recomputed each record_hash from the canonical body and re-derived the chain links, and no modification was detected; each record's Ed25519 signature was verified against the issuer's public key; suffix truncation and events that were never written lie outside both checks, because detecting them needs an anchor kept outside the file.",
+              "start": "2026-09-14T22:18:05.928356+00:00",
+              "end": "2026-09-14T22:18:05.928356+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "signatures_verified",
+                  "value": "true"
+                },
+                {
+                  "name": "chain_verification_source",
+                  "value": "computed-by-exporter"
+                },
+                {
+                  "name": "signature_verification_source",
+                  "value": "computed-by-exporter"
+                },
+                {
+                  "name": "records_total",
+                  "value": "6"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

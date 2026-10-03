@@ -1,0 +1,34 @@
+Demonstração do encadeamento de blocos nativo do Fabric (2.ª camada de integridade)
+Executada: 2026-07-05 · rede test-network 2 orgs, canal compliancechannel,
+chaincode 'compliance' (CCaaS), 5 registos reais do simulador submetidos
+(emissor Ed25519 registado via RegisterIssuer, endosso AND das 2 orgs).
+
+Sustenta o parágrafo «duas camadas de integridade» da subsec:migracao_fabric
+(cap. 5): o cabeçalho de cada bloco cortado pelo orderer referencia o hash do
+bloco anterior, encadeamento construído pelo serviço de ordenação (Raft) e
+INDEPENDENTE do parent_hash/chain_hash aplicacional do registo de evidência.
+
+Comandos e verificação cruzada (dois utilitários independentes, mesmo valor):
+
+1) peer channel getinfo -c compliancechannel
+   → {"height":12, "previousBlockHash":"zgB+VWnNnMDRBmVJFtPySzOA0QE0/9vWGpQOEH3ezs4="}
+   (base64 → hex: ce007e5569cd9cc0d106654916d3f24b3380d10134ffdbd61a940e107ddecece)
+   [output integral em peer_channel_getinfo.txt]
+
+2) peer channel fetch newest last_block.pb -c compliancechannel
+   configtxlator proto_decode --type common.Block → last_block.json
+   → header do bloco 11:
+     previous_hash = ce007e5569cd9cc0d106654916d3f24b3380d10134ffdbd61a940e107ddecece
+     data_hash     = 436a481348bd7ce25a1cf910ebddf106ad66f981ab25ae4fde7e3b3acf45843a
+
+O previous_hash exposto pelo configtxlator no cabeçalho do último bloco é
+byte-a-byte igual ao previousBlockHash devolvido pelo getinfo — a fixação de
+ordem ao nível do livro-razão confirma-se por duas vias independentes, como o
+texto da tese afirma.
+
+Ficheiros: peer_channel_getinfo.txt · last_block.pb · last_block.json
+
+Nota de 2026-10-03 (alcance). Esta conferência compara o previous_hash do último
+bloco com o previousBlockHash devolvido pelo peer. Não é, por si só, uma
+verificação integral de todos os blocos, assinaturas ou endossos. O texto acima
+fica como foi escrito a 2026-07-05.

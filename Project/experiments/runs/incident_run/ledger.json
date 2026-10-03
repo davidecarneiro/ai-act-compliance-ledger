@@ -1,0 +1,83 @@
+[
+  {
+    "evidence_id": "ev-81130a5a-8117-4a28-b4cf-5894f7f8900e",
+    "scenario_id": "serious_incident_detected",
+    "event_type": "serious_incident_detected",
+    "artifact_id": "credit-scoring-v2.0",
+    "artifact_type": "incident_report",
+    "pipeline_stage": "post_deploy_monitoring",
+    "timestamp": "2026-06-13T02:39:28.564956+00:00",
+    "decision": "escalated",
+    "reason": "serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73)",
+    "artifact_hash": "a89971c9836c7c8ad87afc7d1cd8488fb52cd6c03ea856be4413d16f3abc977c",
+    "requirements_covered": [
+      "Art.10(3)",
+      "Art.12",
+      "Art.14",
+      "Art.15",
+      "Art.73"
+    ],
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "record_hash": "dffd24051c836d7105d25e0307848beca6ce7a84f6f2adb180facd0196e8ece3",
+    "issuer_signature": "wYEHHyCRUHsvnwDETn9leGq9Q/zI3o6pxp9YjS4ChrRM8sdhrbbxdypae/G/03EnMrlH+hA1lbYpSCZjGyszAQ==",
+    "chain_hash": "0351b651bc4675e730b0cec57f583f924e164696da07ee53048852cc9d07b4fe"
+  },
+  {
+    "evidence_id": "ev-9d0f3d04-d05a-4217-8337-7348f867f70b",
+    "scenario_id": "incident_reported_to_authority",
+    "event_type": "incident_reported_to_authority",
+    "artifact_id": "credit-scoring-v2.0",
+    "artifact_type": "incident_report",
+    "pipeline_stage": "post_deploy_monitoring",
+    "timestamp": "2026-06-13T02:39:28.567277+00:00",
+    "decision": "escalated",
+    "reason": "serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73)",
+    "artifact_hash": "3de1851285550c295b387b8a54c67f499da8c674bb089bb365d9378d55a41c82",
+    "requirements_covered": [
+      "Art.10(3)",
+      "Art.12",
+      "Art.14",
+      "Art.15",
+      "Art.73"
+    ],
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "0351b651bc4675e730b0cec57f583f924e164696da07ee53048852cc9d07b4fe",
+    "record_hash": "37f36098d1ebacab49f250cad366f837acef5a41024775a3e7c6564dc3f97e4c",
+    "issuer_signature": "osWp6+KU3tRhUE4sxODqpsWJ6bQe4MT0jLMzO2jMSvoc4WIbqpysofxl1+tfAkdNTBXSki98uZ5bEfcFmOM3BA==",
+    "chain_hash": "38a33efb5ce45e6055571ee83bfffb6becedb8377793cf47905e377bc160d7d1"
+  },
+  {
+    "evidence_id": "ev-a505027d-08aa-4d85-b30d-f75ce8d449ac",
+    "scenario_id": "incident_audit_query",
+    "event_type": "incident_audit_query",
+    "artifact_id": "incident-bundle-2026-04",
+    "artifact_type": "audit_package",
+    "pipeline_stage": "audit",
+    "timestamp": "2026-06-13T02:39:28.568068+00:00",
+    "decision": "verified",
+    "reason": "audit query: integrity check requested",
+    "artifact_hash": "5e43cd0fe15b70ffcd79eb12b52dd72c745e113220738082c3eccf9d1c003d5b",
+    "requirements_covered": [
+      "Art.10(3)",
+      "Art.12",
+      "Art.14",
+      "Art.15",
+      "Art.73"
+    ],
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "38a33efb5ce45e6055571ee83bfffb6becedb8377793cf47905e377bc160d7d1",
+    "record_hash": "49e1cdbdd98143325006f9c3a70b685ab412b76e313d19926a81f9af007414b0",
+    "issuer_signature": "vyeZ974KwIRC+uXbMaI4KsTpSFkDcM6PIoA4Gh8unah8VyAdl0ePibmRLbs+V+LNF+ibMIQ66Cuq8atRYTQgDg==",
+    "chain_hash": "bdf9d4a57a1dc1ee619c0863221b9cbcf54c7f729f2cdb574647d0ef4d595bca"
+  }
+]

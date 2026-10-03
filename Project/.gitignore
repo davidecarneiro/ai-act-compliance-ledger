@@ -1,0 +1,18 @@
+# Results of new runs (README, section 3: EXPERIMENTS_DIR=results/demo)
+results/
+
+# Python environments and caches
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Files the simulator and the baseline create while running
+ledger.json.lock
+baseline_log.sqlite*
+
+# Compiled Go binaries
+prototype/fabric_migration/chaincode/compliance-chaincode
+prototype/fabric_migration/gateway/gateway-measure
+
+.DS_Store

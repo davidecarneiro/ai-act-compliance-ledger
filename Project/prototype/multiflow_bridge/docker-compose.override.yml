@@ -1,0 +1,35 @@
+# Place this file in the ROOT of the multiflow repository, next to its
+# docker-compose.yml. Docker Compose merges it automatically: it adds the
+# compliance-bridge service to the broker-kafka network WITHOUT touching the
+# original compose file. The build context comes from the PROTOTYPE_DIR
+# variable, which the proof script exports.
+services:
+  # Confluent version pin: MultiFlow's compose uses :latest together with
+  # KAFKA_ZOOKEEPER_CONNECT, but Confluent Platform 8.0+ dropped ZooKeeper
+  # support (Kafka 4.0 is KRaft-only) and the broker dies on start-up. 7.6.1 is
+  # the version these experiments were run with. A fix by composition, leaving
+  # the platform's repository untouched.
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+
+  compliance-bridge:
+    build:
+      # The context is the prototype/ folder. Because this file is copied to
+      # the root of MultiFlow, a relative path would resolve against that root,
+      # so run_multiflow_proof.sh exports PROTOTYPE_DIR before calling compose.
+      context: ${PROTOTYPE_DIR:?set PROTOTYPE_DIR to the prototype/ folder of the delivery}
+      dockerfile: multiflow_bridge/Dockerfile
+    container_name: compliance_bridge
+    networks:
+      - broker-kafka
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP: kafka:29092
+      STREAM_TOPIC: phd_kafka
+      BATCH_SIZE: "20"
+      MODEL_ID: multiflow-stream-model
+    volumes:
+      - ./compliance_out:/out

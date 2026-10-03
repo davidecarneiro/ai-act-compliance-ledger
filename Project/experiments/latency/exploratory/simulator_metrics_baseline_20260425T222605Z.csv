@@ -1,0 +1,7 @@
+evidence_id,scenario_id,event_type,decision,latency_ms,hash_verification_success,requirements_covered_count,requirements_covered
+ev-6f7483b7-153e-4fe4-baec-6109204bb110,approved_model,approved_model,approved,0.027,True,4,"Art.12,Art.14,Art.15,Art.72"
+ev-902252a5-698a-4d2e-8a82-411d55731245,low_precision_rejected,low_precision_rejected,rejected,0.044,True,4,"Art.12,Art.14,Art.15,Art.72"
+ev-7f40ac83-fdc8-452b-8cca-4b104ff3e0cd,fairness_rejected,fairness_rejected,rejected,0.029,True,4,"Art.12,Art.14,Art.15,Art.72"
+ev-f4406466-1867-41aa-ac93-924b9fe31cf8,missing_human_approval_rejected,missing_human_approval_rejected,rejected,0.03,True,4,"Art.12,Art.14,Art.15,Art.72"
+ev-3ad39a53-02e5-4d30-bef2-a4a71fd92366,drift_detected,drift_detected,rejected,0.029,True,4,"Art.12,Art.14,Art.15,Art.72"
+ev-1bf4b824-a3c7-48b5-b493-2acb04bc7c99,audit_query,audit_query,approved,0.05,True,5,"Art.12,Art.14,Art.15,Art.72,Art.73"

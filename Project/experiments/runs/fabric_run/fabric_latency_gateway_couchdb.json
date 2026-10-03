@@ -1,0 +1,21 @@
+{
+  "endorsement_policy": "AND('Org1MSP.peer','Org2MSP.peer')",
+  "evaluate_endorse_ms_mean": 28.08,
+  "evaluate_endorse_ms_median": 27.13,
+  "evaluate_endorse_ms_min": 26.04,
+  "evaluate_endorse_ms_p95": 31.62,
+  "evaluate_endorse_n": 20,
+  "fabric_version": "2.5.10",
+  "identity_provider": "Fabric CA (-ca)",
+  "method": "Fabric Gateway SDK (Go, conexao gRPC persistente) \u2014 SEM overhead de CLI",
+  "note": "Sem o ~74 ms de arranque do CLI: submit_commit ainda inclui o BatchTimeout=2s do orderer (tempo ate evidencia duravel); evaluate_endorse e a latencia de execucao/endorso PURA no peer, sem ordering. Contraste com 3,79 ms in-process do simulador (QI4).",
+  "orderer_batch_timeout_s": 2,
+  "submit_commit_ms_mean": 2053.73,
+  "submit_commit_ms_median": 2053.7,
+  "submit_commit_ms_min": 2047.86,
+  "submit_commit_ms_p95": 2058.3,
+  "submit_commit_n": 29,
+  "verify_chain": "chain valid: 30 records",
+  "state_db": "couchdb",
+  "records_in_chain": 30
+}

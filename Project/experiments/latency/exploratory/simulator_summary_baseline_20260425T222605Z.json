@@ -1,0 +1,13 @@
+{
+  "run_label": "baseline",
+  "generated_at": "2026-04-25T22:26:05.581329+00:00",
+  "events_processed": 6,
+  "decisions": {
+    "approved": 2,
+    "rejected": 4
+  },
+  "avg_latency_ms": 0.035,
+  "hash_verification_success_rate": 1.0,
+  "max_requirements_covered_in_event": 5,
+  "policy_file": "/Users/ruisousa/Desktop/Tese/04_projeto/prototype/compliance_ledger_sim/configs/policies.json"
+}

@@ -1,0 +1,1 @@
+DATASET=Steel_Industry.csv (35040 linhas → 1750 lotes de evidência)

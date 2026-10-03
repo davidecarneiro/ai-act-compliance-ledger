@@ -1,0 +1,1013 @@
+{
+  "assessment-results": {
+    "uuid": "d75aa0e3-7c39-5636-b3c4-51b9b7dff3f8",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results \u2014 Compliance Oracle prototype",
+      "last-modified": "2026-09-14T15:18:35.910802+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d",
+          "type": "organization",
+          "name": "Compliance Oracle issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Oracle execution",
+        "description": "8 evidence records produced by the Compliance Oracle prototype across 4 distinct scenario identifiers.",
+        "start": "2026-06-13T01:45:37.984578+00:00",
+        "end": "2026-06-13T01:46:40.637296+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "0aac4066-8764-56a5-a0b6-d7ce757d21d8",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0001",
+            "description": "Compliance Oracle decision 'approved' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-aaf7b830-1445-411d-90b9-d7c1c24db2f0",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=a321ad7062bd49c98cc823c3f369e2c2dd52d83bf6f2fb0ddd3f4c939e3947fe; chain_hash=d2effe765ddc6183ea02f3f25725ba9937dd263a6f2283fa64bb60830f5e900e; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:45:37.984578+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "4eaf88b1-7e52-5838-ad70-72011ae01f7a",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0002",
+            "description": "Compliance Oracle decision 'approved' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-a1a89c1b-4bcd-48a2-8874-b53ca32c931a",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=a87cd24a44661adcc5e928b6708c5aa5369d87771f0666b0ac898e47abecd721; chain_hash=de2007b046792e3a6ce53471f2849a064e3432363a35987aa8415382a95571c4; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:45:37.986880+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "b41eac19-2352-5fbe-bb61-671add59558b",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0003",
+            "description": "Compliance Oracle decision 'escalated' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: drift score 1.0 above threshold 0.15.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-2771d163-a3cc-4cae-b04b-35d4a76db24a",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=bc0046cca29748d5a0c9aa25c08d6d2ff2983af377ccecb6f42436edf622b632; chain_hash=8403c05fbaff61e319ae87868f2430da8f9033116b674bff349fef73403b0241; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:45:37.989311+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "drift score 1.0 above threshold 0.15"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "97d98dfc-79d2-5a2f-a225-555b59e29979",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0004",
+            "description": "Compliance Oracle decision 'escalated' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: drift score 1.0 above threshold 0.15.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-fd7216b6-6b7c-488b-8af4-3aa9c353070e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=d7cd6dd23b19caa24341d682c626ef45b1f6ff396d47d9cfe57e595132671c25; chain_hash=c6c49c714530a675a96152a77c86b86ab9a599bffed0e104372fbca8deebf9b5; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:45:37.991716+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "drift score 1.0 above threshold 0.15"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "1fba7e70-2bce-563b-94ca-4c0b332e9884",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0001",
+            "description": "Compliance Oracle decision 'approved' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-e91d78c1-ff2b-4696-9872-e2081b5f017e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=1403b06149011a48e14adc99b3afe2186e736b8a6c219400907b4c6e0675fce7; chain_hash=06ebaa2218bd8014de554c33733ed49a4d09471664857f0ec9fe74831f35649a; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:46:40.627890+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "b2c99e7d-bbce-520e-88de-ffb044a096e2",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0002",
+            "description": "Compliance Oracle decision 'approved' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-20d21fe2-d71f-4aca-a037-fd54c49337fd",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=fdba570b8846cda20ead10935521eb18a6aa18cbaec99bd09c44b8d2ba916091; chain_hash=703b93c3181a10b7f802c9457a3050e9f5989824ce94f9f66919acdf4cf0f7bc; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:46:40.630942+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "75d7e7ac-a3fc-514a-b980-bd9f8d3ea30f",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0003",
+            "description": "Compliance Oracle decision 'escalated' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: drift score 1.0 above threshold 0.15.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-3bff7170-99b2-4973-87d7-fb178e45df8b",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=5a2bae7ec55f521c2b61795b89618cf4a7fd9c923cf977cd505f00bab83e8c44; chain_hash=3a41d6a33a9fa66f6ea2fa2e7297e087478c3591b45c38e8024ced1ef5525a09; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:46:40.634150+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "drift score 1.0 above threshold 0.15"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "60838a85-05b9-5779-9b6a-41fc6d945239",
+            "title": "Pipeline event: multiflow-phd_kafka-batch-0004",
+            "description": "Compliance Oracle decision 'escalated' for artifact multiflow-stream-model at stage post_deploy_monitoring. Reason: drift score 1.0 above threshold 0.15.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c9cb93d6-bfc3-526c-aab2-aeb16421d928",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-a2e2f77c-c595-47c1-8a73-78b755674624",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=fcf390313e1d3a0596ac45b9c6e71e26b7b11da55d61b02bd399356c0ba33b7a; chain_hash=3b84ae0beb5c133d937d48402c7c2864c521256484ba4b4ef4f68a52afe8c935; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T01:46:40.637296+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "drift score 1.0 above threshold 0.15"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "c0439502-fa81-5977-ac76-56772d8270b5",
+            "title": "Technical objective obj-thresholds-met: approved for multiflow-phd_kafka-batch-0001",
+            "description": "The Compliance Oracle rendered decision 'approved' on 2026-06-13T01:45:37.984578+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "0aac4066-8764-56a5-a0b6-d7ce757d21d8"
+              }
+            ]
+          },
+          {
+            "uuid": "e6e4ae04-dd5d-5f1e-82df-27d835113635",
+            "title": "Technical objective obj-thresholds-met: approved for multiflow-phd_kafka-batch-0002",
+            "description": "The Compliance Oracle rendered decision 'approved' on 2026-06-13T01:45:37.986880+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "4eaf88b1-7e52-5838-ad70-72011ae01f7a"
+              }
+            ]
+          },
+          {
+            "uuid": "7a7d1c75-b04e-5eed-b1c9-d1cd23d81851",
+            "title": "Technical objective obj-drift-alert-raised: escalated for multiflow-phd_kafka-batch-0003",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-06-13T01:45:37.989311+00:00. Technical objective: A drift indicator above threshold raised an alert and was recorded. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "b41eac19-2352-5fbe-bb61-671add59558b"
+              }
+            ]
+          },
+          {
+            "uuid": "b3d85b81-f828-5d7b-88cc-454f1640f0bf",
+            "title": "Technical objective obj-drift-alert-raised: escalated for multiflow-phd_kafka-batch-0004",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-06-13T01:45:37.991716+00:00. Technical objective: A drift indicator above threshold raised an alert and was recorded. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "97d98dfc-79d2-5a2f-a225-555b59e29979"
+              }
+            ]
+          },
+          {
+            "uuid": "32b97535-b6ca-5791-823d-c5b205620c25",
+            "title": "Technical objective obj-thresholds-met: approved for multiflow-phd_kafka-batch-0001",
+            "description": "The Compliance Oracle rendered decision 'approved' on 2026-06-13T01:46:40.627890+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "1fba7e70-2bce-563b-94ca-4c0b332e9884"
+              }
+            ]
+          },
+          {
+            "uuid": "10169d73-31d0-563f-8001-8e8f406bf513",
+            "title": "Technical objective obj-thresholds-met: approved for multiflow-phd_kafka-batch-0002",
+            "description": "The Compliance Oracle rendered decision 'approved' on 2026-06-13T01:46:40.630942+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "b2c99e7d-bbce-520e-88de-ffb044a096e2"
+              }
+            ]
+          },
+          {
+            "uuid": "c610117e-e6ce-53a7-be13-a4a6164a48be",
+            "title": "Technical objective obj-drift-alert-raised: escalated for multiflow-phd_kafka-batch-0003",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-06-13T01:46:40.634150+00:00. Technical objective: A drift indicator above threshold raised an alert and was recorded. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "75d7e7ac-a3fc-514a-b980-bd9f8d3ea30f"
+              }
+            ]
+          },
+          {
+            "uuid": "998e35f6-220a-5307-b6fd-6c0fd393de85",
+            "title": "Technical objective obj-drift-alert-raised: escalated for multiflow-phd_kafka-batch-0004",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-06-13T01:46:40.637296+00:00. Technical objective: A drift indicator above threshold raised an alert and was recorded. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "60838a85-05b9-5779-9b6a-41fc6d945239"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Ledger integrity verification",
+              "description": "the chain result was supplied by the caller and not recomputed by this exporter; the caller reports that no modification was detected; the caller reports the Ed25519 signatures as verified; this exporter did not check them; suffix truncation and events that were never written lie outside both checks, because detecting them needs an anchor kept outside the file.",
+              "start": "2026-09-14T15:18:35.910802+00:00",
+              "end": "2026-09-14T15:18:35.910802+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "signatures_verified",
+                  "value": "true"
+                },
+                {
+                  "name": "chain_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "signature_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "records_total",
+                  "value": "8"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

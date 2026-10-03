@@ -1,0 +1,433 @@
+{
+  "assessment-results": {
+    "uuid": "485ac466-b52f-5f8b-99fb-004138372a4f",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results \u2014 Compliance Oracle prototype",
+      "last-modified": "2026-09-14T15:18:35.902426+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d",
+          "type": "organization",
+          "name": "Compliance Oracle issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Oracle execution",
+        "description": "3 evidence records produced by the Compliance Oracle prototype across 3 distinct scenario identifiers.",
+        "start": "2026-06-13T02:39:28.564956+00:00",
+        "end": "2026-06-13T02:39:28.568068+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "00ba52de-7487-5a08-b74c-9f3d20df1118",
+            "title": "Pipeline event: serious_incident_detected",
+            "description": "Compliance Oracle decision 'escalated' for artifact credit-scoring-v2.0 at stage post_deploy_monitoring. Reason: serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73).",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "796b0f08-a6dd-565d-8c41-2c9c1542535e",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-81130a5a-8117-4a28-b4cf-5894f7f8900e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=dffd24051c836d7105d25e0307848beca6ce7a84f6f2adb180facd0196e8ece3; chain_hash=0351b651bc4675e730b0cec57f583f924e164696da07ee53048852cc9d07b4fe; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T02:39:28.564956+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73)"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "f97ae84f-0d30-5cd5-8851-49fb8b095c6c",
+            "title": "Pipeline event: incident_reported_to_authority",
+            "description": "Compliance Oracle decision 'escalated' for artifact credit-scoring-v2.0 at stage post_deploy_monitoring. Reason: serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73).",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "796b0f08-a6dd-565d-8c41-2c9c1542535e",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-9d0f3d04-d05a-4217-8337-7348f867f70b",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=37f36098d1ebacab49f250cad366f837acef5a41024775a3e7c6564dc3f97e4c; chain_hash=38a33efb5ce45e6055571ee83bfffb6becedb8377793cf47905e377bc160d7d1; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T02:39:28.567277+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73)"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "2cbba56b-711d-5ce4-959f-2aa7d6574ad3",
+            "title": "Pipeline event: incident_audit_query",
+            "description": "Compliance Oracle decision 'verified' for artifact incident-bundle-2026-04 at stage audit. Reason: audit query: integrity check requested.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "6a6a4c93-b749-5de9-be89-b97958e4d04e",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-a505027d-08aa-4d85-b30d-f75ce8d449ac",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=49e1cdbdd98143325006f9c3a70b685ab412b76e313d19926a81f9af007414b0; chain_hash=bdf9d4a57a1dc1ee619c0863221b9cbcf54c7f729f2cdb574647d0ef4d595bca; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T02:39:28.568068+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "verified"
+              },
+              {
+                "name": "reason",
+                "value": "audit query: integrity check requested"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "ef625cb7-855e-561a-aca7-7dbe968b9dbd",
+            "title": "Technical objective obj-incident-recorded: escalated for serious_incident_detected",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-06-13T02:39:28.564956+00:00. Technical objective: A serious incident was recorded and escalated for mandatory handling. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.73.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A serious incident was recorded and escalated for mandatory handling.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "incident.reportable",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-incident-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "00ba52de-7487-5a08-b74c-9f3d20df1118"
+              }
+            ]
+          },
+          {
+            "uuid": "b1af377e-48f8-5bf1-ba7d-865523529b8c",
+            "title": "Technical objective obj-incident-recorded: escalated for incident_reported_to_authority",
+            "description": "The Compliance Oracle rendered decision 'escalated' on 2026-06-13T02:39:28.567277+00:00. Technical objective: A serious incident was recorded and escalated for mandatory handling. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.73.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A serious incident was recorded and escalated for mandatory handling.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "incident.reportable",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-incident-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "f97ae84f-0d30-5cd5-8851-49fb8b095c6c"
+              }
+            ]
+          },
+          {
+            "uuid": "05ad2995-746d-52cf-b83f-2b2e5a7b2740",
+            "title": "Technical objective obj-audit-query-recorded: verified for incident_audit_query",
+            "description": "The Compliance Oracle rendered decision 'verified' on 2026-06-13T02:39:28.568068+00:00. Technical objective: An integrity-verification request was recorded on the chain. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.12, Art.14, Art.15, Art.73.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "An integrity-verification request was recorded on the chain.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "audit.query_recorded",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-audit-query-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "2cbba56b-711d-5ce4-959f-2aa7d6574ad3"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Ledger integrity verification",
+              "description": "the chain result was supplied by the caller and not recomputed by this exporter; the caller reports that no modification was detected; the caller reports the Ed25519 signatures as verified; this exporter did not check them; suffix truncation and events that were never written lie outside both checks, because detecting them needs an anchor kept outside the file.",
+              "start": "2026-09-14T15:18:35.902426+00:00",
+              "end": "2026-09-14T15:18:35.902426+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "signatures_verified",
+                  "value": "true"
+                },
+                {
+                  "name": "chain_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "signature_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "records_total",
+                  "value": "3"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "generated_at": "2026-06-10T17:36:44.464353+00:00",
+  "total_events": 500,
+  "total_time_s": 4.5422,
+  "throughput_events_per_s": 110.08,
+  "avg_latency_ms": 9.0823,
+  "p95_latency_ms": 16.0697
+}

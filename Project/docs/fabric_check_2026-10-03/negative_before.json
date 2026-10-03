@@ -1,0 +1,12 @@
+[
+  {
+    "case": "unregistered_issuer",
+    "passed": true,
+    "exit": 1
+  },
+  {
+    "case": "org2_cannot_register",
+    "passed": true,
+    "exit": 1
+  }
+]

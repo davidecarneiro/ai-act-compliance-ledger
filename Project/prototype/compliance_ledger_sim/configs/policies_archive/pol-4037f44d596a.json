@@ -1,0 +1,6 @@
+{
+  "drift_alert_threshold": 0.15,
+  "max_demographic_parity_diff": 0.1,
+  "min_precision": 0.8,
+  "require_human_approval_for_high_risk": true
+}

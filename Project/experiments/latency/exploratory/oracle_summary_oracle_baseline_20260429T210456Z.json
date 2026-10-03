@@ -1,0 +1,24 @@
+{
+  "run_label": "oracle_baseline",
+  "generated_at": "2026-04-29T21:04:56.938921+00:00",
+  "events_processed": 6,
+  "decisions": {
+    "approved": 1,
+    "rejected": 3,
+    "escalated": 1,
+    "verified": 1
+  },
+  "avg_latency_ms": 6.3958,
+  "max_requirements_covered_in_event": 6,
+  "chain_verification": {
+    "total": 6,
+    "valid": 6,
+    "invalid": 0,
+    "is_valid": true
+  },
+  "policy_file": "/sessions/gallant-stoic-turing/mnt/Tese/04_projeto/prototype/compliance_ledger_sim/configs/policies.json",
+  "issuer_id": "compliance-oracle-v1",
+  "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+  "sig_alg": "Ed25519",
+  "hash_alg": "SHA-256"
+}

@@ -1,0 +1,19 @@
+{
+  "measurement": "input validation per event",
+  "target": "ComplianceOracle._validate_input",
+  "event": "approved_model",
+  "repetitions": 20000,
+  "warmup": 1000,
+  "unit": "ms",
+  "mean_ms": 0.002986,
+  "median_ms": 0.002957,
+  "p95_ms": 0.002999,
+  "min_ms": 0.002837,
+  "max_ms": 0.070199,
+  "environment": {
+    "python": "3.9.6",
+    "platform": "macOS-15.7.9-x86_64-i386-64bit",
+    "machine": "x86_64"
+  },
+  "generated_at": "2026-09-14T09:44:49.190157+00:00"
+}

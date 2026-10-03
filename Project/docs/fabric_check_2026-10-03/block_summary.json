@@ -1,0 +1,23 @@
+{
+  "latest_block_number": 39,
+  "previous_block_hash_recomputed_matches": true,
+  "successful_transaction_endorsers": [
+    "Org1MSP",
+    "Org2MSP"
+  ],
+  "both_peers_same_blockchain_info": true,
+  "latest_validation_codes": [
+    11
+  ],
+  "previous_validation_codes": [
+    0
+  ],
+  "single_org_validation_codes": [
+    10
+  ],
+  "channel_info": {
+    "height": 40,
+    "currentBlockHash": "3LK7LYq3mllZUmEMxW1GDeTlqXMwKN/43aB94NsDQ1k=",
+    "previousBlockHash": "9VrF26Z8sY2qlv/5JLOyaOHP7xMsuPHNWOCU2ZjIwW8="
+  }
+}

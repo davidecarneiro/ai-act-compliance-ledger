@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-09-14T15:18:59.734514+00:00",
+  "oracle": {
+    "events_processed": 6,
+    "total_ingestion_s": 0.0084,
+    "avg_latency_ms": 1.385,
+    "p95_latency_ms": 2.3511,
+    "audit_query_by_requirement_ms": 0.2265,
+    "audit_query_by_scenario_ms": 0.1929,
+    "tamper_detection": {
+      "before": {
+        "valid": 6,
+        "total": 6,
+        "detected": false
+      },
+      "after": {
+        "valid": 5,
+        "total": 6,
+        "detected": true,
+        "first_invalid_index": 1,
+        "issues": [
+          "#1 (low_precision_rejected): record_hash mismatch, invalid signature, chain_hash mismatch"
+        ]
+      }
+    },
+    "evidence_field_count": 23,
+    "evidence_sample_fields": [
+      "artifact_hash",
+      "artifact_id",
+      "artifact_type",
+      "chain_hash",
+      "decision",
+      "event_type",
+      "evidence_id",
+      "hash_alg",
+      "issuer_id",
+      "issuer_pubkey_fingerprint",
+      "issuer_signature",
+      "metrics",
+      "parent_hash",
+      "pipeline_stage",
+      "policy_hash",
+      "policy_id",
+      "reason",
+      "record_hash",
+      "requirements_covered",
+      "rule_id",
+      "scenario_id",
+      "sig_alg",
+      "timestamp"
+    ],
+    "by_req_count": 6,
+    "by_scenario_count": 1
+  },
+  "baseline": {
+    "events_processed": 6,
+    "total_ingestion_s": 0.0054,
+    "avg_latency_ms": 0.8951,
+    "p95_latency_ms": 1.0409,
+    "audit_query_by_scenario_ms": 0.0773,
+    "audit_query_by_artifact_ms": 0.0585,
+    "tamper_detection": {
+      "before": {
+        "detected": false
+      },
+      "after": {
+        "detected": false,
+        "method": "row count only \u2014 no cryptographic anchor"
+      }
+    },
+    "evidence_field_count": 9,
+    "evidence_sample_fields": [
+      "artifact_id",
+      "decision",
+      "event_type",
+      "id",
+      "metrics_json",
+      "pipeline_stage",
+      "reason",
+      "scenario_id",
+      "timestamp"
+    ],
+    "by_scenario_count": 1,
+    "by_artifact_count": 1
+  },
+  "delta": {
+    "tamper_detection_oracle": true,
+    "tamper_detection_baseline": false,
+    "evidence_field_count_oracle": 23,
+    "evidence_field_count_baseline": 9
+  }
+}

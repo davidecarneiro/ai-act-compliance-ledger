@@ -1,0 +1,176 @@
+{
+  "protocol": "00_admin/PROTOCOLO_LATENCIA_2026-09-14.md",
+  "design": "paired, interleaved, alternating order; fresh stores per round",
+  "measures": "the two complete implemented paths, not cryptography in isolation",
+  "rounds": 10,
+  "events_per_round": 200,
+  "warmup_per_round": 50,
+  "oracle_median_of_round_medians_ms": 6.4697,
+  "baseline_median_of_round_medians_ms": 1.3754,
+  "paired_difference_median_ms": 5.0812,
+  "paired_difference_iqr_ms": [
+    5.0305,
+    5.1425
+  ],
+  "paired_difference_min_ms": 4.704,
+  "paired_difference_max_ms": 5.4682,
+  "rounds_where_oracle_slower": 10,
+  "per_round": [
+    {
+      "round": 0,
+      "events": 200,
+      "oracle_median_ms": 6.8229,
+      "baseline_median_ms": 1.2815,
+      "paired_median_ms": 5.4682,
+      "oracle_p95_ms": 10.7443,
+      "baseline_p95_ms": 1.7065,
+      "oracle_by_ledger_size": {
+        "50-99": 3.7174,
+        "100-149": 5.4392,
+        "150-199": 7.5834,
+        "200-249": 9.517
+      }
+    },
+    {
+      "round": 1,
+      "events": 200,
+      "oracle_median_ms": 6.4836,
+      "baseline_median_ms": 1.2815,
+      "paired_median_ms": 5.0827,
+      "oracle_p95_ms": 10.0961,
+      "baseline_p95_ms": 1.9364,
+      "oracle_by_ledger_size": {
+        "50-99": 3.4771,
+        "100-149": 5.4017,
+        "150-199": 7.7206,
+        "200-249": 9.405
+      }
+    },
+    {
+      "round": 2,
+      "events": 200,
+      "oracle_median_ms": 6.4559,
+      "baseline_median_ms": 1.374,
+      "paired_median_ms": 5.0376,
+      "oracle_p95_ms": 10.8398,
+      "baseline_p95_ms": 2.1159,
+      "oracle_by_ledger_size": {
+        "50-99": 3.3824,
+        "100-149": 5.5123,
+        "150-199": 7.4282,
+        "200-249": 9.8637
+      }
+    },
+    {
+      "round": 3,
+      "events": 200,
+      "oracle_median_ms": 6.3543,
+      "baseline_median_ms": 1.3767,
+      "paired_median_ms": 5.0305,
+      "oracle_p95_ms": 10.4844,
+      "baseline_p95_ms": 1.7314,
+      "oracle_by_ledger_size": {
+        "50-99": 3.4637,
+        "100-149": 5.1122,
+        "150-199": 7.3419,
+        "200-249": 9.4867
+      }
+    },
+    {
+      "round": 4,
+      "events": 200,
+      "oracle_median_ms": 6.6848,
+      "baseline_median_ms": 1.4134,
+      "paired_median_ms": 5.0798,
+      "oracle_p95_ms": 9.9919,
+      "baseline_p95_ms": 2.1143,
+      "oracle_by_ledger_size": {
+        "50-99": 3.4414,
+        "100-149": 5.63,
+        "150-199": 7.6173,
+        "200-249": 9.4531
+      }
+    },
+    {
+      "round": 5,
+      "events": 200,
+      "oracle_median_ms": 6.5853,
+      "baseline_median_ms": 1.4251,
+      "paired_median_ms": 5.0864,
+      "oracle_p95_ms": 10.4715,
+      "baseline_p95_ms": 1.8606,
+      "oracle_by_ledger_size": {
+        "50-99": 3.2617,
+        "100-149": 5.4998,
+        "150-199": 7.3706,
+        "200-249": 9.6219
+      }
+    },
+    {
+      "round": 6,
+      "events": 200,
+      "oracle_median_ms": 6.421,
+      "baseline_median_ms": 1.442,
+      "paired_median_ms": 4.9687,
+      "oracle_p95_ms": 10.5899,
+      "baseline_p95_ms": 2.133,
+      "oracle_by_ledger_size": {
+        "50-99": 3.5159,
+        "100-149": 5.3962,
+        "150-199": 7.5495,
+        "200-249": 9.4299
+      }
+    },
+    {
+      "round": 7,
+      "events": 200,
+      "oracle_median_ms": 6.4427,
+      "baseline_median_ms": 1.2663,
+      "paired_median_ms": 5.1425,
+      "oracle_p95_ms": 10.4577,
+      "baseline_p95_ms": 1.9335,
+      "oracle_by_ledger_size": {
+        "50-99": 3.5262,
+        "100-149": 5.4547,
+        "150-199": 7.262,
+        "200-249": 9.6594
+      }
+    },
+    {
+      "round": 8,
+      "events": 200,
+      "oracle_median_ms": 6.2906,
+      "baseline_median_ms": 1.4568,
+      "paired_median_ms": 4.704,
+      "oracle_p95_ms": 11.4957,
+      "baseline_p95_ms": 2.553,
+      "oracle_by_ledger_size": {
+        "50-99": 3.5976,
+        "100-149": 5.3444,
+        "150-199": 7.1804,
+        "200-249": 10.0806
+      }
+    },
+    {
+      "round": 9,
+      "events": 200,
+      "oracle_median_ms": 6.6957,
+      "baseline_median_ms": 1.3717,
+      "paired_median_ms": 5.3654,
+      "oracle_p95_ms": 10.2985,
+      "baseline_p95_ms": 2.07,
+      "oracle_by_ledger_size": {
+        "50-99": 3.6098,
+        "100-149": 5.604,
+        "150-199": 8.0837,
+        "200-249": 9.4341
+      }
+    }
+  ],
+  "environment": {
+    "python": "3.9.6",
+    "platform": "macOS-15.7.9-x86_64-i386-64bit",
+    "machine": "x86_64"
+  },
+  "generated_at": "2026-09-14T16:07:31.924812+00:00"
+}

@@ -1,0 +1,19 @@
+{
+  "endorsement_policy": "AND('Org1MSP.peer','Org2MSP.peer')",
+  "evaluate_endorse_ms_mean": 20.34,
+  "evaluate_endorse_ms_median": 19.96,
+  "evaluate_endorse_ms_min": 19.23,
+  "evaluate_endorse_ms_p95": 21.83,
+  "evaluate_endorse_n": 20,
+  "fabric_version": "2.5.10",
+  "identity_provider": "Fabric CA (-ca)",
+  "method": "Fabric Gateway SDK (Go, persistent gRPC connection), NO CLI overhead",
+  "note": "Without the ~74 ms of CLI start-up: submit_commit still includes the orderer's BatchTimeout=2s (time to durable evidence); evaluate_endorse is the latency of PURE execution and endorsement on the peer, without ordering. Do NOT compare against the simulator's 3.79 ms: that April run was declared exploratory on 2026-09-14. The citable local figure is the paired protocol (QI4).",
+  "orderer_batch_timeout_s": 2,
+  "submit_commit_ms_mean": 2035.73,
+  "submit_commit_ms_median": 2035.51,
+  "submit_commit_ms_min": 2031.88,
+  "submit_commit_ms_p95": 2039.01,
+  "submit_commit_n": 29,
+  "verify_chain": "chain valid: 30 records"
+}

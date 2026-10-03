@@ -1,0 +1,624 @@
+{
+  "assessment-results": {
+    "uuid": "42757316-33ac-59db-8f04-d05e49db5357",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results — Compliance Oracle prototype",
+      "last-modified": "2026-04-29T21:04:57.320774+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d",
+          "type": "organization",
+          "name": "Compliance Oracle issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Oracle execution",
+        "description": "Six canonical scenarios processed by the Compliance Oracle prototype with full hash-chain integrity verification.",
+        "start": "2026-04-29T21:04:57.179588+00:00",
+        "end": "2026-04-29T21:04:57.204077+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "14fe8f52-933c-5ac1-9958-379ca554c9c2",
+            "title": "Pipeline event: approved_model",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "796b0f08-a6dd-565d-8c41-2c9c1542535e",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-4f5af3dc-f544-4929-a52a-9aaa75665d32",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=f8d9466d6dac45f3bc48d0c65e856c56e15462c7a16eada244f548ab91dedf89; chain_hash=92e361517be51d9a40d60672192e4440dbadf2bac01a001ec0aed523372af806; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-04-29T21:04:57.179588+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "ef53a98f-b213-5e37-94de-96e3f0392137",
+            "title": "Pipeline event: low_precision_rejected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c780fef3-9d71-5013-b0d8-7af7fea8385c",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-77f53a77-4a25-4dd8-ba03-7875f7eab7d9",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=edf428ecfe18e6054465b65bcd522420b5144c1a8ee4e9107a71634b3d1073a3; chain_hash=a4a1361723361b7fe9201e20cdb0546cf2e67c7fbadbdfcb20701ac5adc9ec2c; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-04-29T21:04:57.183541+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "8f73936c-de77-54c1-9ade-690638a2bda1",
+            "title": "Pipeline event: fairness_rejected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "f78bc161-2d4b-510a-b90d-e583e9db48e4",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-c7743703-d7a3-477a-aa0f-eb071c22cb05",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=8df69278ea7dd4ce6baaf370daa04640e825d7277ebc3b9b37080f10bfbbf27e; chain_hash=f71425d10dece4c3587dc753a02931b22ae80594db532135cd114ea558c1fa57; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-04-29T21:04:57.188142+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "23ab239b-451d-5b1c-a6e7-1bd5cb9533dd",
+            "title": "Pipeline event: missing_human_approval_rejected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "c8806061-1825-5926-abe9-555aef623f31",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-19b7efb7-4429-4cd4-83b4-a74abfe2af04",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=5c76e33ac5b4b89df445d1b4b9a8d8cdbbdd89dda6542a8e06037802b7d321ca; chain_hash=e471b4c9ea6231b4d654b928d25c5c473080b8a906fe6bc6dd048942315984f0; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-04-29T21:04:57.192897+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "c65f59a2-42c1-5386-8a40-442d3f33290d",
+            "title": "Pipeline event: drift_detected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "2931599d-7db0-5d8f-a7ef-2fdeab07bce6",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-f8289094-6c5c-4c9f-9243-dbeeaac9bd50",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=cbd16757cb35873385a94f53d9182a1dd3ce2c755440b24442b2f5b4036e875e; chain_hash=228ee1d3e1a6cffe099e2f149435cb3538cefada3a79406e452261629db2c66e; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-04-29T21:04:57.199537+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "c0766d12-97b8-50ba-80bc-1b173f357043",
+            "title": "Pipeline event: audit_query",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "79544078-0375-5e10-b04b-b242a749e951",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-63b7ea94-860f-4d07-8455-82f2e99da34e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=15b54f8e6a669ea1e0d0f1d99cb993c2b4d6cdf7544f6d048d086d522eebeb7c; chain_hash=d376bbc460c04a2dd90c6c20fcea60b155dc9a7094238fb4655e8acb4642ee81; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-04-29T21:04:57.204077+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "verified"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "1f6775bf-69c4-541b-bb4f-790b794886ea",
+            "title": "AI Act compliance finding: approved for approved_model",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "target": {
+              "type": "objective-id",
+              "target-id": "aia-10-3",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "14fe8f52-933c-5ac1-9958-379ca554c9c2"
+              }
+            ],
+            "props": [
+              {
+                "name": "control-id",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              }
+            ]
+          },
+          {
+            "uuid": "16e9fd3e-98d3-5b24-a4f1-7763ed914def",
+            "title": "AI Act compliance finding: rejected for low_precision_rejected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "target": {
+              "type": "objective-id",
+              "target-id": "aia-10-3",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "ef53a98f-b213-5e37-94de-96e3f0392137"
+              }
+            ],
+            "props": [
+              {
+                "name": "control-id",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              }
+            ]
+          },
+          {
+            "uuid": "9fde5683-0ef8-5827-b864-af84703f46ad",
+            "title": "AI Act compliance finding: rejected for fairness_rejected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "target": {
+              "type": "objective-id",
+              "target-id": "aia-10-3",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "8f73936c-de77-54c1-9ade-690638a2bda1"
+              }
+            ],
+            "props": [
+              {
+                "name": "control-id",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              }
+            ]
+          },
+          {
+            "uuid": "38a60d6d-dabe-5076-80c1-a57f684b1aad",
+            "title": "AI Act compliance finding: rejected for missing_human_approval_rejected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "target": {
+              "type": "objective-id",
+              "target-id": "aia-10-3",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "23ab239b-451d-5b1c-a6e7-1bd5cb9533dd"
+              }
+            ],
+            "props": [
+              {
+                "name": "control-id",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              }
+            ]
+          },
+          {
+            "uuid": "2f420f50-9b60-5e40-82b6-ccae8680ca3b",
+            "title": "AI Act compliance finding: escalated for drift_detected",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "target": {
+              "type": "objective-id",
+              "target-id": "aia-10-3",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c65f59a2-42c1-5386-8a40-442d3f33290d"
+              }
+            ],
+            "props": [
+              {
+                "name": "control-id",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              }
+            ]
+          },
+          {
+            "uuid": "c41be361-1781-5cd8-bb4b-a3634ee2856a",
+            "title": "AI Act compliance finding: verified for audit_query",
+            "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+            "target": {
+              "type": "objective-id",
+              "target-id": "aia-10-3",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c0766d12-97b8-50ba-80bc-1b173f357043"
+              }
+            ],
+            "props": [
+              {
+                "name": "control-id",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "control-id",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Hash-chain verification",
+              "description": "verify_chain() executed end-to-end over the ledger; all three integrity signals (record_hash, Ed25519 signature, chain_hash) were validated.",
+              "start": "2026-04-29T21:04:57.320774+00:00",
+              "end": "2026-04-29T21:04:57.320774+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "records_total",
+                  "value": "6"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

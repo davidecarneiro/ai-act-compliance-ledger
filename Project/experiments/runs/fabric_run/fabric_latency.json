@@ -1,0 +1,21 @@
+{
+  "fabric_version": "2.5.10",
+  "endorsement_policy": "AND('Org1MSP.peer','Org2MSP.peer')",
+  "orderer_batch_timeout_s": 2,
+  "orderer_max_messages_per_block": 10,
+  "chain_length_after_run": "chain valid: 30 records",
+  "method": "peer CLI (subprocess) por invoca\u00e7\u00e3o \u2014 sem reuse de conex\u00e3o",
+  "cli_process_startup_ms_median": 74.2,
+  "write_commit_n": 29,
+  "write_commit_ms_mean": 2152.48,
+  "write_commit_ms_median": 2144.48,
+  "write_commit_ms_p95": 2200.22,
+  "write_commit_ms_min": 2134.28,
+  "write_commit_ms_max": 2200.26,
+  "query_exec_n": 20,
+  "query_exec_ms_mean": 104.17,
+  "query_exec_ms_median": 103.27,
+  "query_exec_ms_p95": 111.91,
+  "honest_caveat": "Todos os tempos s\u00e3o medidos via processo 'peer' CLI (um fork por chamada, sem reuse de conex\u00e3o) e INCLUEM ~74.2 ms de arranque do CLI + setup TLS/gRPC. S\u00e3o pois um LIMITE SUPERIOR do custo atribu\u00edvel ao chaincode/rede, sim\u00e9trico ao 'lower bound' que a tese usa para os 3,79 ms in-process do simulador. A execu\u00e7\u00e3o pura do chaincode \u00e9 uma fra\u00e7\u00e3o de query_exec. Uma medi\u00e7\u00e3o rigorosa usaria o Fabric Gateway SDK com conex\u00e3o persistente.",
+  "interpretation": "write_commit dominado pelo BatchTimeout=2s do orderer (cada tx serial espera o corte do bloco; o design encadeado parent_hash==chainHead n\u00e3o \u00e9 pipelin\u00e1vel) \u2014 INFER\u00caNCIA pela vari\u00e2ncia m\u00ednima junto aos 2000 ms, n\u00e3o medida por run de controlo. A dire\u00e7\u00e3o da QI4 (gargalo migra de cripto-local p/ coordena\u00e7\u00e3o distribu\u00edda) \u00e9 robusta; os M\u00daLTIPLOS exatos dependem do m\u00e9todo de medi\u00e7\u00e3o."
+}

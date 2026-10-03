@@ -1,0 +1,7 @@
+evidence_id,scenario_id,event_type,decision,latency_ms,requirements_covered_count,requirements_covered,chain_hash
+ev-7e3534db-8f1c-44db-9a41-1c1211b965c8,approved_model,approved_model,approved,3.7029,5,"Art.10(3),Art.12,Art.14,Art.15,Art.72",9d675d1bcaa3a6919c15fd65a06fbad93e76fa9df9cffbcdc304695818dadb19
+ev-261cf593-4fe5-4c4a-9d4c-2e68b8676cff,low_precision_rejected,low_precision_rejected,rejected,3.1405,5,"Art.10(3),Art.12,Art.14,Art.15,Art.72",7c68365a57cb8318ad391bd97d118f58e97cbd92fd72a9fcf9d4f76993189900
+ev-9d6260a8-1328-41f5-a847-50171fea887e,fairness_rejected,fairness_rejected,rejected,5.6107,5,"Art.10(3),Art.12,Art.14,Art.15,Art.72",08e754912fa6ca606f306f488707915241cf783b363ac3a03dbdc4a3642820b7
+ev-f72137b8-3259-46d9-9e36-86b918176e5b,missing_human_approval_rejected,missing_human_approval_rejected,rejected,4.7338,5,"Art.10(3),Art.12,Art.14,Art.15,Art.72",6633284acc922b1ff3620a735d8808ac52b44b18091c6d3e9c028a61b67bad24
+ev-a22415e9-a095-42e2-a693-4cff9dbac6a8,drift_detected,drift_detected,escalated,3.9043,5,"Art.10(3),Art.12,Art.14,Art.15,Art.72",fd1658ce4d97c3a014bc656969cbc1fa553187b9a9e20ce8c7953f539c6de3aa
+ev-68be883f-790b-48f5-93e9-96e5c4bb4215,audit_query,audit_query,verified,4.1362,6,"Art.10(3),Art.12,Art.14,Art.15,Art.72,Art.73",cfca0c77fff24caf91f2822f15f6802df2e9acb9f74ac6ea6ae5ffc14076aa8e

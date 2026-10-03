@@ -1,0 +1,10 @@
+{
+  "conflicting_branch_rejected": "MVCC_READ_CONFLICT",
+  "final_verify_chain": "chain valid: 31 records",
+  "get_evidence_and_identity": true,
+  "null_scenario_preserved": true,
+  "query_art72_count": 30,
+  "replay_rejected": "endorse error: rpc error: code = Aborted desc = failed to endorse transaction, see attached details for more info\nDetails:\n  - Address: peer0.org1.example.com:7051\n    MspId: Org1MSP\n    Message: chaincode response 500, parent_hash mismatch: got 0000000000000000000000000000000000000000000000000000000000000000, expected 22b0458320c6704a0e2b6362445beb4f2161c3816c2999c80b82832df677e596",
+  "single_org_commit_rejected": "ENDORSEMENT_POLICY_FAILURE",
+  "tampered_signature_rejected": "endorse error: rpc error: code = Aborted desc = failed to endorse transaction, see attached details for more info\nDetails:\n  - Address: peer0.org1.example.com:7051\n    MspId: Org1MSP\n    Message: chaincode response 500, issuer signature verification failed"
+}

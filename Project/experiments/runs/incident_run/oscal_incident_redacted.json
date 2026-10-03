@@ -1,0 +1,433 @@
+{
+  "assessment-results": {
+    "uuid": "e31287cd-b593-51b1-94e8-8c67fc11b433",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results \u2014 Compliance Oracle prototype",
+      "last-modified": "2026-09-16T21:53:44.185321+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d",
+          "type": "organization",
+          "name": "Compliance Oracle issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Oracle execution",
+        "description": "3 evidence records produced by the Compliance Oracle prototype across 3 distinct scenario identifiers.",
+        "start": "2026-06-13T02:39:28.564956+00:00",
+        "end": "2026-06-13T02:39:28.568068+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "00ba52de-7487-5a08-b74c-9f3d20df1118",
+            "title": "Pipeline event ev-81130a5a-8117-4a28-b4cf-5894f7f8900e",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "6173714e-e5ad-57e6-9ab7-63cd095cf7ad",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-81130a5a-8117-4a28-b4cf-5894f7f8900e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=dffd24051c836d7105d25e0307848beca6ce7a84f6f2adb180facd0196e8ece3; chain_hash=0351b651bc4675e730b0cec57f583f924e164696da07ee53048852cc9d07b4fe; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T02:39:28.564956+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "f97ae84f-0d30-5cd5-8851-49fb8b095c6c",
+            "title": "Pipeline event ev-9d0f3d04-d05a-4217-8337-7348f867f70b",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "dfa1505d-00f0-5cc1-9a62-1cd95f4eb8af",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-9d0f3d04-d05a-4217-8337-7348f867f70b",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=37f36098d1ebacab49f250cad366f837acef5a41024775a3e7c6564dc3f97e4c; chain_hash=38a33efb5ce45e6055571ee83bfffb6becedb8377793cf47905e377bc160d7d1; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T02:39:28.567277+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "2cbba56b-711d-5ce4-959f-2aa7d6574ad3",
+            "title": "Pipeline event ev-a505027d-08aa-4d85-b30d-f75ce8d449ac",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "657fc998-de99-5fdc-b1d3-3d375b970311",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-a505027d-08aa-4d85-b30d-f75ce8d449ac",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=49e1cdbdd98143325006f9c3a70b685ab412b76e313d19926a81f9af007414b0; chain_hash=bdf9d4a57a1dc1ee619c0863221b9cbcf54c7f729f2cdb574647d0ef4d595bca; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-06-13T02:39:28.568068+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "verified"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-oracle-v1"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "ef625cb7-855e-561a-aca7-7dbe968b9dbd",
+            "title": "Technical objective obj-incident-recorded: escalated",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A serious incident was recorded and escalated for mandatory handling.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "incident.reportable",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-incident-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "00ba52de-7487-5a08-b74c-9f3d20df1118"
+              }
+            ]
+          },
+          {
+            "uuid": "b1af377e-48f8-5bf1-ba7d-865523529b8c",
+            "title": "Technical objective obj-incident-recorded: escalated",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A serious incident was recorded and escalated for mandatory handling.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "incident.reportable",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-incident-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "f97ae84f-0d30-5cd5-8851-49fb8b095c6c"
+              }
+            ]
+          },
+          {
+            "uuid": "05ad2995-746d-52cf-b83f-2b2e5a7b2740",
+            "title": "Technical objective obj-audit-query-recorded: verified",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "An integrity-verification request was recorded on the chain.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.0",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "audit.query_recorded",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "recovered-from-reason",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-audit-query-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "2cbba56b-711d-5ce4-959f-2aa7d6574ad3"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Ledger integrity verification",
+              "description": "the chain result was supplied by the caller and not recomputed by this exporter; the caller reports that no modification was detected; the caller reports the Ed25519 signatures as verified; this exporter did not check them; suffix truncation and events that were never written lie outside both checks, because detecting them needs an anchor kept outside the file.",
+              "start": "2026-09-16T21:53:44.185321+00:00",
+              "end": "2026-09-16T21:53:44.185321+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "b0f574e5-a94a-5f7d-94c9-971cb725f85d"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "signatures_verified",
+                  "value": "true"
+                },
+                {
+                  "name": "chain_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "signature_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "records_total",
+                  "value": "3"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
