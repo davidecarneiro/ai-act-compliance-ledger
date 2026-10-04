@@ -5,6 +5,18 @@ and Traceability of Technical Documentation in the AI Act* (Master's in Digital
 Legal Practices, ESTG, Polytechnic of Porto). Every path the manuscript cites
 as `Project/…` resolves from the root of this repository.
 
+## User manuals
+
+The manuals show how to navigate the Compliance Ledger Explorer platform, inspect records and
+verify evidence, with screenshots and step-by-step instructions.
+
+- [Manual completo em português](user_manuals/MANUAL_UTILIZACAO.md)
+- [Complete user manual in English](user_manuals/USER_MANUAL.md)
+
+After downloading the repository, open
+`Project/ledger_explorer/LEDGER_EXPLORER.html` in your browser. The
+`user_manuals/` folder also contains both manuals in HTML for browser reading.
+
 ## 1. What the project does
 
 A provider of a high-risk AI system has to keep technical documentation and
