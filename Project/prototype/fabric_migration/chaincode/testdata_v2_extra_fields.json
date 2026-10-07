@@ -1,0 +1,86 @@
+[
+  {
+    "evidence_id": "ev-77131871-ec6e-43f7-b9b8-7f413dfeed93",
+    "scenario_id": "approved_model",
+    "event_type": "approved_model",
+    "artifact_id": "credit-scoring-v2.0",
+    "artifact_type": "model",
+    "pipeline_stage": "validation",
+    "timestamp": "2026-10-07T17:31:21.684817+00:00",
+    "decision": "approved",
+    "reason": "all policy checks passed",
+    "rule_id": "policy.all_checks_passed",
+    "metrics": {
+      "precision": 0.89,
+      "demographic_parity_diff": 0.03,
+      "drift_score": 0.04
+    },
+    "policy_id": "pol-c3d1fc49f36e",
+    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "artifact_hash": "6a4282fdc802d8907484d2288c6e1f17a0c4ba3400ad700735f1ced8f4c8d85b",
+    "requirements_covered": [
+      "Art.10(3)",
+      "Art.12",
+      "Art.14",
+      "Art.15",
+      "Art.72"
+    ],
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "schema_version": 2,
+    "run_id": "run-0001",
+    "decision_inputs": {
+      "risk_level": "high",
+      "human_approval": true,
+      "note": "n\u00e3o declarado no struct Go"
+    },
+    "record_hash": "c28cc6e5285b45a0dd6f82b10b20090dfb3809339e7f4c01fd25206b83c11bc2",
+    "issuer_signature": "bBov6sRXp9G2OkxnltPPr7M/+807xoTjHNgpv49McCgA726ye7HC/RIOWHiC3t+vDfTAmWUG0lIZPYlPb8jdAA==",
+    "chain_hash": "264e6ee859f589fc59bd267ee7ef4b140cd66d8c59f957e97c3ff10e755840ad"
+  },
+  {
+    "evidence_id": "ev-d5cad054-302f-451e-94e0-68bb9f1f769b",
+    "scenario_id": "low_precision_rejected",
+    "event_type": "low_precision_rejected",
+    "artifact_id": "credit-scoring-v2.1",
+    "artifact_type": "model",
+    "pipeline_stage": "validation",
+    "timestamp": "2026-10-07T17:31:21.687452+00:00",
+    "decision": "rejected",
+    "reason": "precision 0.74 below threshold 0.8",
+    "rule_id": "threshold.precision",
+    "metrics": {
+      "precision": 0.74,
+      "demographic_parity_diff": 0.02,
+      "drift_score": 0.05
+    },
+    "policy_id": "pol-c3d1fc49f36e",
+    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "artifact_hash": "e3498c5ffa01252137a7fb721975e3f50b4576b230cc827fd1608c40eb5d37ce",
+    "requirements_covered": [
+      "Art.10(3)",
+      "Art.12",
+      "Art.14",
+      "Art.15",
+      "Art.72"
+    ],
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "264e6ee859f589fc59bd267ee7ef4b140cd66d8c59f957e97c3ff10e755840ad",
+    "schema_version": 2,
+    "run_id": "run-0001",
+    "decision_inputs": {
+      "risk_level": "high",
+      "human_approval": false,
+      "note": "n\u00e3o declarado no struct Go"
+    },
+    "record_hash": "393e86cf8621cabe3553b24d3392e69d4fa2736f442cf3870183759fb4d242c2",
+    "issuer_signature": "FVaXwI4z54+e+qo46ipu+tU/oXFj2lMv92aIPJZ4SvwNWCjhk/q3lk8RcST6FLhWRV43lzFr3V9j/ehPprzJCw==",
+    "chain_hash": "2a4a56182c3fc25c001d40c95b1d35764db700374990300bdc59f19a73a70f88"
+  }
+]

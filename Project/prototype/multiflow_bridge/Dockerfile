@@ -1,6 +1,6 @@
 # MultiFlow observer and the shared compliance simulator.
 FROM python:3.11-slim-bookworm
-RUN pip install --no-cache-dir kafka-python==2.0.2 cryptography==42.0.5
+RUN pip install --no-cache-dir kafka-python==2.0.2 cryptography==42.0.5 rfc8785==0.1.4
 # The simulator comes from the build context (see INTEGRATION_README.md). It is
 # copied at the same folder depth as in the author's repository, so that the
 # relative path simulator.py uses to find its experiments folder still resolves.

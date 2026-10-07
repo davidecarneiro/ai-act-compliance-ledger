@@ -120,10 +120,10 @@ def run() -> Path:
     print(f"\nsensitivity_csv={csv_path}")
     print(f"sensitivity_json={json_path}")
 
-    # Restores the canonical six-scenario ledger.json with the policy in
-    # configs/policies.json (pol-c3d1fc49f36e, the one Appendix A prints), but
-    # with fresh evidence_id and timestamp values: the published file changes.
-    # Run this only when that is intended, or restore ledger.json afterwards.
+    # Leaves a six-scenario ledger under the policy in configs/policies.json
+    # (pol-c3d1fc49f36e, the one Appendix A prints) in the output directory
+    # (experiments/article/ledger.json by default). The published ledger.json
+    # next to this script is no longer rewritten.
     oracle = ComplianceOracle()
     oracle.reset_ledger()
     for event in build_scenarios():

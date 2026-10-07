@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
-"""Compare Python and Go canonical hashes over six test vectors.
+"""Compare Python and Go canonical hashes, for both schema versions.
 
-Three synthetic vectors exercise escaping. The first record from each of
-three delivered ledgers supplies the real-data vectors. Missing or empty
-required ledgers cause failure. Run: python3 test_interop.py."""
+Schema version 1 (the dissertation's form): three synthetic vectors exercise
+escaping, and the first record of each of three published ledgers supplies
+the real-data vectors. Missing or empty required ledgers cause failure.
+
+Schema version 2 (RFC 8785): the JCS vectors of gen_testdata_v2.py are
+recomputed here with Python's implementation and handed to the chaincode's
+TestJCSVectorsMatchPython, which must reproduce every byte with Go's.
+
+Run: python3 test_interop.py."""
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -16,10 +23,12 @@ SIM = Path(__file__).parents[1].parent / "compliance_ledger_sim"
 sys.path.insert(0, str(SIM))
 from simulator import canonical_json  # noqa: E402
 
-from paths import EXPERIMENTS_DIR, run_dir  # noqa: E402
+from paths import published_run_dir as run_dir  # noqa: E402
 
 HERE = Path(__file__).parent
-EXPERIMENTS = Path(EXPERIMENTS_DIR)
+CHAINCODE = HERE.parent / "chaincode"
+sys.path.insert(0, str(CHAINCODE))
+from gen_testdata_v2 import jcs_vectors  # noqa: E402
 DERIVED = {"record_hash", "issuer_signature", "chain_hash"}
 em_falta: list = []
 
@@ -81,6 +90,28 @@ def vectors() -> list[tuple[str, dict]]:
     return vs
 
 
+def check_v2() -> tuple[int, int]:
+    """Run the RFC 8785 vectors, computed now by Python, through Go."""
+    vectors = jcs_vectors()
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+        json.dump(vectors, f)
+        path = f.name
+    env = dict(os.environ, INTEROP_JCS_VECTORS=path, GOFLAGS="-mod=vendor")
+    res = subprocess.run(
+        ["go", "test", "-count=1", "-v", "-run", "^TestJCSVectorsMatchPython$", "."],
+        cwd=CHAINCODE, capture_output=True, text=True, env=env,
+    )
+    ok = 0
+    for v in vectors:
+        passed = f"JCS-VECTOR OK {v['label']} " in res.stdout
+        ok += passed
+        print(f"[{'OK  ' if passed else 'FAIL'}] v2_jcs_{v['label']}")
+    if ok != len(vectors) or res.returncode != 0:
+        print(res.stdout[-2000:])
+        print(res.stderr[-2000:])
+    return ok, len(vectors)
+
+
 def main() -> int:
     ok = 0
     total = 0
@@ -101,7 +132,9 @@ def main() -> int:
         if not passed:
             print(res.stdout)
             print(res.stderr)
-    print(f"\n{ok}/{total} vectors with identical Python/Go hash")
+    print(f"\n{ok}/{total} schema version 1 vectors with identical Python/Go hash\n")
+    ok2, total2 = check_v2()
+    print(f"\n{ok2}/{total2} schema version 2 (RFC 8785) vectors with identical Python/Go bytes")
     reais = sum(1 for label, _ in todos if label.startswith("real_"))
     if em_falta or reais != 3:
         print("\nERROR: the interoperability proof needs the three real ledgers, and")
@@ -111,7 +144,7 @@ def main() -> int:
         if not em_falta:
             print(f"   only {reais} of the 3 real vectors ran")
         return 1
-    return 0 if ok == total else 1
+    return 0 if ok == total and ok2 == total2 else 1
 
 
 if __name__ == "__main__":

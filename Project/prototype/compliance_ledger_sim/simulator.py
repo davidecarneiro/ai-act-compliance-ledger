@@ -25,13 +25,32 @@ from pathlib import Path
 from typing import Iterable, List, Tuple
 from uuid import uuid4
 
+import rfc8785
+
+from canonical import (
+    CURRENT_SCHEMA_VERSION,
+    JCS_MAX_SAFE_INTEGER,
+    SCHEMA_V1,
+    SCHEMA_V2,
+    SUPPORTED_SCHEMA_VERSIONS,
+    UnsupportedSchemaVersion,
+    canonical_v1,
+    canonicaliser,
+    record_body_bytes,
+)
 from keys import IssuerKey, load_or_create_key, public_key_fingerprint
 from pseudonymizer import Pseudonymizer
 
 BASE_DIR = Path(__file__).parent
-LEDGER_FILE = BASE_DIR / "ledger.json"
 POLICY_FILE = BASE_DIR / "configs" / "policies.json"
-from paths import EXPERIMENTS_DIR  # noqa: E402  (vault: 06_dados/; delivery: ./experiments)
+from paths import EXPERIMENTS_DIR  # noqa: E402  (new runs: experiments/article/)
+
+# The six-scenario ledger shipped with the dissertation stays at
+# BASE_DIR / "ledger.json" and is only read (verify_delivery.py). New runs
+# write their ledger under the output directory instead, so regenerating does
+# not replace published evidence.
+PUBLISHED_LEDGER_FILE = BASE_DIR / "ledger.json"
+LEDGER_FILE = EXPERIMENTS_DIR / "ledger.json"
 
 GENESIS_HASH = "0" * 64
 
@@ -113,12 +132,28 @@ def _validate_policies(policies: dict) -> None:
         )
 
 
-def _safe_metrics(metrics):
+def _outside_jcs_number_domain(value) -> bool:
+    """Is this number one RFC 8785 cannot represent?
+
+    JCS numbers are IEEE 754 doubles. Python integers beyond 2**53 - 1 would be
+    emitted exactly by Python but rounded by a double-based implementation such
+    as Go's, so the two sides would hash different values."""
+    if isinstance(value, bool):
+        return False
+    if isinstance(value, int):
+        return abs(value) > JCS_MAX_SAFE_INTEGER
+    if isinstance(value, float):
+        return math.isnan(value) or math.isinf(value)
+    return False
+
+
+def _safe_metrics(metrics, schema_version: int = SCHEMA_V1):
     """Return finite numeric metrics with interoperable string keys, or None.
 
     Valid measurements are retained for threshold rejections. This function
     checks serialisability, not confidentiality; metric names and values may
-    still require data minimisation before publication."""
+    still require data minimisation before publication. Under schema version 2
+    the numbers must also lie inside the JCS domain."""
     if not isinstance(metrics, dict):
         return None
     for name, value in metrics.items():
@@ -139,6 +174,8 @@ def _safe_metrics(metrics):
         except (OverflowError, ValueError):
             return None
         if math.isnan(as_float) or math.isinf(as_float):
+            return None
+        if schema_version >= SCHEMA_V2 and _outside_jcs_number_domain(value):
             return None
     return metrics
 
@@ -181,16 +218,38 @@ def _without_surrogates(value) -> str:
     )
 
 
-def _canonical_source(value):
+def _canonical_source(value, schema_version: int = SCHEMA_V1):
     """Normalise payloads for hashing, preserving well-formed event mappings.
 
     Mixed-type keys use a sorted envelope containing key type, key text and
-    value. The reserved envelope key is also wrapped to prevent ambiguity."""
+    value. The reserved envelope key is also wrapped to prevent ambiguity.
+
+    Under schema version 2 the same envelope carries the numbers RFC 8785
+    cannot represent (NaN, infinities, integers beyond 2**53 - 1), so hashing
+    a malformed event yields a digest instead of an exception and the
+    rejection can still be recorded. Version 1 is left exactly as shipped."""
     if isinstance(value, dict):
-        if all(isinstance(k, str) for k in value) and _UNREPRESENTABLE_MARKER not in value:
-            return {k: _canonical_source(v) for k, v in value.items()}
+        # Under version 2 a key that is not valid Unicode (a lone surrogate)
+        # has no JCS form either, so it goes into the envelope as well.
+        keys_ok = all(
+            isinstance(k, str)
+            and (schema_version < SCHEMA_V2 or _interoperable_text(k))
+            for k in value
+        )
+        if keys_ok and _UNREPRESENTABLE_MARKER not in value:
+            return {k: _canonical_source(v, schema_version) for k, v in value.items()}
+
+        def _key_tag_and_text(k):
+            if not isinstance(k, str):
+                return type(k).__name__, repr(k)
+            if schema_version >= SCHEMA_V2 and not _interoperable_text(k):
+                # Tagged apart from "str" so an escaped key cannot collide with
+                # a genuine key whose text happens to read "\ud800".
+                return "str-surrogate-escaped", _without_surrogates(k)
+            return "str", k
+
         triples = [
-            [type(k).__name__, k if isinstance(k, str) else repr(k), _canonical_source(v)]
+            [*_key_tag_and_text(k), _canonical_source(v, schema_version)]
             for k, v in value.items()
         ]
         triples.sort(
@@ -201,9 +260,11 @@ def _canonical_source(value):
         return {_UNREPRESENTABLE_MARKER: triples}
 
     if isinstance(value, (list, tuple)):
-        return [_canonical_source(item) for item in value]
+        return [_canonical_source(item, schema_version) for item in value]
     if isinstance(value, str) and not _interoperable_text(value):
         return _without_surrogates(value)
+    if schema_version >= SCHEMA_V2 and _outside_jcs_number_domain(value):
+        return {_UNREPRESENTABLE_MARKER: [type(value).__name__, repr(value)]}
     return value
 
 
@@ -228,26 +289,28 @@ def _optional_text(value):
     return _required_text(value)
 
 
-def policy_identity(policies: dict) -> Tuple[str, str]:
+def policy_identity(
+    policies: dict, schema_version: int = CURRENT_SCHEMA_VERSION
+) -> Tuple[str, str]:
     """Return the policy identifier and SHA-256 digest of its canonical content.
 
     Identical policy content produces the same identity. Changing a policy
-    changes its digest, linking each decision to a specific policy version."""
-    digest = sha256_hex(canonical_json(policies))
+    changes its digest, linking each decision to a specific policy version.
+    The digest uses the canonical form of the schema version the records
+    citing it are written under. For the shipped policies both forms give the
+    same bytes, so their identifiers did not change with version 2."""
+    digest = sha256_hex(canonicaliser(schema_version)(policies))
     return f"pol-{digest[:12]}", digest
 
 
 def canonical_json(payload: dict) -> bytes:
-    """Deterministic JSON serialization used as the basis for hashes/signatures.
+    """Schema version 1 canonical serialisation (kept under its original name).
 
-    ``ensure_ascii=True`` is the json.dumps default but is stated explicitly here
-    because it is part of the canonical contract that the Go chaincode replicates
-    (non-ASCII escaped to \\uXXXX). Making it explicit does not change the output.
-    """
-
-    return json.dumps(
-        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True
-    ).encode("utf-8")
+    Existing callers and the dissertation's records rely on this exact form.
+    New code that handles stored records should use
+    :func:`canonical.record_body_bytes`, which dispatches on each record's
+    ``schema_version``."""
+    return canonical_v1(payload)
 
 
 def sha256_hex(payload: bytes) -> str:
@@ -276,7 +339,20 @@ class ComplianceOracle:
         ledger_file: Path = LEDGER_FILE,
         issuer_key: IssuerKey | None = None,
         pseudonymizer: Pseudonymizer | None = None,
+        schema_version: int = CURRENT_SCHEMA_VERSION,
     ) -> None:
+        # The schema version selects the canonical form of new records. Version
+        # 1 reproduces the dissertation's records byte for byte; version 2 is
+        # RFC 8785. Verification never uses this value: it reads the version
+        # from each stored record.
+        if schema_version not in SUPPORTED_SCHEMA_VERSIONS or isinstance(
+            schema_version, bool
+        ):
+            raise UnsupportedSchemaVersion(
+                f"cannot issue records under schema_version {schema_version!r}"
+            )
+        self.schema_version = schema_version
+        self._canonical = canonicaliser(schema_version)
         self.policy_file = policy_file
         self.ledger_file = ledger_file
         self.issuer_key = issuer_key or load_or_create_key()
@@ -314,7 +390,15 @@ class ComplianceOracle:
         The archived content supports reconstruction of the rules named by a record."""
         archive = self.policy_file.parent / "policies_archive"
         archive.mkdir(parents=True, exist_ok=True)
-        target = archive / f"{policy_identity(policies)[0]}.json"
+        try:
+            policy_id = policy_identity(policies, self.schema_version)[0]
+        except rfc8785.CanonicalizationError as exc:
+            # A policy whose content has no canonical form cannot be named by
+            # a digest, so no decision taken under it could be traced back.
+            raise InvalidPolicyError(
+                f"policy has no RFC 8785 canonical form: {exc}"
+            ) from None
+        target = archive / f"{policy_id}.json"
         if not target.exists():
             target.write_text(
                 json.dumps(policies, indent=2, sort_keys=True), encoding="utf-8"
@@ -471,6 +555,13 @@ class ComplianceOracle:
                 return f"metric {name} must be finite, got {value}"
             if name in BOUNDED_METRICS and not 0.0 <= float(value) <= 1.0:
                 return f"metric {name} must lie in [0,1], got {value}"
+            if self.schema_version >= SCHEMA_V2 and _outside_jcs_number_domain(
+                metrics[name]
+            ):
+                return (
+                    f"metric {name} lies outside the RFC 8785 number domain "
+                    f"(integers up to 2**53 - 1)"
+                )
 
         return None
 
@@ -581,8 +672,10 @@ class ComplianceOracle:
             if self.pseudonymizer is not None:
                 event_data = self.pseudonymizer.apply_to_event(event_data)
 
-            artifact_hash = sha256_hex(canonical_json(_canonical_source(event_data)))
-            policy_id, policy_hash = policy_identity(self.policies)
+            artifact_hash = sha256_hex(
+                self._canonical(_canonical_source(event_data, self.schema_version))
+            )
+            policy_id, policy_hash = policy_identity(self.policies, self.schema_version)
             decision, reason, rule_id = self._validate_compliance(event_data)
             # Coverage is derived from field shapes, so it must not run over an
             # event already declared malformed: doing so turned a rejection that
@@ -607,7 +700,7 @@ class ComplianceOracle:
                 "decision": decision,
                 "reason": reason,
                 "rule_id": rule_id,
-                "metrics": _safe_metrics(event_data.get("metrics")),
+                "metrics": _safe_metrics(event_data.get("metrics"), self.schema_version),
                 "policy_id": policy_id,
                 "policy_hash": policy_hash,
                 "artifact_hash": artifact_hash,
@@ -618,8 +711,12 @@ class ComplianceOracle:
                 "hash_alg": "SHA-256",
                 "parent_hash": parent_chain_hash,
             }
+            # Version 1 records never carried the field, so it is added only
+            # from version 2 on; its presence is what selects JCS on verify.
+            if self.schema_version >= SCHEMA_V2:
+                body["schema_version"] = self.schema_version
 
-            body_bytes = canonical_json(body)
+            body_bytes = self._canonical(body)
             record_hash = sha256_hex(body_bytes)
             signature = self.issuer_key.sign(body_bytes)
             chain_hash = sha256_hex((parent_chain_hash + record_hash).encode("utf-8"))
@@ -667,15 +764,20 @@ class ComplianceOracle:
         previous_chain = GENESIS_HASH
 
         for index, record in enumerate(ledger):
-            stripped = {
-                k: v
-                for k, v in record.items()
-                if k not in {"record_hash", "issuer_signature", "chain_hash"}
-            }
-            body_bytes = canonical_json(stripped)
+            # Each record is recomputed in the canonical form it was written
+            # under, read from the record itself: a ledger may mix version 1
+            # records with version 2 records appended later.
+            local_issues: List[str] = []
+            try:
+                body_bytes = record_body_bytes(record)
+            except UnsupportedSchemaVersion as exc:
+                local_issues.append(f"unsupported schema_version ({exc})")
+                body_bytes = b""
+            except (rfc8785.CanonicalizationError, TypeError, ValueError) as exc:
+                local_issues.append(f"body has no canonical form ({exc})")
+                body_bytes = b""
             recomputed_hash = sha256_hex(body_bytes)
 
-            local_issues: List[str] = []
             if record.get("parent_hash") != previous_chain:
                 local_issues.append("parent_hash mismatch")
             if recomputed_hash != record.get("record_hash"):

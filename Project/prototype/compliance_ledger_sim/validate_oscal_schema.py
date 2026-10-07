@@ -19,7 +19,8 @@ which needs a JRE 11+, is noted as future work in the dissertation.
 
 Usage:
     python3 validate_oscal_schema.py <file.json> [<file.json> ...]
-    python3 validate_oscal_schema.py            # validates the experiments dir
+    python3 validate_oscal_schema.py            # validates the output dir (experiments/article)
+    python3 validate_oscal_schema.py --published --expect 18   # the dissertation's documents
 Exit code is 1 if any document is invalid.
 """
 
@@ -96,17 +97,25 @@ def main(argv: list[str]) -> int:
             return 2
         argv = argv[:i] + argv[i + 2:]
 
+    # --published: the documents shipped with the dissertation, excluding the
+    # article/ output folder that now sits inside the published experiments.
+    published = "--published" in argv
+    argv = [a for a in argv if a != "--published"]
+
     if argv:
         files = argv
     else:
-        from paths import EXPERIMENTS_DIR
-        base = EXPERIMENTS_DIR
+        from paths import EXPERIMENTS_DIR, PUBLISHED_DIR
+        base = PUBLISHED_DIR if published else EXPERIMENTS_DIR
         files = sorted(
             set(
                 glob.glob(str(base / "**" / "oscal_*.json"), recursive=True)
                 + glob.glob(str(base / "oscal_assessment_results_*.json"))
             )
         )
+        if published:
+            article = (PUBLISHED_DIR / "article").resolve()
+            files = [f for f in files if article not in Path(f).resolve().parents]
 
     print(f"oscal-schema-validate :: OSCAL 1.1.2 assessment-results")
     print(f"schema: {SCHEMA_PATH.name} (official NIST release v1.1.2)")

@@ -1,0 +1,26 @@
+[
+  {
+    "label": "keys_utf16_order",
+    "input": "{\n \"\\ud83d\\udea8\": 1,\n \"\\ufb33\": 2,\n \"\\u20ac\": 3,\n \"a\": 4,\n \"B\": 5,\n \"\": 6\n}",
+    "expected_b64": "eyIiOjYsIkIiOjUsImEiOjQsIuKCrCI6Mywi8J+aqCI6MSwi76yzIjoyfQ==",
+    "sha256": "5ca1af12352a5049ad7170c64a61001397b7c39db1484d72ba2118c472e2483e"
+  },
+  {
+    "label": "numbers",
+    "input": "[\n 0.0,\n -0.0,\n 1.0,\n 1e+21,\n 1e-07,\n 0.30000000000000004,\n 5e-324,\n 1.7976931348623157e+308,\n 9007199254740991,\n -9007199254740991,\n 100,\n 1e+20,\n 123.456\n]",
+    "expected_b64": "WzAsMCwxLDFlKzIxLDFlLTcsMC4zMDAwMDAwMDAwMDAwMDAwNCw1ZS0zMjQsMS43OTc2OTMxMzQ4NjIzMTU3ZSszMDgsOTAwNzE5OTI1NDc0MDk5MSwtOTAwNzE5OTI1NDc0MDk5MSwxMDAsMTAwMDAwMDAwMDAwMDAwMDAwMDAwLDEyMy40NTZd",
+    "sha256": "3087b29dbeab80b0858fb3b59ace4b36aa75d8962fe0057bfac9d042a5aa4711"
+  },
+  {
+    "label": "strings",
+    "input": "[\n \"<a&b>\",\n \"\\u007f\",\n \"\\u2028\\u2029\",\n \"\\u0001\\u001f\",\n \"\\\"\\\\/\",\n \"\\ud83d\\udea8\",\n \"\\u00e7\\u00e3\\u20ac\",\n \"\\t\\n\\r\\b\\f\"\n]",
+    "expected_b64": "WyI8YSZiPiIsIn8iLCLigKjigKkiLCJcdTAwMDFcdTAwMWYiLCJcIlxcLyIsIvCfmqgiLCLDp8Oj4oKsIiwiXHRcblxyXGJcZiJd",
+    "sha256": "61e15f99582878a5d8275b7193b12c10cab00e477e37ddd27446b24e0209f186"
+  },
+  {
+    "label": "nested",
+    "input": "{\n \"z\": [\n  {\n   \"b\": null,\n   \"a\": true\n  },\n  [],\n  {}\n ],\n \"a\": {\n  \"y\": false,\n  \"x\": \"1\"\n }\n}",
+    "expected_b64": "eyJhIjp7IngiOiIxIiwieSI6ZmFsc2V9LCJ6IjpbeyJhIjp0cnVlLCJiIjpudWxsfSxbXSx7fV19",
+    "sha256": "67f1c62b68a8b9e85efabb57cfdfae7ebac9c6445ed3f965537343117fab1925"
+  }
+]

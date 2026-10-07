@@ -19,8 +19,9 @@ from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
-from paths import EXPERIMENTS_DIR, run_dir
-from simulator import GENESIS_HASH, canonical_json, sha256_hex
+from canonical import record_body_bytes
+from paths import published_run_dir as run_dir
+from simulator import GENESIS_HASH, sha256_hex
 
 AQUI = Path(__file__).resolve().parent
 PUBLIC_KEY = AQUI / "keys" / "compliance-oracle-v1.ed25519.pub.pem"
@@ -80,10 +81,14 @@ def verify_chain(records: list, pub: Ed25519PublicKey):
     """Recompute every hash, link and signature. Returns (valid, issues)."""
     issues, valid, previous = [], 0, GENESIS_HASH
     for index, record in enumerate(records):
-        body = {k: v for k, v in record.items() if k not in DERIVED}
-        raw = canonical_json(body)
-        recomputed = sha256_hex(raw)
         local = []
+        try:
+            # Each record in the canonical form of its own schema_version.
+            raw = record_body_bytes(record)
+        except Exception as e:                   # noqa: BLE001
+            local.append(f"no canonical body ({e})")
+            raw = b""
+        recomputed = sha256_hex(raw)
         if record.get("parent_hash") != previous:
             local.append("parent_hash mismatch")
         if recomputed != record.get("record_hash"):

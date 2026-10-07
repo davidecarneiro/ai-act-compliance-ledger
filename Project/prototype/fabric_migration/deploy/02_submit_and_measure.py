@@ -29,8 +29,18 @@ TESTNET = SAMPLES / "test-network"
 PEERORG = TESTNET / "organizations" / "peerOrganizations"
 ORDORG = TESTNET / "organizations" / "ordererOrganizations"
 def _experiments() -> Path:
-    """Same markers as compliance_ledger_sim/paths.py: vault or delivered folder."""
+    """Same rule as compliance_ledger_sim/paths.py: EXPERIMENTS_DIR if set,
+    otherwise the article/ folder inside the published experiments, so a new
+    measurement never writes over the published fabric_run."""
     env = os.environ.get("EXPERIMENTS_DIR")
+    if env:
+        return Path(env)
+    return _published() / "article"
+
+
+def _published() -> Path:
+    """Same markers as compliance_ledger_sim/paths.py: vault or delivered folder."""
+    env = os.environ.get("PUBLISHED_DIR")
     if env:
         return Path(env)
     for parent in HERE.parents:

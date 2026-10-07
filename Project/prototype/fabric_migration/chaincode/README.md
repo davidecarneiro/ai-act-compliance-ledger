@@ -42,10 +42,33 @@ keeps every number literal as the issuer wrote it (`UseNumber`; `metrics` is a
 strings, `null` in `scenario_id`, and the numbers inside `metrics`. It is not a
 general JSON canonicaliser; that would need RFC 8785 on both sides.
 
+### Schema versions (article branch)
+
+Records now carry a `schema_version`, and the verifier reads it from each record
+(`canonical_versions.go`, mirroring `compliance_ledger_sim/canonical.py`):
+
+| Version | Selected by | Canonical form | Body |
+| --- | --- | --- | --- |
+| 1 | no `schema_version` field | `canonicalJSON` above | rebuilt from the `EvidenceRecord` struct |
+| 2 | `"schema_version": 2` | RFC 8785 (JCS), `github.com/gowebpki/jcs` v1.0.2, vendored | the record's own members, minus derived and on-chain fields |
+
+Version 1 is unchanged, so every published ledger still verifies. Version 2
+removes the byte-matching work: both sides run a conforming RFC 8785
+implementation, so `0.0` and `0`, HTML characters and non-ASCII text have one
+form by construction. Because the body is the record's own members and a version
+2 record is stored as submitted, a field the struct does not declare can no
+longer be dropped in silence. A record naming `schema_version` 1, any version
+other than 2, or a duplicate member name is refused.
+
+The JCS module was fetched from GitHub directly (the Go module proxy and checksum
+database were not reachable from the build environment); its `go.sum` entry is
+the hash computed locally from the `v1.0.2` tag. `gen_testdata_v2.py` regenerates
+the version 2 fixtures from the Python issuer.
+
 ## Tests (no network needed)
 
-`go test -mod=vendor ./...` runs **10 tests**, all passing, from the vendored
-dependencies and without network access:
+`go test -mod=vendor ./...` runs **16 tests**, all passing, from the vendored
+dependencies and without network access. The ten of the dissertation:
 
 - `TestContractBootstraps` builds the contract with `contractapi.NewChaincode`,
   as the executable does at start-up, and checks that the queries return a null
@@ -64,13 +87,32 @@ dependencies and without network access:
   verify, in Go, the current six-record canonical ledger and the ledger of the
   boundary matrix that `compliance_ledger_sim/tests/test_fronteiras.py` writes.
 
+And six for schema version 2 (`compliance_chaincode_v2_test.go`):
+
+- `TestV2PythonLedgerVerifiesInGo` and `TestV2SubmitAndVerifyChain` take a
+  ten-record version 2 chain issued by Python (non-ASCII, HTML characters, an
+  astral-plane character, `0.0` next to `0`, an event rejected for a number
+  outside the JCS domain) through recomputation, `SubmitEvidence` and
+  `VerifyChain`;
+- `TestV2KeepsMembersTheStructDoesNotDeclare` submits records signed with
+  `run_id` and `decision_inputs`, which the struct does not declare, and finds
+  them verified and stored;
+- `TestV2RejectsVersionAndMemberTamper` and `TestV2RejectsDuplicateMembers`
+  refuse a removed, retyped or unsupported version, a changed undeclared member
+  and a duplicate member name;
+- `TestJCSVectorsMatchPython` reproduces, byte for byte, Python's RFC 8785
+  output for key order by UTF-16 code units, number formatting and string
+  escaping.
+
 A missing fixture makes a test fail rather than skip, because a skipped test
 still lets `go test` print `ok`. The incident ledger is looked up both where the
 delivered `Project/` folder keeps it and where the author's vault does.
 
-`../interop/test_interop.py` checks the canonical form separately, on three
-synthetic vectors (HTML and non-ASCII, an astral-plane emoji, the DEL character)
-and on the first record body of three real ledgers.
+`../interop/test_interop.py` checks the canonical form separately: for version
+1, on three synthetic vectors (HTML and non-ASCII, an astral-plane emoji, the DEL
+character) and on the first record body of three real ledgers; for version 2, on
+the RFC 8785 vectors, computed live by Python and run through
+`TestJCSVectorsMatchPython`.
 
 What these tests do not show: the MVCC conflict on the head pointer, which only
 a peer enforces, and endorsement, which happens outside the chaincode. Both were

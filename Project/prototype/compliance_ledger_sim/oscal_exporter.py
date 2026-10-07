@@ -39,9 +39,9 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 BASE_DIR = Path(__file__).parent
-LEDGER_FILE = BASE_DIR / "ledger.json"
 from paths import EXPERIMENTS_DIR  # noqa: E402
-from simulator import GENESIS_HASH, canonical_json, sha256_hex  # noqa: E402
+from canonical import record_body_bytes  # noqa: E402
+from simulator import GENESIS_HASH, LEDGER_FILE, canonical_json, sha256_hex  # noqa: E402
 
 # Fields derived from the canonical body; excluded before recomputing it.
 DERIVED_FIELDS = {"record_hash", "issuer_signature", "chain_hash"}
@@ -55,8 +55,11 @@ def verify_chain_structure(ledger: List[dict]) -> bool:
     truncation and omitted events without an external inventory or anchor."""
     previous_chain = GENESIS_HASH
     for record in ledger:
-        body = {k: v for k, v in record.items() if k not in DERIVED_FIELDS}
-        recomputed = sha256_hex(canonical_json(body))
+        try:
+            # Recomputed in the canonical form of the record's schema_version.
+            recomputed = sha256_hex(record_body_bytes(record))
+        except Exception:  # unsupported version, or no canonical form
+            return False
         expected_chain = sha256_hex(
             (previous_chain + recomputed).encode("utf-8")
         )
@@ -451,11 +454,10 @@ def verify_signatures(
             unresolved = True
             continue
 
-        body = {k: v for k, v in record.items() if k not in DERIVED_FIELDS}
         try:
             key.verify(
                 b64decode(record.get("issuer_signature", "")),
-                canonical_json(body),
+                record_body_bytes(record),
             )
         except Exception:  # InvalidSignature, malformed base64, missing field
             return False

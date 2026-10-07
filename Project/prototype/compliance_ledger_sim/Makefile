@@ -3,9 +3,9 @@
 #   setup        pip install -r requirements.txt (--break-system-packages on
 #                Debian hosts; elsewhere prefer: python3 -m venv .venv &&
 #                .venv/bin/pip install -r requirements.txt)
-#   tests        the pytest suite (98 tests)
+#   tests        the pytest suite, once per schema version (v2 RFC 8785, then v1)
 #   verify       re-verify the published evidence in experiments/, writing nothing
-#   baseline     run the Compliance Oracle once (regenerates ledger.json)
+#   baseline     run the Compliance Oracle once (writes experiments/article/ledger.json)
 #   compare      Oracle and SQLite baseline side by side
 #   sensitivity  45 policy-threshold combinations
 #   oscal        OSCAL Assessment Results from the ledger
@@ -24,6 +24,7 @@ setup:
 
 tests:
 	$(PYTHON) -m pytest tests/ -v
+	EVIDENCE_SCHEMA_VERSION=1 $(PYTHON) -m pytest tests/ -q
 
 verify:
 	$(PYTHON) verify_delivery.py

@@ -53,8 +53,11 @@ type chainHeadState struct {
 }
 
 // Canonical hashing uses alphabetically ordered JSON map keys, so field order
-// here does not matter. Every signed field must be declared, though:
-// encoding/json drops unknown fields on Unmarshal without an error.
+// here does not matter. For schema version 1 every signed field must be
+// declared: encoding/json drops unknown fields on Unmarshal without an error.
+// Schema version 2 hashes and stores the record's own members instead
+// (canonical_versions.go), so this struct only has to name the fields the
+// contract reads.
 type EvidenceRecord struct {
 	EvidenceID            string   `json:"evidence_id"`
 	// Pointer, not string: the issuer writes JSON null when no scenario is
@@ -161,8 +164,9 @@ func (c *ComplianceContract) SubmitEvidence(
 	if err != nil {
 		return err
 	}
-	body := stripDerived(rec)
-	bodyBytes, err := canonicalJSON(body)
+	// The canonical body is rebuilt in the form of the record's own
+	// schema_version (canonical_versions.go).
+	bodyBytes, version, err := recordBodyBytes([]byte(recordJSON), rec)
 	if err != nil {
 		return err
 	}
@@ -194,13 +198,14 @@ func (c *ComplianceContract) SubmitEvidence(
 	}
 
 	// MSP binding: stamp the submitting Fabric identity as on-chain provenance.
-	if mspID, e := cid.GetMSPID(ctx.GetStub()); e == nil {
-		rec.SubmitterMSP = mspID
+	var mspID, submitterID string
+	if v, e := cid.GetMSPID(ctx.GetStub()); e == nil {
+		mspID = v
 	}
-	if id, e := cid.GetID(ctx.GetStub()); e == nil {
-		rec.SubmitterID = id
+	if v, e := cid.GetID(ctx.GetStub()); e == nil {
+		submitterID = v
 	}
-	stored, err := json.Marshal(rec)
+	stored, err := storedForm([]byte(recordJSON), rec, version, mspID, submitterID)
 	if err != nil {
 		return err
 	}
@@ -242,9 +247,9 @@ func (c *ComplianceContract) VerifyChain(
 		if err := json.Unmarshal(kv.Value, &rec); err != nil {
 			return "", err
 		}
-		bodyBytes, err := canonicalJSON(stripDerived(rec))
+		bodyBytes, _, err := recordBodyBytes(kv.Value, rec)
 		if err != nil {
-			return "", err
+			return fmt.Sprintf("no canonical body at %s: %v", rec.EvidenceID, err), nil
 		}
 		recordHash := sha256Hex(bodyBytes)
 		if recordHash != rec.RecordHash {
