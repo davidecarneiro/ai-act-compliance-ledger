@@ -52,19 +52,14 @@ def run_oracle() -> dict:
 
     pre_tamper = oracle.verify_chain()
 
-    # Tamper test: silently change a stored decision
-    ledger_path = oracle.ledger_file
-    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    # Tamper test: silently change a stored decision. The altered copy is
+    # verified in memory, which works for either ledger format and leaves the
+    # stored ledger as it was.
+    ledger = oracle._read_ledger()
     ledger[1]["decision"] = "approved"  # was "rejected"
-    ledger_path.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
-    post_tamper = oracle.verify_chain()
+    post_tamper = oracle.verify_chain(ledger)
 
-    # Restore the ledger to a clean state
-    oracle.reset_ledger()
-    for event in events:
-        oracle.process_mlops_event(event)
-
-    sample_record = json.loads(oracle.ledger_file.read_text(encoding="utf-8"))[0]
+    sample_record = oracle._read_ledger()[0]
 
     return {
         "events_processed": len(events),

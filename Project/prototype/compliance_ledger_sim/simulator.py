@@ -10,12 +10,9 @@ private key is demonstration material and does not establish exclusive authorshi
 
 from __future__ import annotations
 
-import contextlib
 import csv
-import fcntl
 import hashlib
 import json
-import os
 import math
 import time
 from base64 import b64decode, b64encode
@@ -39,6 +36,7 @@ from canonical import (
     record_body_bytes,
 )
 from keys import IssuerKey, load_or_create_key, public_key_fingerprint
+from ledger_store import open_store
 from pseudonymizer import Pseudonymizer
 
 BASE_DIR = Path(__file__).parent
@@ -48,9 +46,11 @@ from paths import EXPERIMENTS_DIR  # noqa: E402  (new runs: experiments/article/
 # The six-scenario ledger shipped with the dissertation stays at
 # BASE_DIR / "ledger.json" and is only read (verify_delivery.py). New runs
 # write their ledger under the output directory instead, so regenerating does
-# not replace published evidence.
+# not replace published evidence. The default is the append-only JSON Lines
+# store (ledger_store.py); a path ending in .json selects the dissertation's
+# whole-file JSON array.
 PUBLISHED_LEDGER_FILE = BASE_DIR / "ledger.json"
-LEDGER_FILE = EXPERIMENTS_DIR / "ledger.json"
+LEDGER_FILE = EXPERIMENTS_DIR / "ledger.jsonl"
 
 GENESIS_HASH = "0" * 64
 
@@ -354,7 +354,10 @@ class ComplianceOracle:
         self.schema_version = schema_version
         self._canonical = canonicaliser(schema_version)
         self.policy_file = policy_file
-        self.ledger_file = ledger_file
+        self.ledger_file = Path(ledger_file)
+        # ".jsonl": append-only store with a head file; ".json": the
+        # dissertation's whole-file array, rewritten on every event.
+        self.store = open_store(self.ledger_file)
         self.issuer_key = issuer_key or load_or_create_key()
         # Pseudonymization is opt-in: when no instance is supplied the
         # Oracle behaves as before. When supplied, every event is passed
@@ -371,9 +374,7 @@ class ComplianceOracle:
     # ------------------------------------------------------------------
 
     def _ensure_files(self) -> None:
-        self.ledger_file.parent.mkdir(parents=True, exist_ok=True)
-        if not self.ledger_file.exists():
-            self.ledger_file.write_text("[]", encoding="utf-8")
+        self.store.ensure()
         EXPERIMENTS_DIR.mkdir(parents=True, exist_ok=True)
 
     def set_policies(self, policies: dict) -> None:
@@ -429,38 +430,10 @@ class ComplianceOracle:
 
     def reset_ledger(self) -> None:
         """Clear ledger contents — used by tests and reproducible runs."""
-
-        self.ledger_file.write_text("[]", encoding="utf-8")
+        self.store.reset()
 
     def _read_ledger(self) -> List[dict]:
-        return json.loads(self.ledger_file.read_text(encoding="utf-8"))
-
-    def _write_ledger(self, ledger: List[dict]) -> None:
-        # Write to a sibling temporary file and rename over the target. A plain
-        # write_text truncates first, so a crash or a concurrent reader in that
-        # window sees an empty or half-written ledger; os.replace is atomic on
-        # POSIX, so a reader sees either the old file or the new one.
-        tmp = self.ledger_file.with_suffix(self.ledger_file.suffix + ".tmp")
-        with open(tmp, "w", encoding="utf-8") as fh:
-            json.dump(ledger, fh, indent=2)
-            fh.flush()
-            os.fsync(fh.fileno())
-        os.replace(tmp, self.ledger_file)
-
-    @contextlib.contextmanager
-    def _ledger_lock(self):
-        """Serialise the ledger read-modify-write cycle across local processes.
-
-        The advisory file lock prevents cooperating writers from appending to the
-        same prior head and overwriting each other's records. It does not coordinate
-        stores across hosts or protect writes that bypass the lock."""
-        lock_path = self.ledger_file.with_suffix(self.ledger_file.suffix + ".lock")
-        with open(lock_path, "a+") as fh:
-            fcntl.flock(fh.fileno(), fcntl.LOCK_EX)
-            try:
-                yield
-            finally:
-                fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+        return self.store.read_all()
 
     # ------------------------------------------------------------------
     # Policy evaluation
@@ -657,82 +630,20 @@ class ComplianceOracle:
 
     def process_mlops_event(self, event_data: dict) -> dict:
         start = time.perf_counter()
-        # The whole read-modify-write cycle is one critical section: the
-        # parent_chain_hash read here has to still be the head when the record
-        # built from it is written back.
-        with self._ledger_lock():
-            ledger = self._read_ledger()
-            parent_chain_hash = ledger[-1]["chain_hash"] if ledger else GENESIS_HASH
-
-            # Optional pseudonymization layer (EDPB Guidelines 02/2025): if a
-            # pseudonymizer was supplied at construction time, the event is
-            # rewritten so that direct identifiers (subject_id, user_id, …)
-            # become HMAC-SHA256 fingerprints with org and key-version metadata
-            # before any hashing or signing takes place.
-            if self.pseudonymizer is not None:
-                event_data = self.pseudonymizer.apply_to_event(event_data)
-
-            artifact_hash = sha256_hex(
-                self._canonical(_canonical_source(event_data, self.schema_version))
-            )
-            policy_id, policy_hash = policy_identity(self.policies, self.schema_version)
-            decision, reason, rule_id = self._validate_compliance(event_data)
-            # Coverage is derived from field shapes, so it must not run over an
-            # event already declared malformed: doing so turned a rejection that
-            # should have been recorded into an uncaught exception, and nothing
-            # reached the ledger at all.
-            if reason.startswith(INVALID_INPUT_PREFIX):
-                coverage = ["Art.12"]
-            else:
-                coverage = self._requirement_coverage(event_data)
-
-            # Body fields that contribute to the record hash. Signature and
-            # chain_hash are computed afterwards from this canonical body so that
-            # verification is deterministic.
-            body = {
-                "evidence_id": f"ev-{uuid4()}",
-                "scenario_id": _optional_text(event_data.get("scenario_id")),
-                "event_type": _required_text(event_data.get("event_type")),
-                "artifact_id": _required_text(event_data.get("artifact_id")),
-                "artifact_type": _required_text(event_data.get("artifact_type")),
-                "pipeline_stage": _required_text(event_data.get("pipeline_stage")),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "decision": decision,
-                "reason": reason,
-                "rule_id": rule_id,
-                "metrics": _safe_metrics(event_data.get("metrics"), self.schema_version),
-                "policy_id": policy_id,
-                "policy_hash": policy_hash,
-                "artifact_hash": artifact_hash,
-                "requirements_covered": coverage,
-                "issuer_id": self.issuer_key.issuer_id,
-                "issuer_pubkey_fingerprint": public_key_fingerprint(self.issuer_key),
-                "sig_alg": "Ed25519",
-                "hash_alg": "SHA-256",
-                "parent_hash": parent_chain_hash,
-            }
-            # Version 1 records never carried the field, so it is added only
-            # from version 2 on; its presence is what selects JCS on verify.
-            if self.schema_version >= SCHEMA_V2:
-                body["schema_version"] = self.schema_version
-
-            body_bytes = self._canonical(body)
-            record_hash = sha256_hex(body_bytes)
-            signature = self.issuer_key.sign(body_bytes)
-            chain_hash = sha256_hex((parent_chain_hash + record_hash).encode("utf-8"))
-
-            record = dict(body)
-            record["record_hash"] = record_hash
-            record["issuer_signature"] = b64encode(signature).decode("ascii")
-            record["chain_hash"] = chain_hash
-
-            ledger.append(record)
-            self._write_ledger(ledger)
+        # The store holds its lock from reading the head to writing the record:
+        # the parent_chain_hash given to _build_record is still the head when
+        # the record built from it is written.
+        record = self.store.append_with(
+            lambda _seq, parent: self._build_record(event_data, parent)
+        )
+        decision = record["decision"]
+        coverage = record["requirements_covered"]
+        chain_hash = record["chain_hash"]
 
         latency_ms = round((time.perf_counter() - start) * 1000, 4)
         self.metrics_rows.append(
             {
-                "evidence_id": body["evidence_id"],
+                "evidence_id": record["evidence_id"],
                 "scenario_id": event_data.get("scenario_id"),
                 "event_type": event_data.get("event_type"),
                 "decision": decision,
@@ -752,18 +663,87 @@ class ComplianceOracle:
         )
         return record
 
+    def _build_record(self, event_data: dict, parent_chain_hash: str) -> dict:
+        """Evaluate the event and build its signed, chained record."""
+        # Optional pseudonymization layer (EDPB Guidelines 02/2025): if a
+        # pseudonymizer was supplied at construction time, the event is
+        # rewritten so that direct identifiers (subject_id, user_id, …)
+        # become HMAC-SHA256 fingerprints with org and key-version metadata
+        # before any hashing or signing takes place.
+        if self.pseudonymizer is not None:
+            event_data = self.pseudonymizer.apply_to_event(event_data)
+
+        artifact_hash = sha256_hex(
+            self._canonical(_canonical_source(event_data, self.schema_version))
+        )
+        policy_id, policy_hash = policy_identity(self.policies, self.schema_version)
+        decision, reason, rule_id = self._validate_compliance(event_data)
+        # Coverage is derived from field shapes, so it must not run over an
+        # event already declared malformed: doing so turned a rejection that
+        # should have been recorded into an uncaught exception, and nothing
+        # reached the ledger at all.
+        if reason.startswith(INVALID_INPUT_PREFIX):
+            coverage = ["Art.12"]
+        else:
+            coverage = self._requirement_coverage(event_data)
+
+        # Body fields that contribute to the record hash. Signature and
+        # chain_hash are computed afterwards from this canonical body so that
+        # verification is deterministic.
+        body = {
+            "evidence_id": f"ev-{uuid4()}",
+            "scenario_id": _optional_text(event_data.get("scenario_id")),
+            "event_type": _required_text(event_data.get("event_type")),
+            "artifact_id": _required_text(event_data.get("artifact_id")),
+            "artifact_type": _required_text(event_data.get("artifact_type")),
+            "pipeline_stage": _required_text(event_data.get("pipeline_stage")),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "decision": decision,
+            "reason": reason,
+            "rule_id": rule_id,
+            "metrics": _safe_metrics(event_data.get("metrics"), self.schema_version),
+            "policy_id": policy_id,
+            "policy_hash": policy_hash,
+            "artifact_hash": artifact_hash,
+            "requirements_covered": coverage,
+            "issuer_id": self.issuer_key.issuer_id,
+            "issuer_pubkey_fingerprint": public_key_fingerprint(self.issuer_key),
+            "sig_alg": "Ed25519",
+            "hash_alg": "SHA-256",
+            "parent_hash": parent_chain_hash,
+        }
+        # Version 1 records never carried the field, so it is added only
+        # from version 2 on; its presence is what selects JCS on verify.
+        if self.schema_version >= SCHEMA_V2:
+            body["schema_version"] = self.schema_version
+
+        body_bytes = self._canonical(body)
+        record_hash = sha256_hex(body_bytes)
+        signature = self.issuer_key.sign(body_bytes)
+        chain_hash = sha256_hex((parent_chain_hash + record_hash).encode("utf-8"))
+
+        record = dict(body)
+        record["record_hash"] = record_hash
+        record["issuer_signature"] = b64encode(signature).decode("ascii")
+        record["chain_hash"] = chain_hash
+        return record
+
     # ------------------------------------------------------------------
     # Verification
     # ------------------------------------------------------------------
 
-    def verify_chain(self, ledger: List[dict] | None = None) -> VerificationReport:
-        ledger = ledger if ledger is not None else self._read_ledger()
+    def verify_chain(self, ledger: Iterable[dict] | None = None) -> VerificationReport:
+        # Without an explicit ledger the store is streamed: an append-only
+        # ledger is read one line at a time, never loaded whole.
+        records = ledger if ledger is not None else self.store.iter_records()
         issues: List[str] = []
         first_invalid: int | None = None
         valid = 0
+        total = 0
         previous_chain = GENESIS_HASH
 
-        for index, record in enumerate(ledger):
+        for index, record in enumerate(records):
+            total += 1
             # Each record is recomputed in the canonical form it was written
             # under, read from the record itself: a ledger may mix version 1
             # records with version 2 records appended later.
@@ -808,9 +788,9 @@ class ComplianceOracle:
             previous_chain = record.get("chain_hash", expected_chain)
 
         return VerificationReport(
-            total=len(ledger),
+            total=total,
             valid=valid,
-            invalid=len(ledger) - valid,
+            invalid=total - valid,
             first_invalid_index=first_invalid,
             issues=issues,
         )
@@ -820,12 +800,16 @@ class ComplianceOracle:
     # ------------------------------------------------------------------
 
     def query_by_requirement(self, article: str) -> List[dict]:
-        ledger = self._read_ledger()
-        return [r for r in ledger if article in r.get("requirements_covered", [])]
+        return [
+            r for r in self.store.iter_records()
+            if article in r.get("requirements_covered", [])
+        ]
 
     def query_by_scenario(self, scenario_id: str) -> List[dict]:
-        ledger = self._read_ledger()
-        return [r for r in ledger if r.get("scenario_id") == scenario_id]
+        return [
+            r for r in self.store.iter_records()
+            if r.get("scenario_id") == scenario_id
+        ]
 
     # ------------------------------------------------------------------
     # Metrics export

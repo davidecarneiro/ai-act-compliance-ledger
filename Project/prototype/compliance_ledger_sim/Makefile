@@ -8,6 +8,7 @@
 #   baseline     run the Compliance Oracle once (writes experiments/article/ledger.json)
 #   compare      Oracle and SQLite baseline side by side
 #   sensitivity  45 policy-threshold combinations
+#   store-growth per-event latency vs ledger size, append-only vs JSON array (WP1)
 #   oscal        OSCAL Assessment Results from the ledger
 #   demo         tests + baseline + compare + sensitivity + oscal
 #   docker-build / docker-run   the same demonstration in a container
@@ -17,7 +18,7 @@
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 
-.PHONY: setup tests verify baseline compare sensitivity oscal demo docker-build docker-run clean clean-state
+.PHONY: setup tests verify baseline compare sensitivity oscal store-growth demo docker-build docker-run clean clean-state
 
 setup:
 	$(PIP) install --break-system-packages -r requirements.txt
@@ -37,6 +38,9 @@ compare:
 
 sensitivity:
 	$(PYTHON) sensitivity.py
+
+store-growth:
+	$(PYTHON) bench_store_growth.py 10000 2000 1000
 
 oscal:
 	$(PYTHON) -m oscal_exporter

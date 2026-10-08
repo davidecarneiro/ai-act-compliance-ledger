@@ -9,6 +9,10 @@ __pycache__/
 
 # Files the simulator and the baseline create while running
 ledger.json.lock
+*.jsonl.lock
+# Head of an append-only ledger: rebuilt from the .jsonl when missing
+*.jsonl.head
+*.jsonl.head.tmp
 baseline_log.sqlite*
 
 # Compiled Go binaries

@@ -41,6 +41,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 BASE_DIR = Path(__file__).parent
 from paths import EXPERIMENTS_DIR  # noqa: E402
 from canonical import record_body_bytes  # noqa: E402
+from ledger_store import read_ledger  # noqa: E402
 from simulator import GENESIS_HASH, LEDGER_FILE, canonical_json, sha256_hex  # noqa: E402
 
 # Fields derived from the canonical body; excluded before recomputing it.
@@ -719,7 +720,7 @@ def export_oscal(
     redacted: bool = False,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
-    ledger = json.loads(ledger_file.read_text(encoding="utf-8"))
+    ledger = read_ledger(ledger_file)  # .json array or .jsonl lines
     document = to_oscal_sar(ledger, redacted=redacted)
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     suffix = "_redacted" if redacted else ""

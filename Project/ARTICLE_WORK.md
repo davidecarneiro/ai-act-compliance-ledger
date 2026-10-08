@@ -60,3 +60,42 @@ was checked.
 
 Not tested here: Python 3.9 (the dissertation's macOS environment), the Docker
 builds, and a Fabric network.
+
+## WP1 — Append-only persistence
+
+**What changed**
+
+- `compliance_ledger_sim/ledger_store.py`: two stores behind one interface,
+  chosen by suffix. `.jsonl` is append-only: one line per record, one write
+  and one fsync per event, and a head file (`<ledger>.jsonl.head`: sequence
+  number, last `chain_hash`, byte offset) replaced atomically, so an append
+  never reads the ledger. `.json` keeps the dissertation's whole-file rewrite.
+- Crash consistency: the record line is fsynced before the head is replaced.
+  On the next append, under the lock, complete records beyond the head that
+  link and recompute are rolled forward, a torn last line is cut off, a
+  missing head is rebuilt by one scan. A file shorter than the head
+  (truncation) or a complete line that does not link is refused
+  (`LedgerCorrupted`).
+- `simulator.py`: records are appended through the store; `verify_chain`,
+  `query_by_requirement` and `query_by_scenario` stream the file. New runs
+  default to `experiments/article/ledger.jsonl`; paths ending in `.json` (the
+  tests, the bridge, the published ledgers) keep the old store.
+- `oscal_exporter.py` and `compare_oracle_vs_baseline.py` read either format.
+  `python3 ledger_store.py to-json in.jsonl out.json` writes an array copy for
+  the Ledger Explorer page.
+- `bench_store_growth.py` (`make store-growth`): the WP1 acceptance check.
+
+**Checks (2026-10-08, Linux x86_64, Python 3.13, Go 1.24.7)**
+
+| Check | Result |
+| --- | --- |
+| Python suite, v2 and `EVIDENCE_SCHEMA_VERSION=1` | 136/136 each (124 + 12 store tests) |
+| Bridge, Go chaincode, interop | 4/4, 16/16, 6/6 + 4/4 |
+| `verify_delivery.py`, published OSCAL | 1,831/1,831, 18/18 |
+| Latency vs size, append-only, 10,000 events | median 0.88 ms in the first block of 1,000, 0.86 ms in the last (ratio 0.98) |
+| Latency vs size, JSON array, 2,000 events | median 5.4 ms in the first block of 250, 66 ms in the last (ratio 12.3) |
+
+The latency figures come from one run on the cloud container
+(`experiments/article/wp1/store_growth_20261008T073951Z.json`, every
+observation kept). They show the shape, flat against linear; the article's
+cost figures come from the WP3 protocol on the measurement machine.
