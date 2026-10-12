@@ -109,6 +109,14 @@ ISSUER_ID_V2 = "compliance-policy-engine-v2"
 AUDIT_DECISION = {SCHEMA_V1: "verified", SCHEMA_V2: "recorded"}
 AUDIT_EVENT_TYPES = {"audit_query", "incident_audit_query"}
 
+# Policy field (version 2): the pipeline stages at which the precision and
+# fairness thresholds apply. At those stages the metrics are mandatory: an
+# event that lacks one fails the threshold, as in version 1. Events of other
+# stages (data ingestion, training, monitoring) are not held to thresholds
+# that describe a validated model. Absent, the thresholds apply to every
+# event, as in the dissertation.
+METRIC_THRESHOLD_STAGES = "metric_threshold_stages"
+
 DEFAULT_POLICIES = {
     "min_precision": 0.80,
     "max_demographic_parity_diff": 0.05,
@@ -168,6 +176,17 @@ def _validate_policies(policies: dict) -> None:
         raise InvalidPolicyError(
             "signed_approval_required_for must be a list of event types"
         )
+    # Metric thresholds by pipeline stage: optional, absent in the
+    # dissertation's policies. An empty list would switch the precision and
+    # fairness thresholds off without saying so, so it is refused.
+    if METRIC_THRESHOLD_STAGES in policies:
+        stages = policies[METRIC_THRESHOLD_STAGES]
+        if not isinstance(stages, list) or not stages or not all(
+            isinstance(s, str) and s.strip() for s in stages
+        ):
+            raise InvalidPolicyError(
+                f"{METRIC_THRESHOLD_STAGES} must be a non-empty list of pipeline stages"
+            )
 
 
 def _outside_jcs_number_domain(value) -> bool:
@@ -530,24 +549,44 @@ def evaluate_event(
             "incident.reportable",
         )
 
-    if metrics.get("precision", 0.0) < policies["min_precision"]:
-        return (
-            "rejected",
-            f"precision {metrics.get('precision')} below threshold "
-            f"{policies['min_precision']}",
-            "threshold.precision",
-        )
+    # Version 2 policies may restrict the thresholds to named stages
+    # (METRIC_THRESHOLD_STAGES); version 1 applies them to every event.
+    stage = event_data.get("pipeline_stage")
+    gated_stages = policies.get(METRIC_THRESHOLD_STAGES)
+    by_stage = schema_version >= SCHEMA_V2 and gated_stages is not None
+    thresholds_apply = not by_stage or stage in gated_stages
 
-    if (
-        metrics.get("demographic_parity_diff", 1.0)
-        > policies["max_demographic_parity_diff"]
-    ):
-        return (
-            "rejected",
-            f"demographic parity diff {metrics.get('demographic_parity_diff')} "
-            f"above threshold {policies['max_demographic_parity_diff']}",
-            "threshold.fairness",
-        )
+    if thresholds_apply:
+        if by_stage and "precision" not in metrics:
+            return (
+                "rejected",
+                f"precision is required at stage {stage} and is missing",
+                "threshold.precision",
+            )
+        if metrics.get("precision", 0.0) < policies["min_precision"]:
+            return (
+                "rejected",
+                f"precision {metrics.get('precision')} below threshold "
+                f"{policies['min_precision']}",
+                "threshold.precision",
+            )
+
+        if by_stage and "demographic_parity_diff" not in metrics:
+            return (
+                "rejected",
+                f"demographic_parity_diff is required at stage {stage} and is missing",
+                "threshold.fairness",
+            )
+        if (
+            metrics.get("demographic_parity_diff", 1.0)
+            > policies["max_demographic_parity_diff"]
+        ):
+            return (
+                "rejected",
+                f"demographic parity diff {metrics.get('demographic_parity_diff')} "
+                f"above threshold {policies['max_demographic_parity_diff']}",
+                "threshold.fairness",
+            )
 
     # Signed approval (version 2, WP6). An approval that is present is always
     # checked; it is required for the event types the policy lists. A valid
