@@ -1,12 +1,12 @@
 [
   {
-    "evidence_id": "ev-77131871-ec6e-43f7-b9b8-7f413dfeed93",
+    "evidence_id": "ev-c385cdea-3101-423b-a11c-733754ceb240",
     "scenario_id": "approved_model",
     "event_type": "approved_model",
     "artifact_id": "credit-scoring-v2.0",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-07T17:31:21.684817+00:00",
+    "timestamp": "2026-10-12T09:51:45.015773+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -17,38 +17,47 @@
     },
     "policy_id": "pol-c3d1fc49f36e",
     "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
-    "artifact_hash": "6a4282fdc802d8907484d2288c6e1f17a0c4ba3400ad700735f1ced8f4c8d85b",
-    "requirements_covered": [
-      "Art.10(3)",
-      "Art.12",
-      "Art.14",
-      "Art.15",
-      "Art.72"
-    ],
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
     "parent_hash": "0000000000000000000000000000000000000000000000000000000000000000",
     "schema_version": 2,
-    "run_id": "run-0001",
+    "run_id": null,
+    "payload_hash": "6a4282fdc802d8907484d2288c6e1f17a0c4ba3400ad700735f1ced8f4c8d85b",
+    "artifact_hash": null,
+    "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true,
-      "note": "n\u00e3o declarado no struct Go"
+      "human_approval": true
     },
-    "record_hash": "c28cc6e5285b45a0dd6f82b10b20090dfb3809339e7f4c01fd25206b83c11bc2",
-    "issuer_signature": "bBov6sRXp9G2OkxnltPPr7M/+807xoTjHNgpv49McCgA726ye7HC/RIOWHiC3t+vDfTAmWUG0lIZPYlPb8jdAA==",
-    "chain_hash": "264e6ee859f589fc59bd267ee7ef4b140cd66d8c59f957e97c3ff10e755840ad"
+    "supports_requirements": [
+      "Art.10(2)(f)",
+      "Art.12",
+      "Art.14",
+      "Art.15",
+      "Art.72"
+    ],
+    "vendor_extension": {
+      "tag": "ext-0",
+      "nested": [
+        0,
+        null,
+        "n\u00e3o declarado"
+      ]
+    },
+    "record_hash": "b2bad892e75e94ecbcc8f7c35e114d46f8b44f55eb257deb71981fce6c1fdd5c",
+    "issuer_signature": "vkeJk3dzKTS2rmwgPXeh8Z2bvk5Ih2s0brLgHocj6mucqDdHKulCmKKRHTjfZDzmvpck7q9KaT8v2ILwINtqCw==",
+    "chain_hash": "c7e447e6f4d057c0d95c3f9e7b3b28ed7807520619f2bceab1b8c4319bfcadd3"
   },
   {
-    "evidence_id": "ev-d5cad054-302f-451e-94e0-68bb9f1f769b",
+    "evidence_id": "ev-7d217550-2097-47c2-93d2-a009a6f96486",
     "scenario_id": "low_precision_rejected",
     "event_type": "low_precision_rejected",
     "artifact_id": "credit-scoring-v2.1",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-07T17:31:21.687452+00:00",
+    "timestamp": "2026-10-12T09:51:45.017436+00:00",
     "decision": "rejected",
     "reason": "precision 0.74 below threshold 0.8",
     "rule_id": "threshold.precision",
@@ -59,28 +68,37 @@
     },
     "policy_id": "pol-c3d1fc49f36e",
     "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
-    "artifact_hash": "e3498c5ffa01252137a7fb721975e3f50b4576b230cc827fd1608c40eb5d37ce",
-    "requirements_covered": [
-      "Art.10(3)",
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "c7e447e6f4d057c0d95c3f9e7b3b28ed7807520619f2bceab1b8c4319bfcadd3",
+    "schema_version": 2,
+    "run_id": null,
+    "payload_hash": "e3498c5ffa01252137a7fb721975e3f50b4576b230cc827fd1608c40eb5d37ce",
+    "artifact_hash": null,
+    "off_chain_ref": null,
+    "decision_inputs": {
+      "risk_level": "high",
+      "human_approval": true
+    },
+    "supports_requirements": [
+      "Art.10(2)(f)",
       "Art.12",
       "Art.14",
       "Art.15",
       "Art.72"
     ],
-    "issuer_id": "compliance-oracle-v1",
-    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
-    "sig_alg": "Ed25519",
-    "hash_alg": "SHA-256",
-    "parent_hash": "264e6ee859f589fc59bd267ee7ef4b140cd66d8c59f957e97c3ff10e755840ad",
-    "schema_version": 2,
-    "run_id": "run-0001",
-    "decision_inputs": {
-      "risk_level": "high",
-      "human_approval": false,
-      "note": "n\u00e3o declarado no struct Go"
+    "vendor_extension": {
+      "tag": "ext-1",
+      "nested": [
+        1,
+        null,
+        "n\u00e3o declarado"
+      ]
     },
-    "record_hash": "393e86cf8621cabe3553b24d3392e69d4fa2736f442cf3870183759fb4d242c2",
-    "issuer_signature": "FVaXwI4z54+e+qo46ipu+tU/oXFj2lMv92aIPJZ4SvwNWCjhk/q3lk8RcST6FLhWRV43lzFr3V9j/ehPprzJCw==",
-    "chain_hash": "2a4a56182c3fc25c001d40c95b1d35764db700374990300bdc59f19a73a70f88"
+    "record_hash": "68313996dab5c5246ef3c7136754703009f18c1ab626afe6bf46ed9604c0922d",
+    "issuer_signature": "vkZ5oKb9m3E0n7SxaLEi9TjHqEG4rL3TlCwzz9IHooNZZZaz/eD/HplnBr1VHYMHCLmXUMdoW869v6uoGIRYAQ==",
+    "chain_hash": "a8c463714594f56dd97ee5562bc26ed6ad7c884e0d3938dd7dfd1f3a94ff4393"
   }
 ]

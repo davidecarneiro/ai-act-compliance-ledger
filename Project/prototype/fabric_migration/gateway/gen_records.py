@@ -24,7 +24,6 @@ sys.path.insert(0, str(SIM))
 from simulator import ComplianceOracle          # noqa: E402
 from paths import EXPERIMENTS_DIR               # noqa: E402
 from scenarios import build_scenarios           # noqa: E402
-from keys import load_or_create_key             # noqa: E402
 from cryptography.hazmat.primitives import serialization  # noqa: E402
 
 
@@ -44,7 +43,9 @@ def main() -> int:
     (out / "records.json").write_text(json.dumps(records))
     tmp.unlink(missing_ok=True)
 
-    raw = load_or_create_key().public_key.public_bytes(
+    # The key the records were signed with: the engine's own key under schema
+    # version 2, the demonstration key under EVIDENCE_SCHEMA_VERSION=1.
+    raw = oracle.issuer_key.public_key.public_bytes(
         encoding=serialization.Encoding.Raw,
         format=serialization.PublicFormat.Raw)
     (out / "pubkey.txt").write_text(raw.hex())

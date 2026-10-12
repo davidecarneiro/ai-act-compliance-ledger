@@ -13,7 +13,8 @@ Mapping from the simulator's evidence record to OSCAL primitives:
   from ``evidence_id`` (UUID v5 over the URN namespace);
 * every record with a recognised decision produces a **finding** that points
   back to its observation, states a technical objective, and tags the AI Act
-  articles in ``requirements_covered`` as ``supports-requirement`` ``props``
+  articles in ``supports_requirements`` (``requirements_covered`` in schema
+  version 1 records) as ``supports-requirement`` ``props``
   in the ``aia-`` namespace, ``aia-10-3`` among them;
 * the chain and signature results go into one **assessment-log entry** that
   records each outcome and whether it was computed here or supplied;
@@ -42,7 +43,13 @@ BASE_DIR = Path(__file__).parent
 from paths import EXPERIMENTS_DIR  # noqa: E402
 from canonical import record_body_bytes  # noqa: E402
 from ledger_store import read_ledger  # noqa: E402
-from simulator import GENESIS_HASH, LEDGER_FILE, canonical_json, sha256_hex  # noqa: E402
+from simulator import (  # noqa: E402
+    GENESIS_HASH,
+    LEDGER_FILE,
+    canonical_json,
+    requirements_of,
+    sha256_hex,
+)
 
 # Fields derived from the canonical body; excluded before recomputing it.
 DERIVED_FIELDS = {"record_hash", "issuer_signature", "chain_hash"}
@@ -85,10 +92,15 @@ def _uuid_for(label: str, prefix: str) -> str:
 
 
 def _control_id(article: str) -> str:
-    """Map ``Art.15`` style strings to OSCAL control IDs (``aia-15``)."""
+    """Map ``Art.15`` style strings to OSCAL control IDs (``aia-15``).
 
-    digits = "".join(c for c in article if c.isdigit() or c == "(" or c == ")")
-    return "aia-" + digits.replace("(", "-").replace(")", "")
+    Paragraphs and points become dash-separated segments: ``Art.10(3)`` is
+    ``aia-10-3`` and ``Art.10(2)(f)`` is ``aia-10-2-f``. An earlier version
+    kept digits only and turned the point letter into a trailing dash."""
+
+    text = article.split(".", 1)[1] if article.startswith("Art.") else article
+    text = text.lower().replace("(", "-").replace(")", "")
+    return "aia-" + "".join(c for c in text if c.isalnum() or c == "-").strip("-")
 
 
 REDACTED_PLACEHOLDER = "[REDACTED — AI Act Art. 78 confidentiality]"
@@ -130,7 +142,11 @@ def _build_observation(record: dict, redacted: bool = False) -> dict:
                 # from the document. artifact_hash is the digest of the event
                 # payload: it is already in the record and groups by event.
                 "subject-uuid": _uuid_for(
-                    record.get("artifact_hash", "unknown") if redacted
+                    # Version 2 names the payload digest payload_hash (and
+                    # artifact_hash is the file digest, possibly null);
+                    # version 1 called the payload digest artifact_hash.
+                    (record.get("payload_hash") or record.get("artifact_hash") or "unknown")
+                    if redacted
                     else record.get("artifact_id", "unknown"), "subj"
                 ),
                 "type": "component",
@@ -284,7 +300,7 @@ def _build_finding(record: dict, redacted: bool = False) -> dict:
             "value": _control_id(article),
             "class": "ai-act-article",
         }
-        for article in record.get("requirements_covered", [])
+        for article in requirements_of(record)
     ]
     props.extend(
         [
@@ -343,7 +359,7 @@ def _build_finding(record: dict, redacted: bool = False) -> dict:
         f"Technical objective: {proposition} "
         f"This states a technical fact about the evaluation, not a judgement "
         f"on compliance with "
-        f"{', '.join(record.get('requirements_covered', [])) or 'any article'}."
+        f"{', '.join(requirements_of(record)) or 'any article'}."
     )
     return {
         "uuid": _uuid_for(record["evidence_id"], "finding"),
@@ -599,7 +615,7 @@ def to_oscal_sar(
     findings = [
         _build_finding(r, redacted=redacted)
         for r in ledger
-        if r.get("decision") in ("approved", "rejected", "escalated", "verified")
+        if r.get("decision") in ("approved", "rejected", "escalated", "verified", "recorded")
     ]
 
     document = {

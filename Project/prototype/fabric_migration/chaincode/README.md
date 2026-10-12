@@ -67,7 +67,7 @@ the version 2 fixtures from the Python issuer.
 
 ## Tests (no network needed)
 
-`go test -mod=vendor ./...` runs **16 tests**, all passing, from the vendored
+`go test -mod=vendor ./...` runs **17 tests**, all passing, from the vendored
 dependencies and without network access. The ten of the dissertation:
 
 - `TestContractBootstraps` builds the contract with `contractapi.NewChaincode`,
@@ -87,7 +87,7 @@ dependencies and without network access. The ten of the dissertation:
   verify, in Go, the current six-record canonical ledger and the ledger of the
   boundary matrix that `compliance_ledger_sim/tests/test_fronteiras.py` writes.
 
-And six for schema version 2 (`compliance_chaincode_v2_test.go`):
+And seven for schema version 2 (`compliance_chaincode_v2_test.go`):
 
 - `TestV2PythonLedgerVerifiesInGo` and `TestV2SubmitAndVerifyChain` take a
   ten-record version 2 chain issued by Python (non-ASCII, HTML characters, an
@@ -103,6 +103,16 @@ And six for schema version 2 (`compliance_chaincode_v2_test.go`):
 - `TestJCSVectorsMatchPython` reproduces, byte for byte, Python's RFC 8785
   output for key order by UTF-16 code units, number formatting and string
   escaping.
+- `TestBoundaryLedgerV2VerifiesInGo` takes the version 2 boundary matrix (the
+  16 cases above plus 8 for the version 2 fields and the JCS number domain,
+  written by `test_fronteiras.py`) through recomputation, `SubmitEvidence`,
+  `VerifyChain` and `QueryByRequirement` on `supports_requirements`.
+
+The version 2 fixtures carry the article's evidence model (WP2): `run_id`,
+`payload_hash`, `artifact_hash` (the artefact file), `off_chain_ref`,
+`decision_inputs` and `supports_requirements`. The struct declares only
+`supports_requirements`, which `QueryByRequirement` reads; the rest is hashed
+and stored from the record's own members.
 
 A missing fixture makes a test fail rather than skip, because a skipped test
 still lets `go test` print `ok`. The incident ledger is looked up both where the

@@ -1,0 +1,268 @@
+{
+ "generated_at": "2026-10-12T09:53:23.840825+00:00",
+ "ledgers": [
+  {
+   "ledger": "/home/claude/ai-act-compliance-ledger/Project/experiments/article/ledger.jsonl",
+   "total": 6,
+   "counts": {
+    "match": 6
+   },
+   "results": [
+    {
+     "evidence_id": "ev-bfd92258-0a29-4a3e-8c89-7e691979963e",
+     "status": "match",
+     "recorded": {
+      "decision": "approved",
+      "rule_id": "policy.all_checks_passed",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "recomputed": {
+      "decision": "approved",
+      "rule_id": "policy.all_checks_passed",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-1557f04e-d6d1-430c-a427-baa90ce7f6f6",
+     "status": "match",
+     "recorded": {
+      "decision": "rejected",
+      "rule_id": "threshold.precision",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "recomputed": {
+      "decision": "rejected",
+      "rule_id": "threshold.precision",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-de6577c2-ea4b-4247-8415-d8e4badd1310",
+     "status": "match",
+     "recorded": {
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "recomputed": {
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-bbef01e2-db06-4749-a05d-2597cd05ffd6",
+     "status": "match",
+     "recorded": {
+      "decision": "rejected",
+      "rule_id": "oversight.approval_missing",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "recomputed": {
+      "decision": "rejected",
+      "rule_id": "oversight.approval_missing",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-140e11d5-d2e0-4ae0-a797-dee988484d67",
+     "status": "match",
+     "recorded": {
+      "decision": "escalated",
+      "rule_id": "monitoring.drift_alert",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "recomputed": {
+      "decision": "escalated",
+      "rule_id": "monitoring.drift_alert",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-4e32cf9d-967c-4bba-b8c1-4130db5e003d",
+     "status": "match",
+     "recorded": {
+      "decision": "recorded",
+      "rule_id": "audit.query_recorded",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72",
+       "Art.73"
+      ]
+     },
+     "recomputed": {
+      "decision": "recorded",
+      "rule_id": "audit.query_recorded",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.72",
+       "Art.73"
+      ]
+     },
+     "differences": []
+    }
+   ]
+  },
+  {
+   "ledger": "/home/claude/ai-act-compliance-ledger/Project/experiments/article/incident_run/ledger.json",
+   "total": 3,
+   "counts": {
+    "match": 3
+   },
+   "results": [
+    {
+     "evidence_id": "ev-a8e36898-fc59-4e9c-a8f7-e50dd7b5a770",
+     "status": "match",
+     "recorded": {
+      "decision": "escalated",
+      "rule_id": "incident.reportable",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.73"
+      ]
+     },
+     "recomputed": {
+      "decision": "escalated",
+      "rule_id": "incident.reportable",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.73"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-d1dbad4a-1971-4ed1-b670-6cc4c616ee41",
+     "status": "match",
+     "recorded": {
+      "decision": "escalated",
+      "rule_id": "incident.reportable",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.73"
+      ]
+     },
+     "recomputed": {
+      "decision": "escalated",
+      "rule_id": "incident.reportable",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.73"
+      ]
+     },
+     "differences": []
+    },
+    {
+     "evidence_id": "ev-a714c401-b496-4602-8897-add0eb37ad66",
+     "status": "match",
+     "recorded": {
+      "decision": "recorded",
+      "rule_id": "audit.query_recorded",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.73"
+      ]
+     },
+     "recomputed": {
+      "decision": "recorded",
+      "rule_id": "audit.query_recorded",
+      "supports_requirements": [
+       "Art.10(2)(f)",
+       "Art.12",
+       "Art.14",
+       "Art.15",
+       "Art.73"
+      ]
+     },
+     "differences": []
+    }
+   ]
+  }
+ ]
+}

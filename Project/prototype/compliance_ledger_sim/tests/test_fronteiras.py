@@ -29,7 +29,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from canonical import SCHEMA_V1, SCHEMA_V2  # noqa: E402
+from keys import load_or_create_key  # noqa: E402
 from simulator import (  # noqa: E402
+    ISSUER_ID_V1,
     ComplianceOracle,
     _canonical_source,
     canonical_json,
@@ -39,6 +42,8 @@ from simulator import (  # noqa: E402
 GO_TESTDATA = (
     ROOT.parents[0] / "fabric_migration" / "chaincode" / "testdata_fronteiras.json"
 )
+# Schema version 2 boundary ledger: the matrix below plus the version 2 cases.
+GO_TESTDATA_V2 = GO_TESTDATA.with_name("testdata_fronteiras_v2.json")
 
 SOUND_METRICS = {
     "precision": 0.95,
@@ -152,7 +157,56 @@ BOUNDARY_MATRIX = [
 ]
 
 
-def _fresh_oracle() -> ComplianceOracle:
+# Cases only version 2 has: its own fields and the RFC 8785 number domain.
+_DIGEST = sha256_hex(b"boundary artefact")
+BOUNDARY_MATRIX_V2 = [
+    ("v2 run id", _event(scenario_id="v2-1", artifact_id="n1", run_id="run-1"),
+     "approved", True),
+    ("v2 run id is a list", _event(scenario_id="v2-2", artifact_id="n2", run_id=["run"]),
+     "rejected", True),
+    (
+        "v2 artefact in the store",
+        _event(scenario_id="v2-3", artifact_id="n3", artifact_sha256=_DIGEST,
+               off_chain_ref="store/sha256/" + _DIGEST),
+        "approved",
+        True,
+    ),
+    (
+        "v2 artefact digest in upper case",
+        _event(scenario_id="v2-4", artifact_id="n4", artifact_sha256=_DIGEST.upper()),
+        "rejected",
+        True,
+    ),
+    (
+        "v2 reference without a digest",
+        _event(scenario_id="v2-5", artifact_id="n5", off_chain_ref="store/sha256/" + _DIGEST),
+        "rejected",
+        True,
+    ),
+    (
+        "v2 reference to another digest",
+        _event(scenario_id="v2-6", artifact_id="n6", artifact_sha256=_DIGEST,
+               off_chain_ref="store/sha256/" + "0" * 64),
+        "rejected",
+        True,
+    ),
+    (
+        "v2 integer beyond 2**53 - 1",
+        _event(scenario_id="v2-7", artifact_id="n7",
+               metrics={**SOUND_METRICS, "row_count": 2**53}),
+        "rejected",
+        False,
+    ),
+    (
+        "v2 payload key with a lone surrogate",
+        _event(scenario_id="v2-8", artifact_id="n8", extra={"key\ud800": 1}),
+        "rejected",
+        True,
+    ),
+]
+
+
+def _fresh_oracle(schema_version: int | None = None, issuer_key=None) -> ComplianceOracle:
     workdir = Path(tempfile.gettempdir()) / f"oracle_bounds_{uuid.uuid4().hex[:8]}"
     workdir.mkdir(parents=True, exist_ok=True)
     policy_file = workdir / "policies.json"
@@ -168,12 +222,20 @@ def _fresh_oracle() -> ComplianceOracle:
         ),
         encoding="utf-8",
     )
-    return ComplianceOracle(policy_file=policy_file, ledger_file=workdir / "ledger.json")
+    kwargs = {}
+    if schema_version is not None:
+        kwargs["schema_version"] = schema_version
+    if issuer_key is not None:
+        kwargs["issuer_key"] = issuer_key
+    return ComplianceOracle(
+        policy_file=policy_file, ledger_file=workdir / "ledger.json", **kwargs
+    )
 
 
-def build_boundary_ledger() -> list:
-    oracle = _fresh_oracle()
-    for _label, event, _decision, _keeps in BOUNDARY_MATRIX:
+def build_boundary_ledger(schema_version: int | None = None, matrix=None,
+                          issuer_key=None) -> list:
+    oracle = _fresh_oracle(schema_version, issuer_key)
+    for _label, event, _decision, _keeps in (matrix or BOUNDARY_MATRIX):
         oracle.process_mlops_event(event)
     return json.loads(oracle.ledger_file.read_text(encoding="utf-8"))
 
@@ -247,10 +309,59 @@ def test_go_testdata_is_current(boundary_ledger):
     ]
 
 
+# ----------------------------------------------------------------------
+# Schema version 2
+# ----------------------------------------------------------------------
+
+V2_MATRIX = BOUNDARY_MATRIX + BOUNDARY_MATRIX_V2
+
+
+@pytest.fixture(scope="module")
+def boundary_ledger_v2() -> list:
+    return build_boundary_ledger(SCHEMA_V2, V2_MATRIX)
+
+
+def test_v2_decisions_match_the_matrix(boundary_ledger_v2):
+    assert len(boundary_ledger_v2) == len(V2_MATRIX)
+    for record, (label, _event, decision, keeps) in zip(boundary_ledger_v2, V2_MATRIX):
+        assert record["decision"] == decision, label
+        assert (record["metrics"] is not None) == keeps, label
+
+
+def test_v2_rejections_record_no_unvalidated_commitment(boundary_ledger_v2):
+    for record, (label, *_rest) in zip(boundary_ledger_v2, V2_MATRIX):
+        if record["rule_id"] == "input.malformed":
+            assert record["artifact_hash"] is None, label
+            assert record["off_chain_ref"] is None, label
+            assert record["run_id"] is None, label
+            assert record["supports_requirements"] == ["Art.12"], label
+
+
+def test_v2_chain_verifies_over_the_whole_matrix(boundary_ledger_v2):
+    report = _fresh_oracle(SCHEMA_V2).verify_chain(boundary_ledger_v2)
+    assert report.valid == report.total == len(V2_MATRIX), report.issues[:3]
+
+
+def test_go_v2_testdata_is_current():
+    assert GO_TESTDATA_V2.exists(), (
+        f"{GO_TESTDATA_V2} is missing; regenerate it with "
+        f"`python3 tests/test_fronteiras.py`")
+    stored = json.loads(GO_TESTDATA_V2.read_text(encoding="utf-8"))
+    assert [r.get("schema_version") for r in stored] == [SCHEMA_V2] * len(V2_MATRIX)
+    assert [r["decision"] for r in stored] == [d for _l, _e, d, _k in V2_MATRIX]
+    assert [r["metrics"] is not None for r in stored] == [k for _l, _e, _d, k in V2_MATRIX]
+
+
 if __name__ == "__main__":
-    ledger = build_boundary_ledger()
+    # Both fixtures are signed with the demonstration key, which the Go tests
+    # register; version 1 is generated as version 1 whatever the environment.
+    demo = load_or_create_key(ISSUER_ID_V1)
+    ledger = build_boundary_ledger(SCHEMA_V1, BOUNDARY_MATRIX, demo)
     GO_TESTDATA.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
     print(f"testdata_fronteiras.json regenerated: {len(ledger)} records")
+    ledger = build_boundary_ledger(SCHEMA_V2, V2_MATRIX, demo)
+    GO_TESTDATA_V2.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
+    print(f"testdata_fronteiras_v2.json regenerated: {len(ledger)} records")
 
 
 def test_normalisation_does_not_merge_distinct_inputs():

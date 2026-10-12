@@ -29,8 +29,11 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scenarios import build_incident_scenario, build_scenarios  # noqa: E402
+from canonical import CURRENT_SCHEMA_VERSION  # noqa: E402
 from simulator import (  # noqa: E402
+    AUDIT_DECISION,
     GENESIS_HASH,
+    requirements_of,
     ComplianceOracle,
     InvalidPolicyError,
     canonical_json,
@@ -76,7 +79,8 @@ def oracle() -> ComplianceOracle:
         ("fairness_rejected", "rejected"),
         ("missing_human_approval_rejected", "rejected"),
         ("drift_detected", "escalated"),
-        ("audit_query", "verified"),
+        # "verified" in schema version 1, "recorded" from version 2 on.
+        ("audit_query", AUDIT_DECISION[CURRENT_SCHEMA_VERSION]),
     ],
 )
 def test_decision_per_scenario(oracle: ComplianceOracle, scenario_id, expected):
@@ -298,7 +302,7 @@ def test_a_rejected_event_claims_no_coverage_it_did_not_earn(oracle):
     event = _valid_event()
     event["metrics"] = None
     record = oracle.process_mlops_event(event)
-    assert record["requirements_covered"] == ["Art.12"]
+    assert requirements_of(record) == ["Art.12"]
 
 
 def test_an_incident_is_classified_before_the_metric_rules(oracle):

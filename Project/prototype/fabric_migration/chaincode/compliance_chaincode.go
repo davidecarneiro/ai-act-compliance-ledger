@@ -88,6 +88,11 @@ type EvidenceRecord struct {
 	PolicyID              string   `json:"policy_id,omitempty"`
 	PolicyHash            string   `json:"policy_hash,omitempty"`
 	RuleID                string   `json:"rule_id,omitempty"`
+	// Schema version 2 names the normative field supports_requirements. It is
+	// read here for QueryByRequirement only: version 2 bodies are hashed from
+	// the record's own members, and omitempty keeps version 1 bodies, which
+	// never carry the field, byte-identical.
+	SupportsRequirements  []string `json:"supports_requirements,omitempty"`
 	RecordHash            string   `json:"record_hash,omitempty"`
 	IssuerSignatureBase64 string   `json:"issuer_signature,omitempty"`
 	ChainHash             string   `json:"chain_hash,omitempty"`
@@ -287,7 +292,8 @@ func (c *ComplianceContract) VerifyChain(
 }
 
 // QueryByRequirement returns all evidence records that cite a given AI Act
-// article (e.g. "Art.15", "Art.78") in their requirements_covered field.
+// article (e.g. "Art.15", "Art.10(2)(f)") in requirements_covered (schema
+// version 1) or supports_requirements (version 2).
 func (c *ComplianceContract) QueryByRequirement(
 	ctx contractapi.TransactionContextInterface,
 	article string,
@@ -308,7 +314,7 @@ func (c *ComplianceContract) QueryByRequirement(
 		if err := json.Unmarshal(kv.Value, &rec); err != nil {
 			continue
 		}
-		for _, r := range rec.RequirementsCovered {
+		for _, r := range append(rec.RequirementsCovered, rec.SupportsRequirements...) {
 			if r == article {
 				results = append(results, json.RawMessage(kv.Value))
 				break

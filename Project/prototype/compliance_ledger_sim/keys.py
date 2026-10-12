@@ -38,6 +38,35 @@ class IssuerKey:
         return True
 
 
+@dataclass(frozen=True)
+class PublicIssuerKey:
+    """An issuer's public key alone: enough to verify, never to sign."""
+
+    issuer_id: str
+    public_key: Ed25519PublicKey
+
+    def verify(self, payload: bytes, signature: bytes) -> bool:
+        try:
+            self.public_key.verify(signature, payload)
+        except Exception:  # cryptography raises InvalidSignature
+            return False
+        return True
+
+
+def load_public_key(issuer_id: str, keys_dir: Path | None = None) -> PublicIssuerKey | None:
+    """The issuer's published public key, or None if it is not on disk.
+
+    Never creates a key: verification must not mint the identity it checks."""
+    keys_dir = keys_dir or Path(__file__).parent / "keys"
+    path = keys_dir / f"{issuer_id}.ed25519.pub.pem"
+    if not path.exists():
+        return None
+    key = serialization.load_pem_public_key(path.read_bytes())
+    if not isinstance(key, Ed25519PublicKey):
+        raise TypeError(f"{path} is not an Ed25519 public key")
+    return PublicIssuerKey(issuer_id=issuer_id, public_key=key)
+
+
 def load_or_create_key(
     issuer_id: str = "compliance-oracle-v1",
     keys_dir: Path | None = None,
@@ -80,7 +109,7 @@ def load_or_create_key(
     )
 
 
-def public_key_fingerprint(key: IssuerKey) -> str:
+def public_key_fingerprint(key: IssuerKey | PublicIssuerKey) -> str:
     """Return the SHA-256 fingerprint stored in issuer_pubkey_fingerprint."""
 
     import hashlib

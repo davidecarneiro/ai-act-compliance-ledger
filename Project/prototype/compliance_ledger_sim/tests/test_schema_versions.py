@@ -226,7 +226,7 @@ def test_largest_safe_integer_is_accepted():
 def test_payload_outside_the_jcs_domain_still_hashes(extra):
     oracle = _oracle(SCHEMA_V2)
     record = oracle.process_mlops_event(_event(**extra))
-    assert len(record["artifact_hash"]) == 64
+    assert len(record["payload_hash"]) == 64
     assert oracle.verify_chain().is_valid
 
 
@@ -235,7 +235,7 @@ def test_out_of_domain_payloads_hash_apart_from_lookalikes():
     a = oracle.process_mlops_event(_event(note=float("nan")))
     b = oracle.process_mlops_event(_event(note="nan"))
     c = oracle.process_mlops_event(_event(note={"__unrepresentable__": ["float", "nan"]}))
-    assert len({a["artifact_hash"], b["artifact_hash"], c["artifact_hash"]}) == 3
+    assert len({a["payload_hash"], b["payload_hash"], c["payload_hash"]}) == 3
 
 
 # ----------------------------------------------------------------------

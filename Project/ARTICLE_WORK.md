@@ -99,3 +99,73 @@ The latency figures come from one run on the cloud container
 (`experiments/article/wp1/store_growth_20261008T073951Z.json`, every
 observation kept). They show the shape, flat against linear; the article's
 cost figures come from the WP3 protocol on the measurement machine.
+
+## WP2 — Evidence model, schema version 2
+
+Version 2 was first introduced in WP0 with the dissertation's fields under
+RFC 8785. No version 2 record has been published, so WP2 completes the
+version 2 field set rather than opening a version 3.
+
+**What changed**
+
+| Version 1 (dissertation) | Version 2 (article) |
+| --- | --- |
+| `artifact_hash`: digest of the event payload | `payload_hash`: digest of the event payload |
+| — | `artifact_hash`: digest of the artefact file (model, dataset, report), or null |
+| — | `off_chain_ref`: where the artefact is kept (`store/sha256/<digest>` or another URI) |
+| — | `decision_inputs`: `risk_level` and `human_approval` as the decision read them |
+| — | `run_id`: the execution or release the event belongs to |
+| `requirements_covered` | `supports_requirements` |
+| audit query decision `verified` | `recorded` |
+| bias metric supports Art. 10(3) | bias metric supports Art. 10(2)(f); a dataset digest supports Art. 10(3); any artefact digest supports Art. 11 |
+| issuer `compliance-oracle-v1` (demonstration key, committed) | issuer `compliance-policy-engine-v2` (own key, created on first use, not committed) |
+
+- `artifact_store.py`: content-addressed store. `put(path)` returns the
+  digest and the reference; `verify_ledger_artifacts(ledger, store)`
+  recomputes every cited artefact from the store (ok, missing,
+  content-mismatch, ref-mismatch). The engine reads no file: it checks the
+  form of `artifact_sha256` and `off_chain_ref` and that a store reference
+  names the same digest, so its decision stays a function of the event.
+- `simulator.py`: validation, evaluation and coverage are pure functions
+  (`validate_event`, `evaluate_event`, `requirement_support`). Malformed
+  version 2 fields are rejected and recorded with no commitment
+  (`artifact_hash`, `off_chain_ref` and `run_id` null). `verify_chain`
+  resolves the key by `issuer_pubkey_fingerprint` among trusted keys (the
+  engine's own and, by default, the published demonstration key) and reports
+  an unknown issuer separately from a bad signature. `query_by_run`.
+- `reexecution.py`: `reexecute(record, policy_archive, payload=None)` loads
+  the archived policy, checks it still hashes to `policy_hash`, rebuilds the
+  event from the record, re-runs `evaluate_event` and compares decision,
+  `rule_id` and supported provisions. Malformed-input records and version 1
+  records need the original payload, whose digest is checked first.
+  `python3 reexecution.py <ledger>...` re-executes whole ledgers.
+- OSCAL: reads `supports_requirements` or `requirements_covered`, exports
+  `recorded` findings, derives the redacted subject from `payload_hash`, and
+  maps article points to distinct control IDs (`Art.10(2)(f)` →
+  `aia-10-2-f`; the earlier mapping produced `aia-10-2-`).
+- Chaincode: `SupportsRequirements` declared for `QueryByRequirement`; the
+  other version 2 members are hashed and stored from the record itself.
+- Fabric scripts register the key they sign with (the engine's key under
+  version 2).
+
+**Checks (2026-10-12, Linux x86_64, Python 3.13, Go 1.24.7)**
+
+| Check | Result |
+| --- | --- |
+| Python suite, v2 and `EVIDENCE_SCHEMA_VERSION=1` | 165/165 each (136 + 25 model tests + 4 boundary v2 tests) |
+| Bridge (both versions), Go chaincode, interop | 4/4, 17/17, 6/6 + 4/4 |
+| Boundary matrix, version 2 | 24 cases (16 + 8), same outcome in Python and Go |
+| Re-execution, six scenarios and incident run | 9/9 match (`experiments/article/wp2/reexecution_20261012T095323Z.json`) |
+| Artefact digests recomputed from `off_chain_ref` | match; altered and missing artefacts reported |
+| OSCAL v2 exports against the NIST schema | valid (full and redacted) |
+| `verify_delivery.py`, published OSCAL | 1,831/1,831, 18/18 |
+
+**Open points**
+
+- The policy applies the precision and fairness thresholds to every event, so
+  an event without metrics (data ingestion, training) is rejected on
+  precision. Version 1 had no such events. To settle before WP4: apply the
+  thresholds by pipeline stage, or to events that carry the metric.
+- The Art. 10 mapping is a legal reading to be confirmed by the co-authors.
+- The Ledger Explorer page reads `requirements_covered`; version 2 ledgers
+  need it to read `supports_requirements` too (WP9).

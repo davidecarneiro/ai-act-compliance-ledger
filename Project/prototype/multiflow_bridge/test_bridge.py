@@ -50,9 +50,14 @@ def test_bridge_end_to_end(tmp_path, monkeypatch):
     assert decisions[2:] == ["escalated", "escalated"], decisions
     assert "drift score" in ledger[2]["reason"]
 
-    # normative coverage of the monitoring event (the articles used in the thesis)
-    assert ledger[0]["requirements_covered"] == [
-        "Art.10(3)", "Art.12", "Art.14", "Art.15", "Art.72"]
+    # normative coverage of the monitoring event. Schema version 1 (the thesis)
+    # attached the bias metric to Art. 10(3); version 2 attaches it to
+    # Art. 10(2)(f) and names the field supports_requirements.
+    from canonical import CURRENT_SCHEMA_VERSION
+    from simulator import requirements_of
+    bias = "Art.10(3)" if CURRENT_SCHEMA_VERSION == 1 else "Art.10(2)(f)"
+    assert requirements_of(ledger[0]) == sorted(
+        [bias, "Art.12", "Art.14", "Art.15", "Art.72"])
 
     # intact chain: parent and chain hashes linked, full verification
     assert ledger[1]["parent_hash"] == ledger[0]["chain_hash"]

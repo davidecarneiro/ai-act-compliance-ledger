@@ -80,14 +80,15 @@ func TestV2SubmitAndVerifyChain(t *testing.T) {
 	}
 }
 
-// Members the Go struct does not declare are signed, verified and stored as
+// Members the Go struct does not declare (decision_inputs, run_id and a
+// vendor_extension no schema defines) are signed, verified and stored as
 // submitted. Under version 1 encoding/json would drop them and the hash would
 // stop matching; under version 2 the body is the record's own members.
 func TestV2KeepsMembersTheStructDoesNotDeclare(t *testing.T) {
 	cc, ctx, stub := newCtxWithIssuer(t)
 	raw := readRawRecords(t, "testdata_v2_extra_fields.json")
 	for i, r := range raw {
-		if !bytes.Contains(r, []byte(`"decision_inputs"`)) {
+		if !bytes.Contains(r, []byte(`"vendor_extension"`)) {
 			t.Fatalf("fixture #%d lacks the undeclared member", i)
 		}
 		stub.MockTransactionStart(fmt.Sprintf("x-%d", i))
@@ -107,7 +108,7 @@ func TestV2KeepsMembersTheStructDoesNotDeclare(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, member := range []string{`"run_id":"run-0001"`, `"decision_inputs"`, `"submitter_msp":"Org1MSP"`} {
+	for _, member := range []string{`"vendor_extension"`, `"decision_inputs"`, `"run_id"`, `"submitter_msp":"Org1MSP"`} {
 		if !strings.Contains(stored, member) {
 			t.Errorf("stored record lacks %s", member)
 		}
@@ -123,7 +124,8 @@ func TestV2RejectsVersionAndMemberTamper(t *testing.T) {
 		"version as string":     func(m map[string]interface{}) { m["schema_version"] = "2" },
 		"version 1 named":       func(m map[string]interface{}) { m["schema_version"] = 1 },
 		"version 3":             func(m map[string]interface{}) { m["schema_version"] = 3 },
-		"undeclared member set": func(m map[string]interface{}) { m["run_id"] = "run-9999" },
+		"undeclared member set": func(m map[string]interface{}) { m["vendor_extension"] = "changed" },
+		"v2 field changed":      func(m map[string]interface{}) { m["off_chain_ref"] = "store/sha256/" + strings.Repeat("0", 64) },
 	}
 	for name, mutate := range cases {
 		t.Run(name, func(t *testing.T) {
@@ -194,5 +196,47 @@ func TestJCSVectorsMatchPython(t *testing.T) {
 			continue
 		}
 		t.Logf("JCS-VECTOR OK %s %s", v.Label, v.SHA256)
+	}
+}
+
+// The schema version 2 boundary matrix (compliance_ledger_sim/tests/
+// test_fronteiras.py: the 16 cases of the dissertation plus 8 cases of the
+// version 2 fields and number domain) recomputes in Go, goes through
+// SubmitEvidence and VerifyChain, and answers QueryByRequirement on the
+// version 2 field.
+func TestBoundaryLedgerV2VerifiesInGo(t *testing.T) {
+	raw := readRawRecords(t, "testdata_fronteiras_v2.json")
+	if len(raw) != 24 {
+		t.Fatalf("expected 24 boundary records, found %d", len(raw))
+	}
+	cc, ctx, stub := newCtxWithIssuer(t)
+	for i, r := range raw {
+		var rec EvidenceRecord
+		if err := json.Unmarshal(r, &rec); err != nil {
+			t.Fatalf("record %d does not decode into the contract: %v", i, err)
+		}
+		body, version, err := recordBodyBytes(r, rec)
+		if err != nil || version != schemaV2 {
+			t.Fatalf("record %d: version %d, %v", i, version, err)
+		}
+		if sha256Hex(body) != rec.RecordHash {
+			t.Errorf("record %d (%s): record_hash differs in Go", i, scenarioLabel(rec.ScenarioID))
+		}
+		stub.MockTransactionStart(fmt.Sprintf("b2-%d", i))
+		if err := cc.SubmitEvidence(ctx, string(r)); err != nil {
+			t.Fatalf("SubmitEvidence #%d (%s): %v", i, scenarioLabel(rec.ScenarioID), err)
+		}
+		stub.MockTransactionEnd(fmt.Sprintf("b2-%d", i))
+	}
+	if msg, _ := cc.VerifyChain(ctx); msg != "chain valid: 24 records" {
+		t.Fatalf("VerifyChain = %q", msg)
+	}
+	out, err := cc.QueryByRequirement(ctx, "Art.10(2)(f)")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var hits []json.RawMessage
+	if err := json.Unmarshal([]byte(out), &hits); err != nil || len(hits) == 0 {
+		t.Fatalf("QueryByRequirement(Art.10(2)(f)) found nothing: %v", err)
 	}
 }

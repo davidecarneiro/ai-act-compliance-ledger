@@ -55,11 +55,12 @@ def run_one_combination(
         "approved": 0,
         "rejected": 0,
         "escalated": 0,
-        "verified": 0,
+        "recorded": 0,
     }
     for event in build_scenarios():
         record = oracle.process_mlops_event(event)
-        decision = record["decision"]
+        # Schema version 1 called a recorded audit query "verified".
+        decision = {"verified": "recorded"}.get(record["decision"], record["decision"])
         counts[decision] = counts.get(decision, 0) + 1
     total = sum(counts.values())
     return {
@@ -69,7 +70,7 @@ def run_one_combination(
         "approved": counts["approved"],
         "rejected": counts["rejected"],
         "escalated": counts["escalated"],
-        "verified": counts["verified"],
+        "recorded": counts["recorded"],
         "total": total,
         "rejection_rate": round(counts["rejected"] / max(1, total), 3),
         "escalation_rate": round(counts["escalated"] / max(1, total), 3),

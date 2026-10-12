@@ -19,7 +19,7 @@ from pathlib import Path
 
 import oscal_exporter
 from scenarios import build_incident_scenario
-from simulator import ComplianceOracle
+from simulator import ComplianceOracle, requirements_of
 
 from paths import EXPERIMENTS_DIR, run_dir  # noqa: E402
 OUT_DIR = run_dir("incident_run", create=True)
@@ -42,7 +42,7 @@ def main() -> int:
     print(f"evidence events   : {len(ledger)}")
     print(f"decisions         : {dict(Counter(r['decision'] for r in ledger))}")
     print(f"Art. 73 covered   : "
-          f"{sum('Art.73' in r['requirements_covered'] for r in ledger)}/{len(ledger)}")
+          f"{sum('Art.73' in requirements_of(r) for r in ledger)}/{len(ledger)}")
     print(f"chain             : {report.valid}/{report.total} {status}")
 
     full = oscal_exporter.to_oscal_sar(ledger, chain_valid=chain_ok, redacted=False, signatures_verified=chain_ok)

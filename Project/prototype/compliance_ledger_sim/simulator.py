@@ -35,7 +35,14 @@ from canonical import (
     canonicaliser,
     record_body_bytes,
 )
-from keys import IssuerKey, load_or_create_key, public_key_fingerprint
+from artifact_store import digest_of_ref, is_sha256_hex
+from keys import (
+    IssuerKey,
+    PublicIssuerKey,
+    load_or_create_key,
+    load_public_key,
+    public_key_fingerprint,
+)
 from ledger_store import open_store
 from pseudonymizer import Pseudonymizer
 
@@ -82,6 +89,18 @@ REQUIRED_IDENTITY_FIELDS = (
 )
 
 INVALID_INPUT_PREFIX = "invalid input: "
+
+# Issuer identity per schema version. Version 1 records were issued by the
+# dissertation's "Compliance Oracle" with the demonstration key shipped in
+# keys/; version 2 records are issued by the Compliance Policy Engine with a
+# key of its own, created on first use and never committed.
+ISSUER_ID_V1 = "compliance-oracle-v1"
+ISSUER_ID_V2 = "compliance-policy-engine-v2"
+
+# The decision recorded for an audit query. Version 1 called it "verified",
+# which read as the result of an integrity check; it only records the query.
+AUDIT_DECISION = {SCHEMA_V1: "verified", SCHEMA_V2: "recorded"}
+AUDIT_EVENT_TYPES = {"audit_query", "incident_audit_query"}
 
 DEFAULT_POLICIES = {
     "min_precision": 0.80,
@@ -317,6 +336,287 @@ def sha256_hex(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+# ----------------------------------------------------------------------
+# Policy evaluation (pure functions, shared by issuance and re-execution)
+# ----------------------------------------------------------------------
+
+
+def validate_event(event_data: dict, schema_version: int = CURRENT_SCHEMA_VERSION) -> str | None:
+    """Validate event identity, risk, approval, metrics and Unicode text.
+
+    Malformed events are rejected before policy evaluation. The rejection is
+    recorded; only logging coverage is attributed to invalid input."""
+    for name in REQUIRED_IDENTITY_FIELDS:
+        value = event_data.get(name)
+        if not isinstance(value, str) or not value.strip():
+            return f"{name} must be a non-empty string, got {value!r}"
+
+    # scenario_id is optional, but when present it must be a string: a
+    # list or object passed the gate, was signed and chained, and then
+    # could not be exported at all, because the exporter groups records
+    # by this value. A record nothing can read is not evidence.
+    # Text boundary: see _interoperable_text. It is checked over the whole
+    # event, not only over the identity fields, because artifact_hash is
+    # computed over all of event_data.
+    def _sweep(node, path="event"):
+        if isinstance(node, dict):
+            for k, v in node.items():
+                if not _interoperable_text(k):
+                    return f"{path}: field name outside the interoperable text domain"
+                found = _sweep(v, f"{path}.{k if isinstance(k, str) else '?'}")
+                if found:
+                    return found
+        elif isinstance(node, (list, tuple)):
+            for i, v in enumerate(node):
+                found = _sweep(v, f"{path}[{i}]")
+                if found:
+                    return found
+        elif not _interoperable_text(node):
+            return (
+                f"{path} contains a lone Unicode surrogate; the domain is "
+                f"sequences of valid scalar values (RFC 8259 §8.2)"
+            )
+        return None
+
+    out_of_domain = _sweep(event_data)
+    if out_of_domain:
+        return out_of_domain
+
+    scenario_id = event_data.get("scenario_id")
+    if scenario_id is not None and not isinstance(scenario_id, str):
+        return (
+            "scenario_id must be a string when present, got "
+            f"{type(scenario_id).__name__}"
+        )
+
+    approval = event_data.get("human_approval")
+    if approval is not None and not isinstance(approval, bool):
+        return (
+            "human_approval must be a boolean, got "
+            f"{type(approval).__name__}"
+        )
+
+    risk = event_data.get("risk_level")
+    # Compare as a string first: an unhashable value (a list, say) raises
+    # TypeError on set membership, which would escape as a crash instead
+    # of a recorded rejection.
+    if not isinstance(risk, str) or risk not in RISK_LEVELS:
+        return (
+            "risk_level must be one of "
+            f"{', '.join(sorted(RISK_LEVELS))}, got {risk!r}"
+        )
+
+    metrics = event_data.get("metrics", {})
+    if not isinstance(metrics, dict):
+        return f"metrics must be an object, got {type(metrics).__name__}"
+
+    for name, value in metrics.items():
+        # A non-string metric name cannot be ordered against a string one,
+        # so it raised inside canonical_json before any decision existed.
+        if not isinstance(name, str):
+            return f"metric names must be strings, got {type(name).__name__}"
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            return (
+                f"metric {name} must be a number, got "
+                f"{type(value).__name__}"
+            )
+        # An int of arbitrary magnitude overflows on conversion to float,
+        # so it is bounded before math.isnan is allowed to touch it.
+        try:
+            value = float(value)
+        except (OverflowError, ValueError):
+            return f"metric {name} is out of representable range"
+        if math.isnan(value) or math.isinf(value):
+            return f"metric {name} must be finite, got {value}"
+        if name in BOUNDED_METRICS and not 0.0 <= float(value) <= 1.0:
+            return f"metric {name} must lie in [0,1], got {value}"
+        if schema_version >= SCHEMA_V2 and _outside_jcs_number_domain(
+            metrics[name]
+        ):
+            return (
+                f"metric {name} lies outside the RFC 8785 number domain "
+                f"(integers up to 2**53 - 1)"
+            )
+
+    if schema_version >= SCHEMA_V2:
+        invalid = _validate_v2_fields(event_data)
+        if invalid is not None:
+            return invalid
+
+    return None
+
+
+def _validate_v2_fields(event_data: dict) -> str | None:
+    """Fields the version 2 evidence model adds to an event.
+
+    run_id groups the events of one execution or release. artifact_sha256 and
+    off_chain_ref commit to an artefact kept in the content-addressed store
+    (artifact_store.py). Only their form is checked here: the engine reads no
+    file, so the decision stays a function of the event and can be
+    re-executed; the stored bytes are checked against the record afterwards
+    (artifact_store.verify_ledger_artifacts)."""
+    run_id = event_data.get("run_id")
+    if run_id is not None and (not isinstance(run_id, str) or not run_id.strip()):
+        return f"run_id must be a non-empty string when present, got {run_id!r}"
+
+    digest = event_data.get("artifact_sha256")
+    if digest is not None and not is_sha256_hex(digest):
+        return (
+            "artifact_sha256 must be a SHA-256 digest in lowercase hexadecimal, "
+            f"got {digest!r}"
+        )
+
+    ref = event_data.get("off_chain_ref")
+    if ref is not None:
+        if not isinstance(ref, str) or not ref.strip():
+            return f"off_chain_ref must be a non-empty string when present, got {ref!r}"
+        if digest is None:
+            return "off_chain_ref names an artefact but artifact_sha256 is missing"
+        named = digest_of_ref(ref)
+        if ref.startswith("store/") and named != digest:
+            return "off_chain_ref names a different digest from artifact_sha256"
+    return None
+
+
+def evaluate_event(
+    event_data: dict,
+    policies: dict,
+    schema_version: int = CURRENT_SCHEMA_VERSION,
+) -> Tuple[str, str, str]:
+    """The policy decision for an event: (decision, reason, rule_id).
+
+    A pure function of the event, the policy and the schema version: it reads
+    no file and writes nothing, so a recorded decision can be re-executed
+    (reexecution.py) with exactly the logic that produced it."""
+    invalid = validate_event(event_data, schema_version)
+    if invalid is not None:
+        return "rejected", f"{INVALID_INPUT_PREFIX}{invalid}", "input.malformed"
+
+    metrics = event_data.get("metrics", {})
+
+    # An incident that already happened still has to be handled, whatever
+    # the model's metrics look like. Classifying it by event type before
+    # the metric rules keeps a low precision from turning a reportable
+    # incident into an ordinary quality rejection.
+    if event_data.get("event_type") in INCIDENT_EVENT_TYPES:
+        return (
+            "escalated",
+            "serious incident: mandatory reporting to the market "
+            "surveillance authority within the statutory deadline (Art. 73)",
+            "incident.reportable",
+        )
+
+    if metrics.get("precision", 0.0) < policies["min_precision"]:
+        return (
+            "rejected",
+            f"precision {metrics.get('precision')} below threshold "
+            f"{policies['min_precision']}",
+            "threshold.precision",
+        )
+
+    if (
+        metrics.get("demographic_parity_diff", 1.0)
+        > policies["max_demographic_parity_diff"]
+    ):
+        return (
+            "rejected",
+            f"demographic parity diff {metrics.get('demographic_parity_diff')} "
+            f"above threshold {policies['max_demographic_parity_diff']}",
+            "threshold.fairness",
+        )
+
+    if (
+        policies["require_human_approval_for_high_risk"]
+        and event_data.get("risk_level") == "high"
+        and not event_data.get("human_approval", False)
+    ):
+        return (
+            "rejected",
+            "missing human approval for high-risk event",
+            "oversight.approval_missing",
+        )
+
+    if metrics.get("drift_score", 0.0) > policies["drift_alert_threshold"]:
+        return (
+            "escalated",
+            f"drift score {metrics.get('drift_score')} above threshold "
+            f"{policies['drift_alert_threshold']}",
+            "monitoring.drift_alert",
+        )
+
+    if event_data.get("event_type") in AUDIT_EVENT_TYPES:
+        return (
+            AUDIT_DECISION[schema_version],
+            "audit query: integrity check requested",
+            "audit.query_recorded",
+        )
+
+    return "approved", "all policy checks passed", "policy.all_checks_passed"
+
+
+def requirement_support(
+    event_data: dict, schema_version: int = CURRENT_SCHEMA_VERSION
+) -> List[str]:
+    """The AI Act provisions a record helps to assess.
+
+    Derived from which fields the event carries: relevance as evidence, not a
+    judgement of compliance (supports_requirements in version 2). Version 2
+    follows the obligation-to-evidence matrix of the article (Table T4): a
+    bias metric supports Art. 10(2)(f) (examination for possible biases), a
+    dataset digest supports Art. 10(3), and any artefact digest supports the
+    technical documentation of Art. 11. Version 1 is kept as shipped, where
+    the bias metric was attached to Art. 10(3)."""
+    covered = {"Art.12"}
+    if event_data.get("human_approval") is not None:
+        covered.add("Art.14")
+    metrics = event_data.get("metrics", {})
+    if "precision" in metrics or "demographic_parity_diff" in metrics:
+        covered.add("Art.15")
+    if "demographic_parity_diff" in metrics:
+        covered.add("Art.10(3)" if schema_version < SCHEMA_V2 else "Art.10(2)(f)")
+    if schema_version >= SCHEMA_V2 and event_data.get("artifact_sha256"):
+        covered.add("Art.11")
+        if event_data.get("artifact_type") == "dataset":
+            covered.add("Art.10(3)")
+    if "drift_score" in metrics:
+        covered.add("Art.72")
+    if event_data.get("event_type") in {
+        "audit_query",
+        "serious_incident_detected",
+        "incident_reported_to_authority",
+        "incident_audit_query",
+    }:
+        covered.add("Art.73")
+    return sorted(covered)
+
+
+def decision_inputs_of(event_data: dict) -> dict:
+    """The inputs, beyond the metrics, that the policy decision read.
+
+    Recorded in version 2 so that the decision can be re-executed from the
+    record. Values that are not of the expected type are kept as text, so a
+    rejected event still records what it carried."""
+    approval = event_data.get("human_approval")
+    return {
+        "risk_level": _optional_text(event_data.get("risk_level")),
+        "human_approval": (
+            approval if approval is None or isinstance(approval, bool)
+            else _required_text(approval)
+        ),
+    }
+
+
+def requirements_of(record: dict) -> List[str]:
+    """The provisions a stored record supports, whatever its version.
+
+    Version 2 names the field supports_requirements; version 1 named it
+    requirements_covered."""
+    value = record.get("supports_requirements")
+    if value is None:
+        value = record.get("requirements_covered")
+    return list(value) if isinstance(value, list) else []
+
+
 @dataclass
 class VerificationReport:
     """Result of running ``verify_chain`` over a ledger snapshot."""
@@ -358,7 +658,21 @@ class ComplianceOracle:
         # ".jsonl": append-only store with a head file; ".json": the
         # dissertation's whole-file array, rewritten on every event.
         self.store = open_store(self.ledger_file)
-        self.issuer_key = issuer_key or load_or_create_key()
+        self.issuer_key = issuer_key or load_or_create_key(
+            ISSUER_ID_V2 if schema_version >= SCHEMA_V2 else ISSUER_ID_V1
+        )
+        # Keys accepted when verifying, by fingerprint. A record is checked
+        # against the key its issuer_pubkey_fingerprint names, so a ledger
+        # holding records of more than one issuer verifies once every issuer
+        # is trusted, and an unknown issuer is reported as such rather than
+        # as a bad signature.
+        self.trusted_keys = {public_key_fingerprint(self.issuer_key): self.issuer_key}
+        # The dissertation's published records were signed with the
+        # demonstration key; its public half is trusted by default so that
+        # the published evidence keeps verifying with a default engine.
+        published = load_public_key(ISSUER_ID_V1)
+        if published is not None:
+            self.trusted_keys.setdefault(public_key_fingerprint(published), published)
         # Pseudonymization is opt-in: when no instance is supplied the
         # Oracle behaves as before. When supplied, every event is passed
         # through ``apply_to_event`` before the canonical body is built,
@@ -376,6 +690,11 @@ class ComplianceOracle:
     def _ensure_files(self) -> None:
         self.store.ensure()
         EXPERIMENTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    def trust(self, *keys: IssuerKey | PublicIssuerKey) -> None:
+        """Accept records signed by these issuer keys when verifying."""
+        for key in keys:
+            self.trusted_keys[public_key_fingerprint(key)] = key
 
     def set_policies(self, policies: dict) -> None:
         """Validate and archive a policy before activating it.
@@ -440,189 +759,13 @@ class ComplianceOracle:
     # ------------------------------------------------------------------
 
     def _validate_input(self, event_data: dict) -> str | None:
-        """Validate event identity, risk, approval, metrics and Unicode text.
-
-        Malformed events are rejected before policy evaluation. The rejection is
-        recorded; only logging coverage is attributed to invalid input."""
-        for name in REQUIRED_IDENTITY_FIELDS:
-            value = event_data.get(name)
-            if not isinstance(value, str) or not value.strip():
-                return f"{name} must be a non-empty string, got {value!r}"
-
-        # scenario_id is optional, but when present it must be a string: a
-        # list or object passed the gate, was signed and chained, and then
-        # could not be exported at all, because the exporter groups records
-        # by this value. A record nothing can read is not evidence.
-        # Text boundary: see _interoperable_text. It is checked over the whole
-        # event, not only over the identity fields, because artifact_hash is
-        # computed over all of event_data.
-        def _sweep(node, path="event"):
-            if isinstance(node, dict):
-                for k, v in node.items():
-                    if not _interoperable_text(k):
-                        return f"{path}: field name outside the interoperable text domain"
-                    found = _sweep(v, f"{path}.{k if isinstance(k, str) else '?'}")
-                    if found:
-                        return found
-            elif isinstance(node, (list, tuple)):
-                for i, v in enumerate(node):
-                    found = _sweep(v, f"{path}[{i}]")
-                    if found:
-                        return found
-            elif not _interoperable_text(node):
-                return (
-                    f"{path} contains a lone Unicode surrogate; the domain is "
-                    f"sequences of valid scalar values (RFC 8259 §8.2)"
-                )
-            return None
-
-        out_of_domain = _sweep(event_data)
-        if out_of_domain:
-            return out_of_domain
-
-        scenario_id = event_data.get("scenario_id")
-        if scenario_id is not None and not isinstance(scenario_id, str):
-            return (
-                "scenario_id must be a string when present, got "
-                f"{type(scenario_id).__name__}"
-            )
-
-        approval = event_data.get("human_approval")
-        if approval is not None and not isinstance(approval, bool):
-            return (
-                "human_approval must be a boolean, got "
-                f"{type(approval).__name__}"
-            )
-
-        risk = event_data.get("risk_level")
-        # Compare as a string first: an unhashable value (a list, say) raises
-        # TypeError on set membership, which would escape as a crash instead
-        # of a recorded rejection.
-        if not isinstance(risk, str) or risk not in RISK_LEVELS:
-            return (
-                "risk_level must be one of "
-                f"{', '.join(sorted(RISK_LEVELS))}, got {risk!r}"
-            )
-
-        metrics = event_data.get("metrics", {})
-        if not isinstance(metrics, dict):
-            return f"metrics must be an object, got {type(metrics).__name__}"
-
-        for name, value in metrics.items():
-            # A non-string metric name cannot be ordered against a string one,
-            # so it raised inside canonical_json before any decision existed.
-            if not isinstance(name, str):
-                return f"metric names must be strings, got {type(name).__name__}"
-            if isinstance(value, bool) or not isinstance(value, (int, float)):
-                return (
-                    f"metric {name} must be a number, got "
-                    f"{type(value).__name__}"
-                )
-            # An int of arbitrary magnitude overflows on conversion to float,
-            # so it is bounded before math.isnan is allowed to touch it.
-            try:
-                value = float(value)
-            except (OverflowError, ValueError):
-                return f"metric {name} is out of representable range"
-            if math.isnan(value) or math.isinf(value):
-                return f"metric {name} must be finite, got {value}"
-            if name in BOUNDED_METRICS and not 0.0 <= float(value) <= 1.0:
-                return f"metric {name} must lie in [0,1], got {value}"
-            if self.schema_version >= SCHEMA_V2 and _outside_jcs_number_domain(
-                metrics[name]
-            ):
-                return (
-                    f"metric {name} lies outside the RFC 8785 number domain "
-                    f"(integers up to 2**53 - 1)"
-                )
-
-        return None
+        return validate_event(event_data, self.schema_version)
 
     def _validate_compliance(self, event_data: dict) -> Tuple[str, str, str]:
-        invalid = self._validate_input(event_data)
-        if invalid is not None:
-            return "rejected", f"{INVALID_INPUT_PREFIX}{invalid}", "input.malformed"
-
-        metrics = event_data.get("metrics", {})
-
-        # An incident that already happened still has to be handled, whatever
-        # the model's metrics look like. Classifying it by event type before
-        # the metric rules keeps a low precision from turning a reportable
-        # incident into an ordinary quality rejection.
-        if event_data.get("event_type") in INCIDENT_EVENT_TYPES:
-            return (
-                "escalated",
-                "serious incident: mandatory reporting to the market "
-                "surveillance authority within the statutory deadline (Art. 73)",
-                "incident.reportable",
-            )
-
-        if metrics.get("precision", 0.0) < self.policies["min_precision"]:
-            return (
-                "rejected",
-                f"precision {metrics.get('precision')} below threshold "
-                f"{self.policies['min_precision']}",
-                "threshold.precision",
-            )
-
-        if (
-            metrics.get("demographic_parity_diff", 1.0)
-            > self.policies["max_demographic_parity_diff"]
-        ):
-            return (
-                "rejected",
-                f"demographic parity diff {metrics.get('demographic_parity_diff')} "
-                f"above threshold {self.policies['max_demographic_parity_diff']}",
-                "threshold.fairness",
-            )
-
-        if (
-            self.policies["require_human_approval_for_high_risk"]
-            and event_data.get("risk_level") == "high"
-            and not event_data.get("human_approval", False)
-        ):
-            return (
-                "rejected",
-                "missing human approval for high-risk event",
-                "oversight.approval_missing",
-            )
-
-        if metrics.get("drift_score", 0.0) > self.policies["drift_alert_threshold"]:
-            return (
-                "escalated",
-                f"drift score {metrics.get('drift_score')} above threshold "
-                f"{self.policies['drift_alert_threshold']}",
-                "monitoring.drift_alert",
-            )
-
-        if event_data.get("event_type") in {"audit_query", "incident_audit_query"}:
-            return (
-                "verified",
-                "audit query: integrity check requested",
-                "audit.query_recorded",
-            )
-
-        return "approved", "all policy checks passed", "policy.all_checks_passed"
+        return evaluate_event(event_data, self.policies, self.schema_version)
 
     def _requirement_coverage(self, event_data: dict) -> List[str]:
-        covered = {"Art.12"}
-        if event_data.get("human_approval") is not None:
-            covered.add("Art.14")
-        metrics = event_data.get("metrics", {})
-        if "precision" in metrics or "demographic_parity_diff" in metrics:
-            covered.add("Art.15")
-        if "demographic_parity_diff" in metrics:
-            covered.add("Art.10(3)")
-        if "drift_score" in metrics:
-            covered.add("Art.72")
-        if event_data.get("event_type") in {
-            "audit_query",
-            "serious_incident_detected",
-            "incident_reported_to_authority",
-            "incident_audit_query",
-        }:
-            covered.add("Art.73")
-        return sorted(covered)
+        return requirement_support(event_data, self.schema_version)
 
     # ------------------------------------------------------------------
     # Core processing
@@ -637,7 +780,7 @@ class ComplianceOracle:
             lambda _seq, parent: self._build_record(event_data, parent)
         )
         decision = record["decision"]
-        coverage = record["requirements_covered"]
+        coverage = requirements_of(record)
         chain_hash = record["chain_hash"]
 
         latency_ms = round((time.perf_counter() - start) * 1000, 4)
@@ -673,7 +816,10 @@ class ComplianceOracle:
         if self.pseudonymizer is not None:
             event_data = self.pseudonymizer.apply_to_event(event_data)
 
-        artifact_hash = sha256_hex(
+        # Digest of the event as received (the payload). Version 1 recorded it
+        # as artifact_hash; version 2 names it payload_hash and keeps
+        # artifact_hash for the digest of the artefact file itself.
+        payload_hash = sha256_hex(
             self._canonical(_canonical_source(event_data, self.schema_version))
         )
         policy_id, policy_hash = policy_identity(self.policies, self.schema_version)
@@ -704,18 +850,36 @@ class ComplianceOracle:
             "metrics": _safe_metrics(event_data.get("metrics"), self.schema_version),
             "policy_id": policy_id,
             "policy_hash": policy_hash,
-            "artifact_hash": artifact_hash,
-            "requirements_covered": coverage,
             "issuer_id": self.issuer_key.issuer_id,
             "issuer_pubkey_fingerprint": public_key_fingerprint(self.issuer_key),
             "sig_alg": "Ed25519",
             "hash_alg": "SHA-256",
             "parent_hash": parent_chain_hash,
         }
-        # Version 1 records never carried the field, so it is added only
-        # from version 2 on; its presence is what selects JCS on verify.
-        if self.schema_version >= SCHEMA_V2:
-            body["schema_version"] = self.schema_version
+        if self.schema_version < SCHEMA_V2:
+            # The dissertation's 23-field record, unchanged.
+            body["artifact_hash"] = payload_hash
+            body["requirements_covered"] = coverage
+        else:
+            # Version 2 (WP2 of the article plan). schema_version is what
+            # selects RFC 8785 on verification; version 1 never carried it.
+            malformed = reason.startswith(INVALID_INPUT_PREFIX)
+            run_id = event_data.get("run_id")
+            digest = event_data.get("artifact_sha256")
+            ref = event_data.get("off_chain_ref")
+            body.update({
+                "schema_version": self.schema_version,
+                "run_id": None if malformed or not isinstance(run_id, str) else run_id,
+                "payload_hash": payload_hash,
+                # Only validated commitments are recorded: a malformed digest
+                # or reference stays out of the record (the payload_hash
+                # still commits to what was sent), so nothing downstream tries
+                # to resolve it.
+                "artifact_hash": None if malformed else digest,
+                "off_chain_ref": None if malformed else ref,
+                "decision_inputs": decision_inputs_of(event_data),
+                "supports_requirements": coverage,
+            })
 
         body_bytes = self._canonical(body)
         record_hash = sha256_hex(body_bytes)
@@ -762,12 +926,20 @@ class ComplianceOracle:
                 local_issues.append("parent_hash mismatch")
             if recomputed_hash != record.get("record_hash"):
                 local_issues.append("record_hash mismatch")
-            try:
-                signature = b64decode(record.get("issuer_signature", ""))
-                if not self.issuer_key.verify(body_bytes, signature):
-                    local_issues.append("invalid signature")
-            except Exception:
-                local_issues.append("malformed signature")
+            # The key is the one the record names by fingerprint, among the
+            # trusted ones: an issuer nobody trusts is reported as such, not
+            # as a bad signature.
+            fingerprint = record.get("issuer_pubkey_fingerprint")
+            key = self.trusted_keys.get(fingerprint) if isinstance(fingerprint, str) else None
+            if key is None:
+                local_issues.append("unknown issuer key")
+            else:
+                try:
+                    signature = b64decode(record.get("issuer_signature", ""))
+                    if not key.verify(body_bytes, signature):
+                        local_issues.append("invalid signature")
+                except Exception:
+                    local_issues.append("malformed signature")
 
             expected_chain = sha256_hex(
                 (previous_chain + recomputed_hash).encode("utf-8")
@@ -802,8 +974,12 @@ class ComplianceOracle:
     def query_by_requirement(self, article: str) -> List[dict]:
         return [
             r for r in self.store.iter_records()
-            if article in r.get("requirements_covered", [])
+            if article in requirements_of(r)
         ]
+
+    def query_by_run(self, run_id: str) -> List[dict]:
+        """The records of one execution or release (schema version 2)."""
+        return [r for r in self.store.iter_records() if r.get("run_id") == run_id]
 
     def query_by_scenario(self, scenario_id: str) -> List[dict]:
         return [

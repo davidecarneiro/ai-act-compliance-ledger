@@ -15,6 +15,12 @@ ledger.json.lock
 *.jsonl.head.tmp
 baseline_log.sqlite*
 
+# The Compliance Policy Engine's own key (schema version 2) is created on first
+# use and never committed. Publish its .pub.pem next to any ledger it signs.
+# The dissertation's demonstration key (compliance-oracle-v1) stays committed.
+prototype/compliance_ledger_sim/keys/compliance-policy-engine-v2.ed25519.pem
+prototype/compliance_ledger_sim/keys/compliance-policy-engine-v2.ed25519.pub.pem
+
 # Compiled Go binaries
 prototype/fabric_migration/chaincode/compliance-chaincode
 prototype/fabric_migration/gateway/gateway-measure

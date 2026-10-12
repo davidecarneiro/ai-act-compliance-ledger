@@ -80,10 +80,17 @@ def org1_env() -> dict:
 
 
 def raw_pubkey_hex() -> str:
+    """The raw public key of the issuer that gen_chain signs with.
+
+    Under schema version 2 that is the Compliance Policy Engine's own key;
+    with EVIDENCE_SCHEMA_VERSION=1 it is the demonstration key."""
     sys.path.insert(0, str(SIM))
+    from canonical import CURRENT_SCHEMA_VERSION, SCHEMA_V2  # noqa: E402
     from keys import load_or_create_key  # noqa: E402
+    from simulator import ISSUER_ID_V1, ISSUER_ID_V2  # noqa: E402
     from cryptography.hazmat.primitives import serialization  # noqa: E402
-    raw = load_or_create_key().public_key.public_bytes(
+    issuer = ISSUER_ID_V2 if CURRENT_SCHEMA_VERSION >= SCHEMA_V2 else ISSUER_ID_V1
+    raw = load_or_create_key(issuer).public_key.public_bytes(
         encoding=serialization.Encoding.Raw,
         format=serialization.PublicFormat.Raw)
     return raw.hex()
