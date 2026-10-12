@@ -26,3 +26,7 @@ prototype/fabric_migration/chaincode/compliance-chaincode
 prototype/fabric_migration/gateway/gateway-measure
 
 .DS_Store
+# WP3 ablation: scratch storage of the arms, and runs that only validate the
+# script (label validation-*); measurement-machine runs are committed.
+experiments/article/wp3/_work/
+experiments/article/wp3/ablation_validation-*.json

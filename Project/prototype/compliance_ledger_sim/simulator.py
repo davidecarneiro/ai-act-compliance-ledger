@@ -981,14 +981,23 @@ class ComplianceOracle:
 
         body_bytes = self._canonical(body)
         record_hash = sha256_hex(body_bytes)
-        signature = self.issuer_key.sign(body_bytes)
+        signature = self._sign(body_bytes)
         chain_hash = sha256_hex((parent_chain_hash + record_hash).encode("utf-8"))
 
         record = dict(body)
         record["record_hash"] = record_hash
-        record["issuer_signature"] = b64encode(signature).decode("ascii")
+        if signature is not None:
+            record["issuer_signature"] = b64encode(signature).decode("ascii")
         record["chain_hash"] = chain_hash
         return record
+
+    def _sign(self, body_bytes: bytes) -> bytes | None:
+        """The issuer's signature over the canonical body.
+
+        Overridden only by the unsigned arm of the WP3 ablation (B0), which
+        does everything else the engine does, so that the difference between
+        arms B and B0 is the cost of signing alone."""
+        return self.issuer_key.sign(body_bytes)
 
     # ------------------------------------------------------------------
     # Verification

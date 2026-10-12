@@ -34,13 +34,21 @@ CREATE TABLE IF NOT EXISTS events (
     timestamp TEXT,
     decision TEXT,
     reason TEXT,
+    rule_id TEXT,
     metrics_json TEXT
 );
 """
 
 
 class BaselineLogger:
-    def __init__(self, db_file: Path = DB_FILE) -> None:
+    def __init__(self, db_file: Path = DB_FILE, policies: dict | None = None,
+                 schema_version: int | None = None) -> None:
+        # With a policy, decisions are taken by the engine's own function
+        # (simulator.evaluate_event), as arm A of the WP3 ablation requires:
+        # the arms then differ only in what they persist. Without one, the
+        # dissertation's hard-coded rules are kept (thesis-v1.0 behaviour).
+        self.policies = policies
+        self.schema_version = schema_version
         self.db_file = db_file
         if self.db_file.exists():
             try:
@@ -61,6 +69,19 @@ class BaselineLogger:
     # ------------------------------------------------------------------
 
     def _decide(self, event: dict) -> Tuple[str, str]:
+        return self._decide_with_rule(event)[:2]
+
+    def _decide_with_rule(self, event: dict) -> Tuple[str, str, str | None]:
+        if self.policies is not None:
+            from canonical import CURRENT_SCHEMA_VERSION
+            from simulator import evaluate_event
+
+            version = self.schema_version or CURRENT_SCHEMA_VERSION
+            return evaluate_event(event, self.policies, version)
+        decision, reason = self._legacy_decide(event)
+        return decision, reason, None
+
+    def _legacy_decide(self, event: dict) -> Tuple[str, str]:
         metrics = event.get("metrics", {})
         if metrics.get("precision", 0.0) < 0.80:
             return "rejected", "precision below threshold"
@@ -77,15 +98,16 @@ class BaselineLogger:
             return "verified", "audit query"
         return "approved", "ok"
 
-    def log(self, event: dict) -> dict:
-        start = time.perf_counter()
-        decision, reason = self._decide(event)
+    def record(self, event: dict) -> dict:
+        """Decide and insert one row, committed. No timing, no output: the
+        path arm A of the WP3 ablation measures."""
+        decision, reason, rule_id = self._decide_with_rule(event)
         timestamp = datetime.now(timezone.utc).isoformat()
         self.connection.execute(
             """
             INSERT INTO events (scenario_id, event_type, artifact_id,
-                pipeline_stage, timestamp, decision, reason, metrics_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                pipeline_stage, timestamp, decision, reason, rule_id, metrics_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 event.get("scenario_id"),
@@ -95,10 +117,23 @@ class BaselineLogger:
                 timestamp,
                 decision,
                 reason,
+                rule_id,
                 json.dumps(event.get("metrics", {})),
             ),
         )
         self.connection.commit()
+        return {
+            "scenario_id": event.get("scenario_id"),
+            "decision": decision,
+            "reason": reason,
+            "rule_id": rule_id,
+            "timestamp": timestamp,
+        }
+
+    def log(self, event: dict) -> dict:
+        start = time.perf_counter()
+        row = self.record(event)
+        decision, timestamp, reason = row["decision"], row["timestamp"], row["reason"]
         latency_ms = round((time.perf_counter() - start) * 1000, 4)
         self.metrics_rows.append(
             {

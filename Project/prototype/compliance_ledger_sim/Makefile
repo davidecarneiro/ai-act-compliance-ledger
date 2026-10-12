@@ -9,6 +9,7 @@
 #   compare      Oracle and SQLite baseline side by side
 #   sensitivity  45 policy-threshold combinations
 #   store-growth per-event latency vs ledger size, append-only vs JSON array (WP1)
+#   ablation     WP3 four-arm ablation; LABEL=<machine> (protocols/wp3_ablation.md)
 #   oscal        OSCAL Assessment Results from the ledger
 #   demo         tests + baseline + compare + sensitivity + oscal
 #   docker-build / docker-run   the same demonstration in a container
@@ -18,7 +19,7 @@
 PYTHON ?= python3
 PIP ?= $(PYTHON) -m pip
 
-.PHONY: setup tests verify baseline compare sensitivity oscal store-growth demo docker-build docker-run clean clean-state
+.PHONY: setup tests verify baseline compare sensitivity oscal store-growth ablation demo docker-build docker-run clean clean-state
 
 setup:
 	$(PIP) install --break-system-packages -r requirements.txt
@@ -41,6 +42,10 @@ sensitivity:
 
 store-growth:
 	$(PYTHON) bench_store_growth.py 10000 2000 1000
+
+ablation:
+	@test -n "$(LABEL)" || (echo "usage: make ablation LABEL=<machine-name>"; exit 2)
+	$(PYTHON) bench_ablation.py --label $(LABEL)
 
 oscal:
 	$(PYTHON) -m oscal_exporter
