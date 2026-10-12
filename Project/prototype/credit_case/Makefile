@@ -5,10 +5,11 @@
 #   run     the case with seed 42 under the committed policy.json
 #   pilot   seed 7; refuses to overwrite policy.json (the policy is fixed)
 #   stability  seed-stability addendum: partition seeds 0-499 (post hoc, exploratory)
+#   tamper  attacks T1-T9 on the case output in configurations A, B0, B, B+ (protocols/tamper_detection.md)
 
 PYTHON ?= python3
 
-.PHONY: setup tests run pilot stability
+.PHONY: setup tests run pilot stability tamper
 
 setup:
 	$(PYTHON) -m pip install --break-system-packages -r requirements.txt
@@ -24,3 +25,6 @@ pilot:
 
 stability:
 	$(PYTHON) seed_stability.py
+
+tamper:
+	$(PYTHON) tamper_experiment.py

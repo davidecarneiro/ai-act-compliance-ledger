@@ -371,3 +371,84 @@ carries over to 200 unseen applicants about half the time. The evidence
 records exactly which decision was taken on which metric values; it cannot
 make a decision on a noisy estimate reliable. Thresholds on group metrics
 need the estimate's uncertainty, which the policy language does not express.
+
+## WP3 — Ablation: code and protocol (measurement pending)
+
+Protocol `protocols/wp3_ablation.md`, committed and pushed before any
+measurement. Instructions for the measurement machine:
+`protocols/RUNNING_MEASUREMENTS.md`.
+
+**What changed**
+
+- `ablation_arms.py`: the four arms, each deciding with `evaluate_event`
+  under the same policy and differing only in what it persists. A: one
+  SQLite row (`BaselineLogger.record`; SQLite as shipped, rollback journal,
+  `synchronous = FULL`). B0: the engine with its signing step removed. B: the
+  engine. B+: B plus a signed head appended to an external anchor file every
+  100 records. Plus the verifier a third party can run on each output.
+- `simulator.py`: the signature moved into `ComplianceOracle._sign`, the hook
+  B0 overrides; records are byte-for-byte as before.
+- `baseline_logger.py`: optional policy (decisions by `evaluate_event`, as
+  arm A requires) and an untimed `record()`; without a policy the
+  dissertation's rules are kept, so its scripts behave as before.
+- `bench_ablation.py` (`make ablation LABEL=<machine>`): W1 and W2, ten
+  rounds of 200 events after 50 warm-up, Williams 4×4 rotation, paired
+  differences, anchor operation timed apart, 10,000-event growth run. Writes
+  every observation, the environment (CPU, file system of the working
+  directory, SQLite settings), the rows of Table T9 and the series of F4.
+- `tests/test_ablation.py` (6): same decisions in every arm; B0 differs from
+  B only by the signature; every output verifies; what each verifier
+  catches; the rotation is balanced; a small benchmark runs.
+
+**Validation run (cloud container; label `validation-cloud-container`; not
+committed and not reported).** Full protocol in 81 s; identical decisions in
+the four arms; every output verifies in every round; latency flat over
+10,000 records in every arm. The article's figures come from the
+measurement machine.
+
+**Checks (2026-10-12):** Python 214/214 under each schema version; bridge
+4/4; the dissertation's `compare_oracle_vs_baseline.py` still runs.
+
+## Tamper detection (plan 4.4) — configurations A, B0, B, B+
+
+Protocol `protocols/tamper_detection.md`, committed before the run and
+amended once before it (T9b carries the fabricated metrics of T9a, so that
+the approval rule is reached). Script `prototype/credit_case/tamper_experiment.py`
+(`make tamper`); results `experiments/article/tamper/tamper_20261012T161251Z.json`.
+
+The 16 events of the credit case go through each configuration (B+ anchors
+every 5 records: anchors at 5, 10, 15); each attack is applied to a fresh copy
+and checked by what a third party holding that output can verify.
+
+| # | Attack | A | B0 | B | B+ |
+| --- | --- | --- | --- | --- | --- |
+| T1 | alter a field (record 8: rejected → approved) | not detected | detected | detected | detected |
+| T2 | alter only the signature | n/a | n/a | detected | detected |
+| T3 | alter and recompute every hash, without the key | not detected | not detected | detected | detected |
+| T4 | swap two records | not detected | detected | detected | detected |
+| T5 | delete an intermediate record (A: identifiers renumbered) | not detected | detected | detected | detected |
+| T6a | truncate a suffix crossing an anchor | not detected | not detected | not detected | detected |
+| T6b | truncate after the last anchor | not detected | not detected | not detected | not detected |
+| T7a | insider rewrite with the key, crossing an anchor | not detected | not detected | not detected | detected |
+| T7b | insider rewrite after the last anchor | not detected | not detected | not detected | not detected |
+| T8 | omit an event at the source | not detected | not detected | not detected | not detected |
+| T9a | forged event upstream (fabricated metrics) | not detected; approved | idem | idem | idem |
+| T9b | forged approval upstream (another key) | not detected; rejected at the gate (`oversight.approval_invalid`) | idem | idem | idem |
+
+All 48 cells as expected. Readings for sections 6.4 and 7.1–7.2:
+
+- T3 is what the signature adds to the hash chain; T6a and T7a are what an
+  external anchor adds to a signed log, and only up to the last anchor (T6b,
+  T7b). The same holds for C, where every record is anchored.
+- T9b is caught in every configuration, A included, because every
+  configuration decides with the same engine function: protection against a
+  forged approval comes from the policy engine verifying the signature, not
+  from how the outcome is stored.
+- T8 and T9a are outside the reach of any configuration: integrity of the
+  record says nothing about events never sent or fabricated at the source.
+- Configuration C is run on the Fabric machine with WP7.
+- The issues in the output name records by 0-based index ("record 7" is
+  record 8).
+
+Case tests 17/17 (the tamper experiment runs once in a temporary folder and
+must match the expected table).

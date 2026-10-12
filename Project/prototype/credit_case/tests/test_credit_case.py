@@ -180,3 +180,19 @@ def test_wilson_interval():
     assert ss.wilson(0, 500)[0] == 0.0
     low, high = ss.wilson(219, 500)
     assert low < 219 / 500 < high
+
+
+# ----------------------------------------------------------------------
+# Tamper detection (plan 4.4)
+# ----------------------------------------------------------------------
+
+def test_tamper_experiment_matches_the_expected_table(tmp_path):
+    import tamper_experiment as te
+    path = te.run(out_dir=tmp_path)
+    result = json.loads(path.read_text(encoding="utf-8"))
+    assert all(result["original"]["verification"].values())
+    assert result["all_as_expected"], [
+        (a, arm, v["observed"], v["expected"]) for a, row in result["results"].items()
+        for arm, v in row.items() if not v["as_expected"]]
+    gate = {arm: v["gate"]["rule_id"] for arm, v in result["results"]["T9b"].items()}
+    assert set(gate.values()) == {"oversight.approval_invalid"}

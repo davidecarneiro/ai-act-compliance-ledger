@@ -1,0 +1,592 @@
+{
+ "protocol": "Project/protocols/tamper_detection.md",
+ "generated_at": "2026-10-12T16:12:51.870691+00:00",
+ "environment": {
+  "platform": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "python": "3.13.15",
+  "scikit-learn": "1.9.1",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "joblib": "1.6.0"
+ },
+ "anchor_interval": 5,
+ "target_record": 8,
+ "original": {
+  "records": 16,
+  "verification": {
+   "A": true,
+   "B0": true,
+   "B": true,
+   "Bplus": true
+  },
+  "decisions": {
+   "A": [
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "rejected",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "escalated"
+   ],
+   "B0": [
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "rejected",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "escalated"
+   ],
+   "B": [
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "rejected",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "escalated"
+   ],
+   "Bplus": [
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "rejected",
+    "rejected",
+    "rejected",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "approved",
+    "escalated"
+   ]
+  }
+ },
+ "results": {
+  "T1": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "detected",
+    "issues": [
+     "record 7: body does not match record_hash"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "detected",
+    "issues": [
+     "record 7: body does not match record_hash",
+     "record 7: signature does not verify"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "record 7: body does not match record_hash",
+     "record 7: signature does not verify"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T2": {
+   "A": {
+    "observed": "n/a",
+    "issues": [],
+    "expected": "n/a",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "n/a",
+    "issues": [],
+    "expected": "n/a",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "detected",
+    "issues": [
+     "record 7: signature does not verify"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "record 7: signature does not verify"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T3": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "detected",
+    "issues": [
+     "record 7: signature does not verify",
+     "record 8: signature does not verify",
+     "record 9: signature does not verify",
+     "record 10: signature does not verify",
+     "record 11: signature does not verify"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "record 7: signature does not verify",
+     "record 8: signature does not verify",
+     "record 9: signature does not verify",
+     "record 10: signature does not verify",
+     "record 11: signature does not verify"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T4": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "detected",
+    "issues": [
+     "record 7: parent_hash does not link to the previous record",
+     "record 8: parent_hash does not link to the previous record",
+     "record 9: parent_hash does not link to the previous record"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "detected",
+    "issues": [
+     "record 7: parent_hash does not link to the previous record",
+     "record 8: parent_hash does not link to the previous record",
+     "record 9: parent_hash does not link to the previous record"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "record 7: parent_hash does not link to the previous record",
+     "record 8: parent_hash does not link to the previous record",
+     "record 9: parent_hash does not link to the previous record"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T5": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "detected",
+    "issues": [
+     "record 7: parent_hash does not link to the previous record"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "detected",
+    "issues": [
+     "record 7: parent_hash does not link to the previous record"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "record 7: parent_hash does not link to the previous record",
+     "anchor 10: chain_hash differs from the anchored head",
+     "anchor 15: chain_hash differs from the anchored head"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T6a": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "anchor 15: the ledger has only 13 records (truncated)"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T6b": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   }
+  },
+  "T7a": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "detected",
+    "issues": [
+     "anchor 10: chain_hash differs from the anchored head",
+     "anchor 15: chain_hash differs from the anchored head"
+    ],
+    "expected": "detected",
+    "as_expected": true
+   }
+  },
+  "T7b": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   }
+  },
+  "T8": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "not detected",
+    "issues": [],
+    "expected": "not detected",
+    "as_expected": true
+   }
+  },
+  "T9a": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "approved",
+     "rule_id": "policy.all_checks_passed"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "approved",
+     "rule_id": "policy.all_checks_passed"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "approved",
+     "rule_id": "policy.all_checks_passed"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "approved",
+     "rule_id": "policy.all_checks_passed"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   }
+  },
+  "T9b": {
+   "A": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "rejected",
+     "rule_id": "oversight.approval_invalid"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B0": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "rejected",
+     "rule_id": "oversight.approval_invalid"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "B": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "rejected",
+     "rule_id": "oversight.approval_invalid"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   },
+   "Bplus": {
+    "observed": "not detected",
+    "issues": [],
+    "gate": {
+     "decision": "rejected",
+     "rule_id": "oversight.approval_invalid"
+    },
+    "expected": "not detected",
+    "as_expected": true
+   }
+  }
+ },
+ "table_t7": [
+  {
+   "attack": "T1",
+   "description": "alter a field of an intermediate record",
+   "A": "not detected",
+   "B0": "detected",
+   "B": "detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T2",
+   "description": "alter only the signature",
+   "A": "n/a",
+   "B0": "n/a",
+   "B": "detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T3",
+   "description": "alter and recompute every hash, without the key",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T4",
+   "description": "swap two records",
+   "A": "not detected",
+   "B0": "detected",
+   "B": "detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T5",
+   "description": "delete an intermediate record",
+   "A": "not detected",
+   "B0": "detected",
+   "B": "detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T6a",
+   "description": "truncate a suffix that crosses an anchor",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T6b",
+   "description": "truncate a suffix after the last anchor",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "not detected"
+  },
+  {
+   "attack": "T7a",
+   "description": "rewrite with the issuer's key, crossing an anchor",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "detected"
+  },
+  {
+   "attack": "T7b",
+   "description": "rewrite with the issuer's key, after the last anchor",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "not detected"
+  },
+  {
+   "attack": "T8",
+   "description": "omit an event at the source",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "not detected"
+  },
+  {
+   "attack": "T9a",
+   "description": "inject a forged event upstream",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "not detected"
+  },
+  {
+   "attack": "T9b",
+   "description": "inject a forged approval upstream",
+   "A": "not detected",
+   "B0": "not detected",
+   "B": "not detected",
+   "Bplus": "not detected"
+  }
+ ],
+ "all_as_expected": true
+}
