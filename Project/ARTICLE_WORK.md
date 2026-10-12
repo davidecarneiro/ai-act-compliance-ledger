@@ -162,10 +162,10 @@ version 2 field set rather than opening a version 3.
 
 **Open points**
 
-- The policy applies the precision and fairness thresholds to every event, so
-  an event without metrics (data ingestion, training) is rejected on
-  precision. Version 1 had no such events. To settle before WP4: apply the
-  thresholds by pipeline stage, or to events that carry the metric.
+- ~~The policy applies the precision and fairness thresholds to every event,
+  so an event without metrics (data ingestion, training) is rejected on
+  precision.~~ Settled on 2026-10-12: thresholds by pipeline stage (below,
+  before WP4).
 - The Art. 10 mapping is a legal reading to be confirmed by the co-authors.
 - The Ledger Explorer page reads `requirements_covered`; version 2 ledgers
   need it to read `supports_requirements` too (WP9).
@@ -211,5 +211,120 @@ whether oversight was effective (Art. 14(4)).
 | --- | --- |
 | Python suite, v2 and `EVIDENCE_SCHEMA_VERSION=1` | 186/186 each (165 + 21 approval tests) |
 | Acceptance cases | forged signature, unauthorised key, other artefact, other run, statement altered after signing: each rejected as `oversight.approval_invalid` and recorded; chain valid |
+| Bridge (both versions), Go chaincode, interop | 4/4, 17/17, 6/6 + 4/4 |
+| `verify_delivery.py`, published OSCAL | 1,831/1,831, 18/18 |
+
+## Policy — metric thresholds by pipeline stage (2026-10-12)
+
+The dissertation's policy holds every event to the precision and fairness
+thresholds, so an event without metrics (data ingestion, training) is
+rejected on precision. Decided: thresholds by pipeline stage.
+
+- Optional policy field `metric_threshold_stages` (version 2): the stages at
+  which the thresholds apply. There, the metrics are mandatory; a missing one
+  fails the threshold with its own reason ("precision is required at stage
+  validation and is missing"). Other stages are not held to them; monitoring
+  keeps the drift rule.
+- Absent, every event is held to the thresholds, as in the dissertation, and
+  version 1 ignores the field, so the dissertation's records and the shipped
+  policy (`pol-c3d1fc49f36e`) are unchanged. An empty or malformed list fails
+  closed. The field is part of the policy content and of `policy_hash`.
+- Tests: `tests/test_stage_thresholds.py` (22). Python suite 208/208 under
+  version 2 and under `EVIDENCE_SCHEMA_VERSION=1`.
+
+## WP4 — Credit-scoring case (German Credit)
+
+**Order of work, visible in the history:** protocol committed and pushed
+before any model was trained (`protocols/wp4_credit_case.md`); then the
+pipeline, the pilot and the case policy, committed before the main run; then
+the run.
+
+**What changed**
+
+- `prototype/credit_case/credit_case.py`: implements the protocol. Reads
+  `german.data` from the archive after checking both digests; stratified
+  60/20/20 partition; logistic regression without (v1) and with reweighing
+  (v2); precision and parity difference on the validation partition; six
+  monitoring batches with an induced shift towards checking account < 0 DM;
+  PSI of the v2 scores over quintile bins; the fixed sequence of 16 events,
+  each with its artefact in the content-addressed store; the deployment
+  request with an approval signed by the demonstration approver.
+- `recompute_metrics(ledger, store)`: recomputes every metric in the ledger
+  from the ledger and the store alone (dataset and partition from the run's
+  `data_ingested` and `data_split` events, model from the record, batch from
+  its monitoring report), as a third party holding them would.
+- `policy.json`: the case policy, written by the pilot, fixed thereafter;
+  `keys/approver-demo.*`: demonstration approver key, committed so the case
+  regenerates under the same policy identifier (`pol-16d3a1645858`).
+- `make pilot`, `make run`, `make tests` in `prototype/credit_case/`;
+  dependency versions pinned in its `requirements.txt`.
+
+**Pilot (partition seed 7, discarded for evaluation;
+`experiments/article/wp4/pilot_20261012T145725Z.json`)**
+
+| | Precision | Parity difference |
+| --- | --- | --- |
+| v1 | 0.734568 | 0.247059 |
+| v2 | 0.734940 | 0.113725 |
+
+Calibration rule of the protocol: `min_precision` = floor to 0.01 of
+(0.73494 − 0.05) = 0.68.
+
+**Run (partition seed 42; `experiments/article/wp4/run_20261012T145744Z/`)**
+
+| # | Run | Event | Decision | Rule | Metrics |
+| --- | --- | --- | --- | --- | --- |
+| 1–3 | gc-run-1 | ingested, split, trained | approved ×3 | `policy.all_checks_passed` | — |
+| 4 | gc-run-1 | validation (v1) | rejected | `threshold.fairness` | precision 0.793333, parity 0.111607 |
+| 5–7 | gc-run-2 | ingested, split, trained | approved ×3 | `policy.all_checks_passed` | — |
+| 8 | gc-run-2 | validation (v2) | rejected | `threshold.fairness` | precision 0.800000, parity 0.111607 |
+| 9 | gc-run-2 | deployment request, no approval | rejected | `threshold.fairness` | as 8 |
+| 10 | gc-run-2 | deployment request, signed approval | rejected | `threshold.fairness` | as 8 |
+| 11–15 | gc-run-2 | monitoring, shares 0.30, 0.30, 0.50, 0.65, 0.80 | approved ×5 | `policy.all_checks_passed` | PSI 0.042, 0.103, 0.109, 0.123, 0.230 |
+| 16 | gc-run-2 | monitoring, share 0.95 | escalated | `monitoring.drift_alert` | PSI 0.930 |
+
+Decisions: 11 approved, 4 rejected, 1 escalated.
+
+| Acceptance criterion | Result |
+| --- | --- |
+| No metric set by hand | 10/10 metrics recomputed from the ledger and the store, identical |
+| Chain verifies | 16/16 |
+| Artefact digests recompute from `off_chain_ref` | 16/16 ok |
+| Re-execution | 16/16 match (decision, rule, supported provisions) |
+| OSCAL exports against the NIST schema | complete and redacted valid |
+| One decision of each type | approved, rejected, escalated |
+
+**Observations (reported as they came out; nothing changed after the run)**
+
+- Both models exceed the parity bound of 0.10, so the two deployment requests
+  are rejected on fairness before the approval rules are reached. On these
+  data the case therefore does not exercise `oversight.approval_missing` or
+  the verification of a valid approval at the gate; the valid approval is
+  recorded whole in event 10 (`decision_inputs.approval`, Art. 14 supported).
+  Those rules are exercised by the WP6 tests.
+- v1 and v2 have the same parity difference. Checked: reweighing equalises
+  the weighted label rate of the two groups (0.70), lowers the age
+  coefficient (0.245 → 0.191) and changes two validation predictions, but
+  within each group, so the counts stay 129/168 (25 or over) and 21/32 (under
+  25). On this training partition the groups' label rates are close (0.71 and
+  0.64), which leaves reweighing little to correct; in the pilot it reduced
+  the parity difference from 0.25 to 0.11.
+- With 32 applicants under 25 in the validation partition, the parity
+  difference has a standard error of about 0.09: a gate on this metric is
+  unstable across partitions. For section 7.1 and threats to validity.
+- The calibrated `min_precision` (0.68) is below the share of good risks
+  (0.70): a classifier that grants every application would pass it. It
+  follows from the pre-registered rule and a pilot precision of 0.735, and is
+  reported rather than corrected.
+- Protocol detail made explicit in the code: round(50·q) rounds halves up
+  (32.5 → 33 in batch 4). The pilot draws its batches with the same seed (42)
+  as the main run; only the partition seed differs, as the protocol states.
+
+**Checks (2026-10-12, Linux x86_64, Python 3.13, scikit-learn 1.9.1, Go 1.24.7)**
+
+| Check | Result |
+| --- | --- |
+| Python suite, v2 and `EVIDENCE_SCHEMA_VERSION=1` | 208/208 each |
+| Credit case tests (`prototype/credit_case/tests`) | 13/13, including a full run in a temporary folder that reproduces the committed one, and a swapped model caught by the artefact check and by recomputation |
 | Bridge (both versions), Go chaincode, interop | 4/4, 17/17, 6/6 + 4/4 |
 | `verify_delivery.py`, published OSCAL | 1,831/1,831, 18/18 |

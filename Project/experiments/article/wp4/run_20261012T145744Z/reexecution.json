@@ -1,0 +1,382 @@
+{
+ "total": 16,
+ "counts": {
+  "match": 16
+ },
+ "results": [
+  {
+   "evidence_id": "ev-8f73959f-8b41-4698-948a-e56994f5a8f9",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-449ae160-fd66-47d9-841f-8f624e3d4a0c",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-dc68723e-aadc-4293-a0b0-24c073cebff7",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-1a26493a-65e8-4e83-8634-7c65283ec0bf",
+   "status": "match",
+   "recorded": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.15"
+    ]
+   },
+   "recomputed": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.15"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-077cff9a-cc48-4864-870a-07ed10cdf63e",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-af8e757f-dce9-4cb3-bc2d-5f6cbe38844e",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.10(3)",
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-c40dad85-60b3-4448-9b15-75b4134128ab",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-e445128c-ea2e-43e1-afc4-3a1f543119ec",
+   "status": "match",
+   "recorded": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.15"
+    ]
+   },
+   "recomputed": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.15"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-9506d150-5b43-415c-aaa4-98bac447482e",
+   "status": "match",
+   "recorded": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.15"
+    ]
+   },
+   "recomputed": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.15"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-f19ac449-fbda-49a3-a13c-403504aa42f5",
+   "status": "match",
+   "recorded": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.14",
+     "Art.15"
+    ]
+   },
+   "recomputed": {
+    "decision": "rejected",
+    "rule_id": "threshold.fairness",
+    "supports_requirements": [
+     "Art.10(2)(f)",
+     "Art.11",
+     "Art.12",
+     "Art.14",
+     "Art.15"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-e2a084b5-b1b2-4d6b-9695-a0d91c5c5155",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-879cfde3-d2ed-4e21-949c-0a7f891a6075",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-2a39c3ad-5d01-40f2-88a0-c0bd4f17ed23",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-37aa7adf-5152-406a-a5b0-e211324d476f",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-a6a09243-2761-4828-835c-119e31481f40",
+   "status": "match",
+   "recorded": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "recomputed": {
+    "decision": "approved",
+    "rule_id": "policy.all_checks_passed",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "differences": []
+  },
+  {
+   "evidence_id": "ev-24686c2d-1a7b-4f9c-9592-6647096c4dcd",
+   "status": "match",
+   "recorded": {
+    "decision": "escalated",
+    "rule_id": "monitoring.drift_alert",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "recomputed": {
+    "decision": "escalated",
+    "rule_id": "monitoring.drift_alert",
+    "supports_requirements": [
+     "Art.11",
+     "Art.12",
+     "Art.72"
+    ]
+   },
+   "differences": []
+  }
+ ]
+}

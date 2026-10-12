@@ -1,0 +1,1876 @@
+{
+  "assessment-results": {
+    "uuid": "1d0b5963-ee99-5d68-b630-63346e02011a",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results \u2014 Compliance Oracle prototype",
+      "last-modified": "2026-10-12T14:57:45.159730+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "31614cb2-5e22-5c3f-add5-cc8aa1b13807",
+          "type": "organization",
+          "name": "Compliance Oracle issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Oracle execution",
+        "description": "16 evidence records produced by the Compliance Oracle prototype across 1 distinct scenario identifier.",
+        "start": "2026-10-12T14:57:44.920297+00:00",
+        "end": "2026-10-12T14:57:44.940487+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "5ad73135-9df8-558a-be41-11f99a0d9c3a",
+            "title": "Pipeline event ev-8f73959f-8b41-4698-948a-e56994f5a8f9",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "36b1efce-8691-5745-ad23-647363f67e72",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-8f73959f-8b41-4698-948a-e56994f5a8f9",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=37394a3ea92e7deeb5ef0f24bc6dd9ecf81b444610fe7fe86590bdea1e39f8b7; chain_hash=5c031b1246a52b0203a2238354ada134be7b95b4fdfe4f916697109809085f67; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.920297+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "7abfad96-4c02-59b6-b46a-df4e4f2512b4",
+            "title": "Pipeline event ev-449ae160-fd66-47d9-841f-8f624e3d4a0c",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "bf45e3f4-fd72-5e14-b344-ca032ac2c81e",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-449ae160-fd66-47d9-841f-8f624e3d4a0c",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=6a2f80be232d71610b5c8392d683d3d9b6e8cc5e91d91f4857692fe8b567c374; chain_hash=0f77079d02b1b9c49ecb88484c94281b8d6d252bab374dc0a0aa09f89a30baf1; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.921656+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "7d6208b3-b8d6-5f4a-aaca-175acc46292d",
+            "title": "Pipeline event ev-dc68723e-aadc-4293-a0b0-24c073cebff7",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "a742d870-cc29-55a8-a0b8-cc6f6bb203bc",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-dc68723e-aadc-4293-a0b0-24c073cebff7",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=c64daf18f37977841bd698122f9a111980a8f19525f1f495b5e059b0ad36e7b2; chain_hash=89327ce809274c5f6e8949c28015f1fc634fbfa564a31be6f84e3d02bfecf919; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.923055+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "ceb5e559-03a5-5c61-86ae-6c692b23bb92",
+            "title": "Pipeline event ev-1a26493a-65e8-4e83-8634-7c65283ec0bf",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "dad3b4d2-511c-5ae2-8ff8-c15ac0aaf6f6",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-1a26493a-65e8-4e83-8634-7c65283ec0bf",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=fa41945344dfefa12fc1bc61a241741574a8aeae189ecf1566b28a94d1753fd4; chain_hash=ea2ac020a9e8eb17a7faf3daea0a49c5d4e99a3453c4ee76bebf1eeb36a1f57c; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.924449+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "a9b8cce7-7e5f-5537-98d0-7e70b38741a0",
+            "title": "Pipeline event ev-077cff9a-cc48-4864-870a-07ed10cdf63e",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "098891d9-29b3-513c-a5ac-274a02ba47db",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-077cff9a-cc48-4864-870a-07ed10cdf63e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=9e2861e0cb24704cb0d11a22ea63ec09ef129962dd6c655c639134cbe778e6e2; chain_hash=e7304fc629487010538acf783f0102f5bea4bd1c1acd4acbf64a9a0683df0374; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.926018+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "a7a9b2ea-bf38-5cf9-a328-3e9e2e3077ee",
+            "title": "Pipeline event ev-af8e757f-dce9-4cb3-bc2d-5f6cbe38844e",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "165b197a-9309-5117-9f77-66692e933e80",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-af8e757f-dce9-4cb3-bc2d-5f6cbe38844e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=69a5363984eea2747b166aa7093321b77557423f6bc622ca2c79382cf5cb8172; chain_hash=f5aa1f77187a3c8b1921eaa8e7e4158617b21629a17f7b850ec3e2e30f957997; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.927367+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "c11b83e6-4240-54f5-8513-bf2a6ea725a5",
+            "title": "Pipeline event ev-c40dad85-60b3-4448-9b15-75b4134128ab",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "71cce474-39ab-5a85-9437-13bbe7c5e703",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-c40dad85-60b3-4448-9b15-75b4134128ab",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=a2e27d829d6182e12b1a6e4eb6849914d49efddd831df9fc6ec0d8d88c95a954; chain_hash=99584369d0b4dc2d673feb100871278d64a924dd5dbeb2fa28ca0eb82f52cc95; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.928606+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "4260ac2d-b2c1-5a84-91a4-5fb65f61f2ff",
+            "title": "Pipeline event ev-e445128c-ea2e-43e1-afc4-3a1f543119ec",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "ac9b13f7-1c91-58d0-8cc0-f2223b4e36eb",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-e445128c-ea2e-43e1-afc4-3a1f543119ec",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=601c6d4793baf77749f2cd319e6b6cdb6aa0d52fe04d20367d6f51b6334d26d7; chain_hash=95cdc1678f01e0fda87e706426d8da4c63ffb6dd00190566ccccdff8eb08376a; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.929867+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "c3ac2f0d-9434-52d9-af09-9494d0574992",
+            "title": "Pipeline event ev-9506d150-5b43-415c-aaa4-98bac447482e",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "e5775f08-590f-5fb7-a0e4-6d510fc9fe31",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-9506d150-5b43-415c-aaa4-98bac447482e",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=94076635c44d2a53384c850682f98977e30e2b87cc875a1dc3214b6c410a3974; chain_hash=947a3d4cf7ef9c807e1c164600ca0100d73d8d8141db28072bd75974567aa687; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.931120+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "1f4c5de5-b01d-505d-ac52-f71a0f5698af",
+            "title": "Pipeline event ev-f19ac449-fbda-49a3-a13c-403504aa42f5",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "f38ce8a7-5e44-557c-8ab7-af4e577699ca",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-f19ac449-fbda-49a3-a13c-403504aa42f5",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=40d144d151a272a5f5ad8ad28ed2ed641ebbfc5a15496809e24e639a3688ee02; chain_hash=4e5edcbbcec10bb2685ad08c5c47e94f72b333f83c33442a37050d17f926d328; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.932443+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "d305ab43-a318-50f7-9b65-c196c184ae9b",
+            "title": "Pipeline event ev-e2a084b5-b1b2-4d6b-9695-a0d91c5c5155",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "b32baead-f977-5a9e-a47b-a74c30e7216d",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-e2a084b5-b1b2-4d6b-9695-a0d91c5c5155",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=6b2e172911912e9c180e5b63664488d2da35bc42988f6c90c76f543e78797f91; chain_hash=7acf47f50b3f8b80a66891dd8f37d7696314d862e891d103039e965e2a73567c; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.933759+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "077ca9cd-cab7-5adc-936d-5c75a47e13b6",
+            "title": "Pipeline event ev-879cfde3-d2ed-4e21-949c-0a7f891a6075",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "b2698638-1eb1-50b9-81d9-1509b5a71564",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-879cfde3-d2ed-4e21-949c-0a7f891a6075",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=8bfb8e91730cc81db4b49a7abecaf58be0ed83a9e159322dcee19d4d51805c01; chain_hash=aa66b16285b26c3eca894d4b47e978252fea4e8841d52349487ea9ec59babee8; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.935280+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "c5b87f2f-8c8e-5ee2-a3b8-9b56282c3282",
+            "title": "Pipeline event ev-2a39c3ad-5d01-40f2-88a0-c0bd4f17ed23",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "72e32a42-fba4-5e01-9a3a-d61bcb19ca3d",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-2a39c3ad-5d01-40f2-88a0-c0bd4f17ed23",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=008093bdcd26a106ac972aeceb21e9130c03cf7433c68b8a870ec98657de129f; chain_hash=eaf7f374e69983b359594c2de532a3d827cbc8f52299f265c8b8bcdedecb4da1; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.936682+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "999df2c3-a668-542e-b5fe-dd412de11c61",
+            "title": "Pipeline event ev-37aa7adf-5152-406a-a5b0-e211324d476f",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "895eee63-2c2d-588c-a1c7-c37dbc8d38d2",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-37aa7adf-5152-406a-a5b0-e211324d476f",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=a386a849e47357705d07b4a733eb2bae416061ccd8a89e30d966d7c2f7cd18fc; chain_hash=28b8e71b06d9d3ed85f510c1bc300f414b079cf894be5ac55455a3cd838bc0ae; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.937857+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "7bafad76-78aa-5892-9e23-f2e731210084",
+            "title": "Pipeline event ev-a6a09243-2761-4828-835c-119e31481f40",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "8f701969-b460-5a4b-8245-2092dfcfe5fc",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-a6a09243-2761-4828-835c-119e31481f40",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=4fcfb97676ecce10c62790adac095fe639457d259a5def053fe370501f15be70; chain_hash=0ea292ec861ac35abe835242f61b78b7967c5b67aa7215899a692dcdfad10023; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.939269+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          },
+          {
+            "uuid": "40953191-19a7-5f3a-911c-d6f3304d1d29",
+            "title": "Pipeline event ev-24686c2d-1a7b-4f9c-9592-6647096c4dcd",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "6eebdcb4-2a9d-56db-be52-9c0e1179dd5b",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-24686c2d-1a7b-4f9c-9592-6647096c4dcd",
+                "description": "Hash-anchored evidence in the permissioned ledger. record_hash=c4b53bc0d7e3717d417a115ae752da9ef2447646daa16531b280a59eb91becfb; chain_hash=2d96fc700ad7a74fcc361484989e4b122e1727c6a915bcc8db20f5a1639dd57d; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-10-12T14:57:44.940487+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "[REDACTED \u2014 AI Act Art. 78 confidentiality]"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "true"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "1389232d-83b6-5707-bc4b-fa7b32ad53a7",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "5ad73135-9df8-558a-be41-11f99a0d9c3a"
+              }
+            ]
+          },
+          {
+            "uuid": "63e3f5af-e23b-5bfd-86d6-966e51db82e4",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "7abfad96-4c02-59b6-b46a-df4e4f2512b4"
+              }
+            ]
+          },
+          {
+            "uuid": "303b86fd-e836-5acf-909c-25a37b7622aa",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "7d6208b3-b8d6-5f4a-aaca-175acc46292d"
+              }
+            ]
+          },
+          {
+            "uuid": "b5465161-47cb-52ff-95ae-39a9d34ff02b",
+            "title": "Technical objective obj-fairness-threshold: rejected",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "ceb5e559-03a5-5c61-86ae-6c692b23bb92"
+              }
+            ]
+          },
+          {
+            "uuid": "92bb89a1-6208-5fa3-b475-9dced3b39137",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "a9b8cce7-7e5f-5537-98d0-7e70b38741a0"
+              }
+            ]
+          },
+          {
+            "uuid": "450b4365-3d3e-56a7-99ac-903cb279ccf7",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "a7a9b2ea-bf38-5cf9-a328-3e9e2e3077ee"
+              }
+            ]
+          },
+          {
+            "uuid": "41527b68-3a61-5262-9c3a-ec846291ddc5",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c11b83e6-4240-54f5-8513-bf2a6ea725a5"
+              }
+            ]
+          },
+          {
+            "uuid": "929fe6f8-96c0-5987-a91b-73f414c3dca3",
+            "title": "Technical objective obj-fairness-threshold: rejected",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "4260ac2d-b2c1-5a84-91a4-5fb65f61f2ff"
+              }
+            ]
+          },
+          {
+            "uuid": "be844433-7a8e-5967-a284-0af99998908d",
+            "title": "Technical objective obj-fairness-threshold: rejected",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c3ac2f0d-9434-52d9-af09-9494d0574992"
+              }
+            ]
+          },
+          {
+            "uuid": "d8baa727-b827-599c-9c05-a7bc0c482e1f",
+            "title": "Technical objective obj-fairness-threshold: rejected",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "1f4c5de5-b01d-505d-ac52-f71a0f5698af"
+              }
+            ]
+          },
+          {
+            "uuid": "3c6382f1-4b3c-52de-8a63-908805185623",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "d305ab43-a318-50f7-9b65-c196c184ae9b"
+              }
+            ]
+          },
+          {
+            "uuid": "eb078de6-b1b7-5e7b-ae8e-6b798ab23a1b",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "077ca9cd-cab7-5adc-936d-5c75a47e13b6"
+              }
+            ]
+          },
+          {
+            "uuid": "7e23b38e-23b7-5b11-81e8-908d09992dbf",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c5b87f2f-8c8e-5ee2-a3b8-9b56282c3282"
+              }
+            ]
+          },
+          {
+            "uuid": "c842932c-27bd-58d1-8b89-06cafafdd21d",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "999df2c3-a668-542e-b5fe-dd412de11c61"
+              }
+            ]
+          },
+          {
+            "uuid": "307e66ee-d098-5958-8cb4-abb72c9af3b7",
+            "title": "Technical objective obj-thresholds-met: approved",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "7bafad76-78aa-5892-9e23-f2e731210084"
+              }
+            ]
+          },
+          {
+            "uuid": "84a045d0-059a-5b8b-a57c-3c3dd9df54e8",
+            "title": "Technical objective obj-drift-alert-raised: escalated",
+            "description": "[REDACTED \u2014 AI Act Art. 78 confidentiality]",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-hash",
+                "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "40953191-19a7-5f3a-911c-d6f3304d1d29"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Ledger integrity verification",
+              "description": "verify_chain_structure() recomputed each record_hash from the canonical body and re-derived the chain links, and no modification was detected; each record's Ed25519 signature was verified against the issuer's public key; suffix truncation and events that were never written lie outside both checks, because detecting them needs an anchor kept outside the file.",
+              "start": "2026-10-12T14:57:45.159730+00:00",
+              "end": "2026-10-12T14:57:45.159730+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "31614cb2-5e22-5c3f-add5-cc8aa1b13807"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "signatures_verified",
+                  "value": "true"
+                },
+                {
+                  "name": "chain_verification_source",
+                  "value": "computed-by-exporter"
+                },
+                {
+                  "name": "signature_verification_source",
+                  "value": "computed-by-exporter"
+                },
+                {
+                  "name": "records_total",
+                  "value": "16"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

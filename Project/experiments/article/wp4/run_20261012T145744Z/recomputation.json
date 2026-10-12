@@ -1,0 +1,142 @@
+[
+ {
+  "index": 3,
+  "evidence_id": "ev-1a26493a-65e8-4e83-8634-7c65283ec0bf",
+  "event_type": "model_validation",
+  "recorded": {
+   "precision": 0.793333,
+   "demographic_parity_diff": 0.111607
+  },
+  "recomputed": {
+   "precision": 0.793333,
+   "demographic_parity_diff": 0.111607
+  },
+  "match": true
+ },
+ {
+  "index": 7,
+  "evidence_id": "ev-e445128c-ea2e-43e1-afc4-3a1f543119ec",
+  "event_type": "model_validation",
+  "recorded": {
+   "precision": 0.8,
+   "demographic_parity_diff": 0.111607
+  },
+  "recomputed": {
+   "precision": 0.8,
+   "demographic_parity_diff": 0.111607
+  },
+  "match": true
+ },
+ {
+  "index": 8,
+  "evidence_id": "ev-9506d150-5b43-415c-aaa4-98bac447482e",
+  "event_type": "deployment_request",
+  "recorded": {
+   "precision": 0.8,
+   "demographic_parity_diff": 0.111607
+  },
+  "recomputed": {
+   "precision": 0.8,
+   "demographic_parity_diff": 0.111607
+  },
+  "match": true
+ },
+ {
+  "index": 9,
+  "evidence_id": "ev-f19ac449-fbda-49a3-a13c-403504aa42f5",
+  "event_type": "deployment_request",
+  "recorded": {
+   "precision": 0.8,
+   "demographic_parity_diff": 0.111607
+  },
+  "recomputed": {
+   "precision": 0.8,
+   "demographic_parity_diff": 0.111607
+  },
+  "match": true
+ },
+ {
+  "index": 10,
+  "evidence_id": "ev-e2a084b5-b1b2-4d6b-9695-a0d91c5c5155",
+  "event_type": "monitoring_batch",
+  "recorded": {
+   "psi": 0.042294,
+   "drift_score": 0.042294
+  },
+  "recomputed": {
+   "psi": 0.042294,
+   "drift_score": 0.042294
+  },
+  "match": true
+ },
+ {
+  "index": 11,
+  "evidence_id": "ev-879cfde3-d2ed-4e21-949c-0a7f891a6075",
+  "event_type": "monitoring_batch",
+  "recorded": {
+   "psi": 0.1026,
+   "drift_score": 0.1026
+  },
+  "recomputed": {
+   "psi": 0.1026,
+   "drift_score": 0.1026
+  },
+  "match": true
+ },
+ {
+  "index": 12,
+  "evidence_id": "ev-2a39c3ad-5d01-40f2-88a0-c0bd4f17ed23",
+  "event_type": "monitoring_batch",
+  "recorded": {
+   "psi": 0.109154,
+   "drift_score": 0.109154
+  },
+  "recomputed": {
+   "psi": 0.109154,
+   "drift_score": 0.109154
+  },
+  "match": true
+ },
+ {
+  "index": 13,
+  "evidence_id": "ev-37aa7adf-5152-406a-a5b0-e211324d476f",
+  "event_type": "monitoring_batch",
+  "recorded": {
+   "psi": 0.122992,
+   "drift_score": 0.122992
+  },
+  "recomputed": {
+   "psi": 0.122992,
+   "drift_score": 0.122992
+  },
+  "match": true
+ },
+ {
+  "index": 14,
+  "evidence_id": "ev-a6a09243-2761-4828-835c-119e31481f40",
+  "event_type": "monitoring_batch",
+  "recorded": {
+   "psi": 0.230099,
+   "drift_score": 0.230099
+  },
+  "recomputed": {
+   "psi": 0.230099,
+   "drift_score": 0.230099
+  },
+  "match": true
+ },
+ {
+  "index": 15,
+  "evidence_id": "ev-24686c2d-1a7b-4f9c-9592-6647096c4dcd",
+  "event_type": "monitoring_batch",
+  "recorded": {
+   "psi": 0.929529,
+   "drift_score": 0.929529
+  },
+  "recomputed": {
+   "psi": 0.929529,
+   "drift_score": 0.929529
+  },
+  "match": true
+ }
+]
