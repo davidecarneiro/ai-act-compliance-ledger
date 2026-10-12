@@ -196,3 +196,26 @@ def test_tamper_experiment_matches_the_expected_table(tmp_path):
         for arm, v in row.items() if not v["as_expected"]]
     gate = {arm: v["gate"]["rule_id"] for arm, v in result["results"]["T9b"].items()}
     assert set(gate.values()) == {"oversight.approval_invalid"}
+
+
+# ----------------------------------------------------------------------
+# Answerability (WP5)
+# ----------------------------------------------------------------------
+
+def test_answerability_matrix(tmp_path):
+    import answerability as an
+    result = json.loads(an.run(out_dir=tmp_path).read_text(encoding="utf-8"))
+    m = result["matrix"]
+    assert result["evidence"]["events"] == 18
+    assert result["evidence"]["integrity"]["B"] and result["evidence"]["integrity"]["C"]
+    # Q11 only in C (the plan's expectation).
+    assert [c for c in an.CONFIGURATIONS if m["Q11"][c]["answerable"] == "yes"] == ["C"]
+    # Every answer in C is third-party verifiable; none in A or D.
+    assert all(m[q]["C"]["verifiable"] in ("yes", "n/a") for q in m)
+    assert all(m[q][c]["verifiable"] in ("no", "n/a") for q in m for c in ("A", "D"))
+    # Re-execution reproduces every decision; the approval verifies.
+    assert m["Q6"]["C"]["answer"]["reexecution"] == {"match": 18}
+    approvals = [d for d in m["Q2"]["C"]["answer"]["deployment_requests"] if d.get("approver")]
+    assert approvals and all(d["authorised_and_verifies"] for d in approvals)
+    # The redacted export discloses none of the checked items.
+    assert m["Q14"]["D"]["answer"]["disclosed"] == []

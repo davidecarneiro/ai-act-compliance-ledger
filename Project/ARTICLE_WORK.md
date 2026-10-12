@@ -452,3 +452,68 @@ All 48 cells as expected. Readings for sections 6.4 and 7.1–7.2:
 
 Case tests 17/17 (the tamper experiment runs once in a temporary folder and
 must match the expected table).
+
+## WP5 — Answerability of the audit questions Q1–Q14
+
+Protocol `protocols/wp5_answerability.md`, committed before the queries were
+written. Script `prototype/credit_case/answerability.py`
+(`make answerability`); results
+`experiments/article/wp5/answerability_20261012T161816Z.json`, with the
+evidence it was computed on in `evidence_20261012T161816Z/` next to it. The
+queries were developed against a trial evidence set in a scratch folder; the
+committed run is the only one reported.
+
+Evidence: the 16 events of the credit case and two synthetic incident events
+(declared), through arm A, arm B, and arm B+ anchored after every record (C,
+stand-in for the Fabric ledger); D is the redacted OSCAL export of C.
+
+| | A | B | C | D |
+| --- | --- | --- | --- | --- |
+| Q1 deployment approved: digest, time | partial / no | yes / partial | yes / yes | no |
+| Q2 approved by an authorised overseer, by whom | no | yes / partial | yes / yes | no |
+| Q3 metrics and thresholds behind the decision | partial / no | yes / yes | yes / yes | partial / no |
+| Q4 bias examined before deployment | yes / no | yes / yes | yes / yes | partial / no |
+| Q5 dataset digest that trained model X | no | yes / yes | yes / yes | no |
+| Q6 deciding policy; re-execution | no | yes / yes | yes / yes | partial / no |
+| Q7 events of run R | no | yes / partial | yes / yes | no |
+| Q8 drift alerts after deployment, when | yes / no | yes / partial | yes / yes | partial / no |
+| Q9 drift alert before incident Y | yes / no | yes / partial | yes / yes | yes / no |
+| Q10 any record altered since issuance | no | partial / partial | yes / yes | no |
+| Q11 sequence complete from t1 to the audit | no | no | yes / yes | no |
+| Q12 submitting organisation | no | partial / yes | partial / yes (stand-in) | partial / no |
+| Q13 provisions supported and outcome | no | yes / yes | yes / yes | yes / no |
+| Q14 redacted export discloses identity or logic | — | — | — | checked: nothing disclosed (56 items) |
+
+Cells: answerable / third-party verifiable without trusting the issuer.
+
+Table T10 (condensed): A 3 yes, 2 partial, 8 no, none verifiable; B 10 yes,
+2 partial, 1 no, 6 verifiable and 6 partially; C 12 yes, 1 partial, all 13
+verifiable; D 3 yes, 5 partial, 6 no, none verifiable.
+
+Readings:
+
+- Q11 is answerable only in C, as the plan expected: without something outside
+  the issuer's reach, truncation cannot be excluded.
+- Q2 is answerable only with signed approvals in the record (B, C): the case's
+  approval verifies against the archived policy and names `approver-demo`,
+  while the deployment itself was not approved (fairness).
+- Q6 needs `decision_inputs` and the policy archive: 18/18 decisions
+  re-execute in B and C; A has no policy identity, D only the policy hash.
+- What B lacks against C is completeness (Q1, Q2, Q7, Q8, Q9 partially
+  verifiable; Q11 not answerable) and protection against a re-signing key
+  holder (Q10).
+- D answers which provisions are supported and with which technical outcome
+  (Q13), and the order of drift alert and incident (Q9), but cannot be
+  verified on its own; nothing it must withhold was found in it (Q14).
+- Q12: the stand-in names the issuer (by key), not the organisation; the
+  Fabric ledger records the submitting organisation (`submitter_msp`), so Q12
+  in C is to be answered from the Fabric run (WP7).
+- Times per query are below 2 ms on 18 records and say little; they are kept
+  in the output as the protocol asks.
+
+Open for WP9 (seen while reading the exports): the OSCAL observation text
+still says "Compliance Oracle" and "Hash-anchored evidence in the permissioned
+ledger" for every ledger, including a local JSONL one; to be worded by schema
+version and ledger kind.
+
+Case tests 18/18.
