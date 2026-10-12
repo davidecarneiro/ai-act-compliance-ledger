@@ -1,0 +1,16 @@
+{
+  "authorised_approvers": {
+    "approver-demo": "050943dabbed612a7fd9bcad41d7336fb925902c40e5cb2c1623f10ce63f09df"
+  },
+  "drift_alert_threshold": 0.25,
+  "max_demographic_parity_diff": 0.1,
+  "metric_threshold_stages": [
+    "validation",
+    "deployment"
+  ],
+  "min_precision": 0.68,
+  "require_human_approval_for_high_risk": false,
+  "signed_approval_required_for": [
+    "deployment_request"
+  ]
+}
