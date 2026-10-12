@@ -1,6 +1,9 @@
 # Protocol — tamper detection (section 4.4 of the article plan)
 
-Recorded on 2026-10-12, before the experiment was run. It fixes how each
+Recorded on 2026-10-12, before the experiment was run, and amended once
+before the run (T9b: the forged request carries the fabricated metrics of
+T9a; on the case's real metrics it would stop at the fairness threshold
+before the approval rule). It fixes how each
 attack of the plan's table is carried out, so that the observed outcome can
 be compared with the expected one. Nothing here changes after the run.
 
@@ -44,7 +47,7 @@ whose decision is `rejected`; the alteration sets it to `approved`.
 | T7b | Rewrite with the issuer's key after the last anchor | Record 16 altered (`decision` changed) and re-signed. |
 | T8 | Omit an event at the source | Event 8 is never sent; the configuration records the other 15. |
 | T9a | Inject a forged event upstream | An extra validation event for v2 with fabricated metrics (parity 0.05) is sent after event 8. |
-| T9b | Inject a forged approval upstream | An extra deployment request for v2 with an approval in the name of `approver-demo` but signed with another key is sent after event 10. |
+| T9b | Inject a forged approval upstream | An extra deployment request for v2, with the same fabricated metrics as T9a (so that the thresholds pass and the approval rule is reached) and an approval in the name of `approver-demo` signed with another key, is sent after event 10. |
 
 T9b is also reported by its decision: every configuration decides with the
 same engine function, which verifies the approval against the policy.
