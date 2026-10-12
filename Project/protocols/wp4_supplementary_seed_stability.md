@@ -28,6 +28,18 @@ from 200 validation applicants, 30 or so of them under 25.
   written: the decision function is pure, so the outcome is the one the
   engine would record.
 
+### Amendment (2026-10-12, before any result)
+
+A trial run on seeds 40–44 stopped on an error before producing any result:
+in some partitions the test partition holds fewer applicants of the drift
+subgroup than a batch needs (48 for the share 0.95), and the case protocol
+draws without replacement within a batch. Rule added: when the subgroup has
+fewer applicants than the batch needs, the batch takes all of them and the
+rest from the other applicants; the realised subgroup count is recorded, and
+the number of partitions where this happens is reported. The rule cannot bind
+in the main run (60 subgroup applicants in its test partition), whose code
+path is unchanged.
+
 ## Measures, per seed
 
 - Validation precision and parity difference of v1 and v2; number of

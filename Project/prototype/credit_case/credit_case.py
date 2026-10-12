@@ -222,8 +222,13 @@ def _half_up(x: float) -> int:
     return int(math.floor(x + 0.5))
 
 
-def draw_batches(frame: pd.DataFrame, test: Sequence[int], seed: int = BATCH_SEED) -> List[Dict]:
-    """Six batches with an increasing share of the drift subgroup."""
+def draw_batches(frame: pd.DataFrame, test: Sequence[int], seed: int = BATCH_SEED,
+                 cap: bool = False) -> List[Dict]:
+    """Six batches with an increasing share of the drift subgroup.
+
+    ``cap`` (seed-stability addendum only): when the subgroup has fewer
+    applicants than a batch needs, take all of them. The case protocol does
+    not cap, and its partition never needs it."""
     test = np.array(sorted(test))
     in_group = (frame.iloc[test][DRIFT_ATTRIBUTE] == DRIFT_VALUE).to_numpy()
     sub, rest = test[in_group], test[~in_group]
@@ -232,6 +237,8 @@ def draw_batches(frame: pd.DataFrame, test: Sequence[int], seed: int = BATCH_SEE
     batches = []
     for k, share in enumerate((natural, natural) + DRIFT_FIXED_SHARES, start=1):
         n_sub = _half_up(BATCH_SIZE * share)
+        if cap:
+            n_sub = min(n_sub, len(sub))
         chosen = np.concatenate([
             rng.choice(sub, n_sub, replace=False),
             rng.choice(rest, BATCH_SIZE - n_sub, replace=False),
