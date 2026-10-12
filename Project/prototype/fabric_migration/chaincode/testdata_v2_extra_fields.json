@@ -1,12 +1,12 @@
 [
   {
-    "evidence_id": "ev-c385cdea-3101-423b-a11c-733754ceb240",
+    "evidence_id": "ev-59d14c32-e6a1-4962-8d01-b5c31aa4a42a",
     "scenario_id": "approved_model",
     "event_type": "approved_model",
     "artifact_id": "credit-scoring-v2.0",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.015773+00:00",
+    "timestamp": "2026-10-12T14:36:26.330822+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -15,8 +15,8 @@
       "demographic_parity_diff": 0.03,
       "drift_score": 0.04
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
@@ -29,7 +29,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -46,18 +47,18 @@
         "n\u00e3o declarado"
       ]
     },
-    "record_hash": "b2bad892e75e94ecbcc8f7c35e114d46f8b44f55eb257deb71981fce6c1fdd5c",
-    "issuer_signature": "vkeJk3dzKTS2rmwgPXeh8Z2bvk5Ih2s0brLgHocj6mucqDdHKulCmKKRHTjfZDzmvpck7q9KaT8v2ILwINtqCw==",
-    "chain_hash": "c7e447e6f4d057c0d95c3f9e7b3b28ed7807520619f2bceab1b8c4319bfcadd3"
+    "record_hash": "616f5cf503114514020c01f3e2729e5d293a09e763b1f0ce6edd857d2bff41ba",
+    "issuer_signature": "Wu0yWrOOyvtGOvaBQDsVhog4Dz9qkeYeM8SzIXKwBIkom3IMONRWHXER8Nzc0w7LjDA6n355sy6rXa1BsmDhDQ==",
+    "chain_hash": "3ae4b4827b65fd7cd13adfedcbd86a6c8dfda7155490d03ce08b5e0bfafd60ec"
   },
   {
-    "evidence_id": "ev-7d217550-2097-47c2-93d2-a009a6f96486",
+    "evidence_id": "ev-7d2ddb84-b4a7-423a-959b-e682fdd3e27a",
     "scenario_id": "low_precision_rejected",
     "event_type": "low_precision_rejected",
     "artifact_id": "credit-scoring-v2.1",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.017436+00:00",
+    "timestamp": "2026-10-12T14:36:26.332050+00:00",
     "decision": "rejected",
     "reason": "precision 0.74 below threshold 0.8",
     "rule_id": "threshold.precision",
@@ -66,13 +67,13 @@
       "demographic_parity_diff": 0.02,
       "drift_score": 0.05
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "c7e447e6f4d057c0d95c3f9e7b3b28ed7807520619f2bceab1b8c4319bfcadd3",
+    "parent_hash": "3ae4b4827b65fd7cd13adfedcbd86a6c8dfda7155490d03ce08b5e0bfafd60ec",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "e3498c5ffa01252137a7fb721975e3f50b4576b230cc827fd1608c40eb5d37ce",
@@ -80,7 +81,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -97,8 +99,8 @@
         "n\u00e3o declarado"
       ]
     },
-    "record_hash": "68313996dab5c5246ef3c7136754703009f18c1ab626afe6bf46ed9604c0922d",
-    "issuer_signature": "vkZ5oKb9m3E0n7SxaLEi9TjHqEG4rL3TlCwzz9IHooNZZZaz/eD/HplnBr1VHYMHCLmXUMdoW869v6uoGIRYAQ==",
-    "chain_hash": "a8c463714594f56dd97ee5562bc26ed6ad7c884e0d3938dd7dfd1f3a94ff4393"
+    "record_hash": "22d551c7928698418fd0f13bb427624f8768913d840b5bf13cab24be96a795b3",
+    "issuer_signature": "/bi8PtZrYDv6L0lzZCR4q89S9xZQUlSUAygclvtXxRUhUiPFSylEdBcBvyC1YfeU38gF5TsNoK0jXEUtboRYBQ==",
+    "chain_hash": "6e62efe3c5d565992b0a34490895afc15576e8810d872c49b8bb5c8a403d1315"
   }
 ]

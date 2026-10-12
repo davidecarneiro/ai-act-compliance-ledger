@@ -34,9 +34,10 @@ HERE = Path(__file__).resolve().parent
 SIM = HERE.parents[1] / "compliance_ledger_sim"
 sys.path.insert(0, str(SIM))
 
+from approvals import sign_approval  # noqa: E402
 from artifact_store import ArtifactStore  # noqa: E402
 from canonical import SCHEMA_V2, canonical_v2  # noqa: E402
-from keys import load_or_create_key  # noqa: E402
+from keys import load_or_create_key, public_key_hex  # noqa: E402
 from scenarios import build_scenarios  # noqa: E402
 from simulator import GENESIS_HASH, ISSUER_ID_V1, ComplianceOracle, sha256_hex  # noqa: E402
 
@@ -73,7 +74,7 @@ def tricky_events() -> list[dict]:
     ]
 
 
-def evidence_v2_events(store: ArtifactStore) -> list[dict]:
+def evidence_v2_events(store: ArtifactStore, approver=None) -> list[dict]:
     """Events that exercise the version 2 evidence fields."""
     dataset = store.put_bytes(b"age,amount,label\n23,1000,1\n41,2500,0\n")
     model = store.put_bytes(b"model weights, run-0001")
@@ -98,18 +99,43 @@ def evidence_v2_events(store: ArtifactStore) -> list[dict]:
          "pipeline_stage": "validation",
          "artifact_sha256": "1" * 64, "off_chain_ref": "store/sha256/" + "2" * 64,
          "metrics": {"precision": 0.88, "demographic_parity_diff": 0.04}},
-    ]
+    ] + ([] if approver is None else [
+        # Signed approvals (WP6): a valid one, and one signed by a key the
+        # policy does not list. Both nest an object with a base64 signature
+        # inside decision_inputs.
+        {**base, "scenario_id": "v2-signed-approval", "event_type": "deployment_request",
+         "artifact_id": "credit-scoring-v3", "artifact_type": "model",
+         "pipeline_stage": "deployment", "human_approval": None,
+         "artifact_sha256": model.digest, "off_chain_ref": model.ref,
+         "metrics": {"precision": 0.88, "demographic_parity_diff": 0.04},
+         "approval": sign_approval(approver, "approver-demo", model.digest, "run-0001",
+                                   approved_at="2026-10-12T14:00:00+00:00")},
+        {**base, "scenario_id": "v2-unauthorised-approval",
+         "event_type": "deployment_request",
+         "artifact_id": "credit-scoring-v3", "artifact_type": "model",
+         "pipeline_stage": "deployment", "human_approval": None,
+         "artifact_sha256": model.digest, "off_chain_ref": model.ref,
+         "metrics": {"precision": 0.88, "demographic_parity_diff": 0.04},
+         "approval": sign_approval(DEMO_KEY, "approver-unknown", model.digest, "run-0001",
+                                   approved_at="2026-10-12T14:00:00+00:00")},
+    ])
 
 
 def issue_ledger() -> list[dict]:
     with tempfile.TemporaryDirectory() as d:
+        approver = load_or_create_key("approver-demo", keys_dir=Path(d) / "keys")
+        policy = json.loads((SIM / "configs" / "policies.json").read_text(encoding="utf-8"))
+        policy["authorised_approvers"] = {"approver-demo": public_key_hex(approver)}
+        policy["signed_approval_required_for"] = ["deployment_request"]
+        (Path(d) / "policies.json").write_text(json.dumps(policy), encoding="utf-8")
         oracle = ComplianceOracle(
+            policy_file=Path(d) / "policies.json",
             ledger_file=Path(d) / "ledger.json", schema_version=SCHEMA_V2,
             issuer_key=DEMO_KEY,
         )
         oracle.reset_ledger()
         events = (build_scenarios() + tricky_events()
-                  + evidence_v2_events(ArtifactStore(Path(d) / "store")))
+                  + evidence_v2_events(ArtifactStore(Path(d) / "store"), approver))
         for event in events:
             oracle.process_mlops_event(event)
         ledger = json.loads((Path(d) / "ledger.json").read_text(encoding="utf-8"))

@@ -194,7 +194,7 @@ def _build_observation(record: dict, redacted: bool = False) -> dict:
 # breached, and a recorded rejection means the logging duty of Art. 12 was
 # served, not failed. Publishing satisfied/not-satisfied against an article
 # collapsed those two different propositions into one.
-OBJECTIVES_VERSION = "1.0"
+OBJECTIVES_VERSION = "1.1"  # 1.1 adds the signed-approval objectives (WP6)
 
 TECHNICAL_OBJECTIVES = {
     "policy.all_checks_passed": (
@@ -216,6 +216,18 @@ TECHNICAL_OBJECTIVES = {
     "oversight.approval_missing": (
         "obj-human-approval-recorded",
         "A human approval was recorded for a high-risk event.",
+        False,
+    ),
+    # Signed human approval (schema version 2, WP6).
+    "oversight.approval_invalid": (
+        "obj-human-approval-verified",
+        "The submitted human approval was signed by an approver the policy "
+        "authorises and named this artefact and run.",
+        False,
+    ),
+    "oversight.approval_denied": (
+        "obj-human-approval-granted",
+        "An authorised approver approved deployment of this artefact.",
         False,
     ),
     "monitoring.drift_alert": (

@@ -206,7 +206,7 @@ func TestJCSVectorsMatchPython(t *testing.T) {
 // version 2 field.
 func TestBoundaryLedgerV2VerifiesInGo(t *testing.T) {
 	raw := readRawRecords(t, "testdata_fronteiras_v2.json")
-	if len(raw) != 24 {
+	if len(raw) != 24 { // boundary matrix: 16 + 8
 		t.Fatalf("expected 24 boundary records, found %d", len(raw))
 	}
 	cc, ctx, stub := newCtxWithIssuer(t)

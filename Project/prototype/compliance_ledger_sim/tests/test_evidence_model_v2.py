@@ -107,7 +107,8 @@ def test_version_2_record_has_the_new_fields_and_the_engine_key():
     assert record["run_id"] == "run-1"
     assert len(record["payload_hash"]) == 64
     assert record["artifact_hash"] is None and record["off_chain_ref"] is None
-    assert record["decision_inputs"] == {"risk_level": "high", "human_approval": True}
+    assert record["decision_inputs"] == {
+        "risk_level": "high", "human_approval": True, "approval": None}
 
 
 def test_version_1_record_is_unchanged():

@@ -101,6 +101,7 @@ def event_from_record(record: dict) -> dict:
     inputs = record.get("decision_inputs") or {}
     optional["risk_level"] = inputs.get("risk_level")
     optional["human_approval"] = inputs.get("human_approval")
+    optional["approval"] = inputs.get("approval")
     event.update({k: v for k, v in optional.items() if v is not None})
     return event
 

@@ -169,3 +169,47 @@ version 2 field set rather than opening a version 3.
 - The Art. 10 mapping is a legal reading to be confirmed by the co-authors.
 - The Ledger Explorer page reads `requirements_covered`; version 2 ledgers
   need it to read `supports_requirements` too (WP9).
+
+## WP6 — Signed human approval
+
+Version 1 recorded human oversight as a boolean asserted by whoever sent the
+event. Version 2 also accepts an approval statement signed by the approver.
+
+**What changed**
+
+- `compliance_ledger_sim/approvals.py`: the statement (`type`
+  `deployment-approval`, `artifact_sha256`, `run_id`, `decision` approve or
+  deny, `approved_at`) is signed with the approver's Ed25519 key over its
+  RFC 8785 form; `sign_approval`, `structure_error`, `check_approval`.
+- Policy (optional fields, absent in the dissertation's policies):
+  `authorised_approvers` (approver id → raw public key, 64 hex digits) and
+  `signed_approval_required_for` (event types). Both are part of the policy
+  content and therefore of `policy_hash`; malformed values fail closed.
+- Evaluation (version 2), in the slot of the approval rule: a present
+  approval is always checked. Unauthorised approver, signature that does not
+  verify, statement for another artefact or run → `oversight.approval_invalid`;
+  a valid denial → `oversight.approval_denied`; required but absent →
+  `oversight.approval_missing`, whatever the boolean says. A valid approval
+  also satisfies the high-risk boolean rule. A malformed approval makes the
+  event malformed.
+- The record keeps the approval whole in `decision_inputs.approval`, so a
+  third party holding the archived policy can verify who approved what;
+  re-execution re-verifies it. Art. 14 is supported when a boolean or an
+  approval is present.
+- OSCAL: objectives `obj-human-approval-verified` and
+  `obj-human-approval-granted` (objectives version 1.1).
+- Go fixtures include a valid and an unauthorised signed approval; the
+  chaincode needs no change (the approval is a member of the body).
+
+**What a valid approval establishes:** that the holder of an authorised key
+signed an approval of this artefact in this run. Not who held the key, nor
+whether oversight was effective (Art. 14(4)).
+
+**Checks (2026-10-12)**
+
+| Check | Result |
+| --- | --- |
+| Python suite, v2 and `EVIDENCE_SCHEMA_VERSION=1` | 186/186 each (165 + 21 approval tests) |
+| Acceptance cases | forged signature, unauthorised key, other artefact, other run, statement altered after signing: each rejected as `oversight.approval_invalid` and recorded; chain valid |
+| Bridge (both versions), Go chaincode, interop | 4/4, 17/17, 6/6 + 4/4 |
+| `verify_delivery.py`, published OSCAL | 1,831/1,831, 18/18 |

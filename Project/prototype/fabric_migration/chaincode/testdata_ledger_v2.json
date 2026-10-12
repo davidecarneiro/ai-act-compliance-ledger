@@ -1,12 +1,12 @@
 [
   {
-    "evidence_id": "ev-c385cdea-3101-423b-a11c-733754ceb240",
+    "evidence_id": "ev-59d14c32-e6a1-4962-8d01-b5c31aa4a42a",
     "scenario_id": "approved_model",
     "event_type": "approved_model",
     "artifact_id": "credit-scoring-v2.0",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.015773+00:00",
+    "timestamp": "2026-10-12T14:36:26.330822+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -15,8 +15,8 @@
       "demographic_parity_diff": 0.03,
       "drift_score": 0.04
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
@@ -29,7 +29,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -38,18 +39,18 @@
       "Art.15",
       "Art.72"
     ],
-    "record_hash": "85e82586e064e79765b58279d8791a513bb7d6e0c01765ac02a181078e0a3c4e",
-    "issuer_signature": "3VfS3BLVXUZm9CMhA+0xOSfTGmsS7flt07MM8+UdM6QE4xi1sgonPmzrDRvmD+Y8CAhpk+FUE7RCWQPUF2aOAA==",
-    "chain_hash": "a13e6802072b4c45306c71436f7e3bd0a59a945c8d7b0f837cd6f8babde5d84d"
+    "record_hash": "c05e686cb0721465a72a1568463f8194c79af28d7ec8d0e8c891a7bebd0f5418",
+    "issuer_signature": "fTQJEY1OehpYUxAPIHsb8T/VNDwW4tRuu/OanR1kn8UNpe6StzCP6a4bfjjW2ScP1PHDKtQHsAagIhSeoRqVBQ==",
+    "chain_hash": "968b90c5a0e7e42db3ec54b8e867794acbb31154589592a0d12773656eb060b5"
   },
   {
-    "evidence_id": "ev-7d217550-2097-47c2-93d2-a009a6f96486",
+    "evidence_id": "ev-7d2ddb84-b4a7-423a-959b-e682fdd3e27a",
     "scenario_id": "low_precision_rejected",
     "event_type": "low_precision_rejected",
     "artifact_id": "credit-scoring-v2.1",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.017436+00:00",
+    "timestamp": "2026-10-12T14:36:26.332050+00:00",
     "decision": "rejected",
     "reason": "precision 0.74 below threshold 0.8",
     "rule_id": "threshold.precision",
@@ -58,13 +59,13 @@
       "demographic_parity_diff": 0.02,
       "drift_score": 0.05
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "a13e6802072b4c45306c71436f7e3bd0a59a945c8d7b0f837cd6f8babde5d84d",
+    "parent_hash": "968b90c5a0e7e42db3ec54b8e867794acbb31154589592a0d12773656eb060b5",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "e3498c5ffa01252137a7fb721975e3f50b4576b230cc827fd1608c40eb5d37ce",
@@ -72,7 +73,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -81,18 +83,18 @@
       "Art.15",
       "Art.72"
     ],
-    "record_hash": "d66891ad2ec21ab516e1e7d185918871510a72016a1a1e8473a6b9afcf5f8367",
-    "issuer_signature": "xTqSvdhuMoQ4Ss/gpS4zJJy7uLCqBj7Ef/XR9sVbfF2qJglOLCcBK+HMmvfuPgkoIQX4VUKfPR56rsyDPr2hDw==",
-    "chain_hash": "a8141ef6aaae28908e663993f269988a885962c77423bca9ef670ff9bacc5ffa"
+    "record_hash": "b6e50d4137bfee4d8f9dd44dda462bbd05f95def30ba343073b8f3030ef44349",
+    "issuer_signature": "TRcvIVQhnLtpBpVW/vJW2Ujc/KLpvvw2onKOJGy1RxcxyRwePnu+hA5alU4JmeFncGqNL/faEE0A2skgArXjAw==",
+    "chain_hash": "337d83b8b07cf84f7e37a39130b48d73e0b9bb966b32980782791325eaa90f95"
   },
   {
-    "evidence_id": "ev-ff5577a7-6db5-44b0-8edd-46e9217e7a3e",
+    "evidence_id": "ev-5175eccc-677f-4f4f-8900-62ccbcae8f66",
     "scenario_id": "fairness_rejected",
     "event_type": "fairness_rejected",
     "artifact_id": "credit-scoring-v2.2",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.018624+00:00",
+    "timestamp": "2026-10-12T14:36:26.333066+00:00",
     "decision": "rejected",
     "reason": "demographic parity diff 0.09 above threshold 0.05",
     "rule_id": "threshold.fairness",
@@ -101,13 +103,13 @@
       "demographic_parity_diff": 0.09,
       "drift_score": 0.06
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "a8141ef6aaae28908e663993f269988a885962c77423bca9ef670ff9bacc5ffa",
+    "parent_hash": "337d83b8b07cf84f7e37a39130b48d73e0b9bb966b32980782791325eaa90f95",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "cf1bca31305c0a69cd5959e32964a953585c564bab6ed35bd16af2ac19a81c7b",
@@ -115,7 +117,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -124,18 +127,18 @@
       "Art.15",
       "Art.72"
     ],
-    "record_hash": "97dd7cd9133320ba51bb95e3c47e592accfe7a711856fe78297979a7f9469e83",
-    "issuer_signature": "u1NYW0FZpb+9tnpy8oHVY4cGmxk3z/8hZNMbgdvdRtoOL5TRcx0+VcQ4JgmPpT/o7GvWhJIagd2dgaudv1qMAQ==",
-    "chain_hash": "1319078d2779c8d216c623bc3b04952b8b1926007a9c28cb28169d147b8aba45"
+    "record_hash": "d6005191f30fe0f3e976b7633ed0b4e5abface9d5209b462463c65ae2541886d",
+    "issuer_signature": "U94fHx0slexe97n7rz12c6DLi9Fvm88PRjqaB1ZXdxdxL3apZw2npJx76HAxwwQUwiPXQS9Xl5hY4hMm23xgBw==",
+    "chain_hash": "3e8b83742e3e2c4c7a86fe9234bc8c0423faff188b75ed5507ad75c31e488c30"
   },
   {
-    "evidence_id": "ev-30b23ca3-74a2-4cab-863a-6c97ab2c00db",
+    "evidence_id": "ev-eca2c924-606d-4674-bd74-8df1d018e050",
     "scenario_id": "missing_human_approval_rejected",
     "event_type": "missing_human_approval_rejected",
     "artifact_id": "credit-scoring-v2.3",
     "artifact_type": "model",
     "pipeline_stage": "deployment",
-    "timestamp": "2026-10-12T09:51:45.019947+00:00",
+    "timestamp": "2026-10-12T14:36:26.333961+00:00",
     "decision": "rejected",
     "reason": "missing human approval for high-risk event",
     "rule_id": "oversight.approval_missing",
@@ -144,13 +147,13 @@
       "demographic_parity_diff": 0.02,
       "drift_score": 0.03
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "1319078d2779c8d216c623bc3b04952b8b1926007a9c28cb28169d147b8aba45",
+    "parent_hash": "3e8b83742e3e2c4c7a86fe9234bc8c0423faff188b75ed5507ad75c31e488c30",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "458cd17df7c20f6bf51c6b1a6b59349479a6a2764a8a2566d860e9ce09cb4f00",
@@ -158,7 +161,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": false
+      "human_approval": false,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -167,18 +171,18 @@
       "Art.15",
       "Art.72"
     ],
-    "record_hash": "c12ca8dd4447edf1bfa383faf2cee5a00fc1c2a8f0d15d31cc7533d6374bdd53",
-    "issuer_signature": "tnVTI6Jk+/ZrsVerhjLe+Rfnrk7IftclW8Mk2eqZSYuXDlPSZJg9KbxqHWwJjYdpEZy86uOD0G7FmYbPvXpIAw==",
-    "chain_hash": "efe1872618072e5fcb501dfcab0a561223cb9d9a9cf4f19c9bc19efc40b3b02d"
+    "record_hash": "3c60913c897bf4a8909d53b5685f7aeefe8ef22c77d1833f8a12cdc9d1d0b473",
+    "issuer_signature": "RcvITe/3+5JU9vZQ1I1xAvncD3VmJQmS2zzjFCCndJpzweWY1/wy6BzqTiTqI5yQ7I9NkoXzMYy6dl7O+C9pAw==",
+    "chain_hash": "10a65fe0e17c25b9a12410366160161a4d4ba6866e60b132ef46aaf4aeacdfe3"
   },
   {
-    "evidence_id": "ev-e4b0e37b-3df4-43f9-8313-e85449cea8cf",
+    "evidence_id": "ev-12f4ee78-5f34-4628-a226-437953068031",
     "scenario_id": "drift_detected",
     "event_type": "drift_detected",
     "artifact_id": "credit-scoring-v2.4",
     "artifact_type": "monitoring_report",
     "pipeline_stage": "post_deploy_monitoring",
-    "timestamp": "2026-10-12T09:51:45.021149+00:00",
+    "timestamp": "2026-10-12T14:36:26.334879+00:00",
     "decision": "escalated",
     "reason": "drift score 0.22 above threshold 0.15",
     "rule_id": "monitoring.drift_alert",
@@ -187,13 +191,13 @@
       "demographic_parity_diff": 0.03,
       "drift_score": 0.22
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "efe1872618072e5fcb501dfcab0a561223cb9d9a9cf4f19c9bc19efc40b3b02d",
+    "parent_hash": "10a65fe0e17c25b9a12410366160161a4d4ba6866e60b132ef46aaf4aeacdfe3",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "3762d87fd31a858926c37316f60f1e17e252076c96982e6458c41208ee30a1c2",
@@ -201,7 +205,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -210,18 +215,18 @@
       "Art.15",
       "Art.72"
     ],
-    "record_hash": "88a45fb8fd3e0e63f0003272a3dce58a032f472c7193c788609fa9b2cdbc648a",
-    "issuer_signature": "YVhkWqRbEjUeSzSOu7dyPZFSgx+t6LqzSCa6VDDOoX+23iXpcUHKzHcKAgASnS/oBXlaG1HxWTEIrMMXv/vTDw==",
-    "chain_hash": "2b23488659f23837bb391d1f87f2eefbb6086999a7a40861d1c34d8a0a9b5a41"
+    "record_hash": "6c158ce3c6b005efd0214c8d3cd469534db4e68e5b5cc596475d517fa75bcb21",
+    "issuer_signature": "1ajGHA3213ZFhbH4n2MBsIKyzBbxpaXE83SPCZZ/F5vf2sjC0iPJAqneHBCn9zNKN7HgzjiMF0BJ4xtRFWpWAg==",
+    "chain_hash": "909f8ba1c45a0f85ef0760bb7a74c47bbf818aeb479a87ef6bd455626da9cf62"
   },
   {
-    "evidence_id": "ev-db601b19-fa9d-41fd-8d68-87cb7413cc3d",
+    "evidence_id": "ev-3ea38442-9162-4f2c-97c4-36bed2ef4698",
     "scenario_id": "audit_query",
     "event_type": "audit_query",
     "artifact_id": "audit-bundle-2026-04",
     "artifact_type": "audit_package",
     "pipeline_stage": "audit",
-    "timestamp": "2026-10-12T09:51:45.022392+00:00",
+    "timestamp": "2026-10-12T14:36:26.336024+00:00",
     "decision": "recorded",
     "reason": "audit query: integrity check requested",
     "rule_id": "audit.query_recorded",
@@ -230,13 +235,13 @@
       "demographic_parity_diff": 0.0,
       "drift_score": 0.01
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "2b23488659f23837bb391d1f87f2eefbb6086999a7a40861d1c34d8a0a9b5a41",
+    "parent_hash": "909f8ba1c45a0f85ef0760bb7a74c47bbf818aeb479a87ef6bd455626da9cf62",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "ad0ea161418b0fce654e619652747e6f417e3f714279da2099ef783a6262f477",
@@ -244,7 +249,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "medium",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -254,18 +260,18 @@
       "Art.72",
       "Art.73"
     ],
-    "record_hash": "6255f17b3f4abeeac816da93edb538437ee5a3908dc2c6a8e6ad7f45d8fef4cf",
-    "issuer_signature": "0ti331IMdFo3KjzAIsOETl+bhUGRuIDWTC6WCwkMnDKjnmqBazRX3UZcp/4hTf7hWTyX8KMLcn69z4PwraX9Ag==",
-    "chain_hash": "c427ac8b859b05bb548abc9b4b9d29b1a78a8beec31b32f5376e4ef9149ef72f"
+    "record_hash": "731a8b29bbb3ecd02b4f9a575c13b805aa4b5827a7969d1c71db77fda1eb4fd0",
+    "issuer_signature": "uDj0/nA+28A0m9Gq2kWhc4T7KyP2AjOlCCLLow077cWauOtAYgC2GywzpCoYM7YL0nqwMBMQkg8W6MF2bAHLAA==",
+    "chain_hash": "4f8ab56b2bb54969a0e263006e4bfc8fc5e7a28b913a1dc22785c3e07bc05ab3"
   },
   {
-    "evidence_id": "ev-68901a5d-4c51-46af-b45f-12cb10629a39",
+    "evidence_id": "ev-006f9b7c-db09-4add-9574-2b87c4d69d4e",
     "scenario_id": "v2-texto-n\u00e3o-ASCII-\u00e7\u00e3\u20ac",
     "event_type": "approved_model",
     "artifact_id": "modelo-cr\u00e9dito-v2",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.023670+00:00",
+    "timestamp": "2026-10-12T14:36:26.337192+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -273,13 +279,13 @@
       "precision": 0.91,
       "demographic_parity_diff": 0.0
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "c427ac8b859b05bb548abc9b4b9d29b1a78a8beec31b32f5376e4ef9149ef72f",
+    "parent_hash": "4f8ab56b2bb54969a0e263006e4bfc8fc5e7a28b913a1dc22785c3e07bc05ab3",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "25d04a944c556d38d60c0f1f8b558b73edf1c09ba6fec6b4a34bffc9e6726c35",
@@ -287,7 +293,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -295,18 +302,18 @@
       "Art.14",
       "Art.15"
     ],
-    "record_hash": "27803a2e2d560a00be035ad9c1aa70ecfd568be21da44eceab50b3e128ceb176",
-    "issuer_signature": "/lSGo5T4f+jq7AChyd9Wt0r9ob8BoeTkusSRUakOW8pafsN/I5lxHgcurJk5KF53I4wJL5efd6aeUhNmMFclAA==",
-    "chain_hash": "a2b5ad8f9999a7908b43272128d57f36d2653eb017da8dc1c0d41b46e73b45c0"
+    "record_hash": "6d6477395388a2080ab13079a32d6aacb617dcaf7c17b545f7422cfec4ad9301",
+    "issuer_signature": "RVzPtfPKhoY+U9qQq4P0ozxWmCXycaMINkuq5pywYk7njKFscGeHiXirt7S9qBvoEbl50sacNqProEhmpvlfAg==",
+    "chain_hash": "dbc009b0d280041517edbc1e708fde9afadc50a83a6db4fb355b400c262444db"
   },
   {
-    "evidence_id": "ev-de0d27f0-1057-4bfe-8a47-6b3f26461f14",
+    "evidence_id": "ev-38f38486-b652-4d3c-9149-313e566589d6",
     "scenario_id": "v2-html-<a&b>",
     "event_type": "approved_model",
     "artifact_id": "m<1>&\"q\"",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.025647+00:00",
+    "timestamp": "2026-10-12T14:36:26.338412+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -314,13 +321,13 @@
       "precision": 1.0,
       "demographic_parity_diff": 0
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "a2b5ad8f9999a7908b43272128d57f36d2653eb017da8dc1c0d41b46e73b45c0",
+    "parent_hash": "dbc009b0d280041517edbc1e708fde9afadc50a83a6db4fb355b400c262444db",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "3dcaa8b96fd2b5ee772795263f464cce8831d2d37803e25f644a66d74c4b4765",
@@ -328,7 +335,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -336,18 +344,18 @@
       "Art.14",
       "Art.15"
     ],
-    "record_hash": "9f98b52323a51437b1fd144f4d9a6964229605c665b2a7a500ea5193e6dcc998",
-    "issuer_signature": "FrM3Dccbn+NMRZvBi+H7PV2W3Vv/HEgSWAJzk529dhTs2TLjXOg6KbMUZMDBENedDG/+af662ia20OmflMjgBQ==",
-    "chain_hash": "ff0a8fff0feae5d0372bf3bb91cbec119d7bd43297c8485d5a44968c210e48ff"
+    "record_hash": "97de6ef199ed668e99c0326271337e91a95d994dee224984ee82fe02f8898b38",
+    "issuer_signature": "RzeWs0Dj+lVJvH7dcqiy1GpU+iu8Y7N4he3H9KWdzCW0HT1IE2QD6yUcTJzkl5t4XeFtBSOzjrC6vTGs9whBDA==",
+    "chain_hash": "dfe1116d79d06fb1c75df58d65aef8a060bf7cd5aaf1965d9402c16112251562"
   },
   {
-    "evidence_id": "ev-6f37dc23-e498-412a-b4ae-c5439b70eb33",
+    "evidence_id": "ev-58e9c901-e488-459e-8d66-db12e80405c0",
     "scenario_id": "v2-astral-\ud83d\udea8",
     "event_type": "approved_model",
     "artifact_id": "m-\u2028-\u007f",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.027851+00:00",
+    "timestamp": "2026-10-12T14:36:26.339577+00:00",
     "decision": "escalated",
     "reason": "drift score 0.30000000000000004 above threshold 0.15",
     "rule_id": "monitoring.drift_alert",
@@ -356,13 +364,13 @@
       "demographic_parity_diff": 1e-07,
       "drift_score": 0.30000000000000004
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "ff0a8fff0feae5d0372bf3bb91cbec119d7bd43297c8485d5a44968c210e48ff",
+    "parent_hash": "dfe1116d79d06fb1c75df58d65aef8a060bf7cd5aaf1965d9402c16112251562",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "76e00ce3e01693697fd6d54e70e972d014f8ed4c80051e831d7c7ba7aac6481f",
@@ -370,7 +378,8 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -379,29 +388,29 @@
       "Art.15",
       "Art.72"
     ],
-    "record_hash": "a7563dba8a2180a6907bd1f2cbda58c276eeadfc43ba0cd7171dbc3542fcc1a4",
-    "issuer_signature": "KWvyNi+yNRB9uWm37wxpVM5hrH1PooVKGtPtHhFRS+7LaKSLfPj+HIfAtwWrAwOXzX6rNg3+ZrB1jFlQXZCLDQ==",
-    "chain_hash": "0802cd5ba3097af8fe3b04dda187fc10bb726868171516476e1a95e4bac74580"
+    "record_hash": "bce1693c190b678ab268b1b212fbe78a4395252264bb05f9b2af424997662f49",
+    "issuer_signature": "KdS7SclZYKnLGf/LsjJpKOki5/h4DogCY/hjJOpZM58SNBZbaEF4dlmxwhkL3yhf6bVMtHBr4Fw6+rRpOJ7CDw==",
+    "chain_hash": "297d3326a010cbacf190bebd0fb2cc8ebddef888a00f39970e978b90013ae338"
   },
   {
-    "evidence_id": "ev-1cfc9be9-ae6c-439c-8f11-b178da9de423",
+    "evidence_id": "ev-c5a4e73f-e71a-47a7-84b5-467c3bddce25",
     "scenario_id": "v2-malformed",
     "event_type": "approved_model",
     "artifact_id": "m-bad",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.030546+00:00",
+    "timestamp": "2026-10-12T14:36:26.340906+00:00",
     "decision": "rejected",
     "reason": "invalid input: metric row_count lies outside the RFC 8785 number domain (integers up to 2**53 - 1)",
     "rule_id": "input.malformed",
     "metrics": null,
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "0802cd5ba3097af8fe3b04dda187fc10bb726868171516476e1a95e4bac74580",
+    "parent_hash": "297d3326a010cbacf190bebd0fb2cc8ebddef888a00f39970e978b90013ae338",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "edb71e0fba1420f9a8442b437667a8071aa0d623ce4b47c6ed3f3ccf1ac3d928",
@@ -409,34 +418,35 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.12"
     ],
-    "record_hash": "dfcb7e3495628159fbc7c8f24d93559c9edf69b0cae6359b35c8663436093c82",
-    "issuer_signature": "26BCV22+97rN1mK3FN4ujqdGfT28FZ+NbQNBRn5KCGFINkWlgcfmW3b/KnEVTTEcXYVppxyWtpXsJON2dAltDg==",
-    "chain_hash": "800e28a9f5d0eb229109b29be8ebcbadda19418f1ea83db1e2d9ffcfddafccf3"
+    "record_hash": "5344d9e4b62ec6e04d347233de9c3d59447a3c5a7a90105a9c5116c20d9a2e6b",
+    "issuer_signature": "jzkxf2iEAOLQVJi3Y894n9fQA3XM5b4LFrTeIUNRVRngElBnFiCItSLL6No6trC068P+qea+11KI31Tzk8PQCw==",
+    "chain_hash": "ed03a8c25f4b56f345500bf1b660c14c7cdb1a7cbac0b16df9d722e1aaae65f3"
   },
   {
-    "evidence_id": "ev-1006c496-5593-48cb-95a6-1f5661611753",
+    "evidence_id": "ev-f894b753-abd8-463b-aae3-453ce5cb3a1f",
     "scenario_id": "v2-dataset",
     "event_type": "data_ingested",
     "artifact_id": "german-credit",
     "artifact_type": "dataset",
     "pipeline_stage": "ingestion",
-    "timestamp": "2026-10-12T09:51:45.032658+00:00",
+    "timestamp": "2026-10-12T14:36:26.342063+00:00",
     "decision": "rejected",
     "reason": "precision None below threshold 0.8",
     "rule_id": "threshold.precision",
     "metrics": null,
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "800e28a9f5d0eb229109b29be8ebcbadda19418f1ea83db1e2d9ffcfddafccf3",
+    "parent_hash": "ed03a8c25f4b56f345500bf1b660c14c7cdb1a7cbac0b16df9d722e1aaae65f3",
     "schema_version": 2,
     "run_id": "run-0001",
     "payload_hash": "215dffbf0a5cf526c016958b7062fad59df71ff082c79a90d33382936dfbf0ac",
@@ -444,7 +454,8 @@
     "off_chain_ref": "store/sha256/948c9cd63703826d543d83fd9402ab13877ffa9da1eda1eb4a2ee99f99769133",
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(3)",
@@ -452,18 +463,18 @@
       "Art.12",
       "Art.14"
     ],
-    "record_hash": "2344221db37d9949574a897acdb5aaa5a4fca92edcc307eacc48c652150d704e",
-    "issuer_signature": "THTTbf5BuzuIVlWS//N9tIUFCMqq/+LtQ2UqVFzqAvcmLa+g6jfiY2Loc0rUEqBoO4qR8zHq+OdSa4qx72NEBg==",
-    "chain_hash": "b8fe65b97e24853c898078a2731effabf2c0fd1df83d65f19349db493049f54f"
+    "record_hash": "ab6732c008c8d08c79e76786e19da4498e53f43b1dd03961c0830eb9247fa119",
+    "issuer_signature": "3oJqhipReEbbcwsH1vrb/XlQoBDAqOxKzgNJme211g5ILlUyMgfU9ojCcJH9P8GKvgty76sXZIMK9v2BvIPSAg==",
+    "chain_hash": "68ead189ee4542ef86a95d1de354f6b731b54e2d616adeb91feb60ababc6fd1e"
   },
   {
-    "evidence_id": "ev-ce3c6b5b-bf0a-4f7f-ba94-e970e9a99cff",
+    "evidence_id": "ev-87945ac0-f075-42d1-9c54-e14275aa3041",
     "scenario_id": "v2-model",
     "event_type": "model_validation",
     "artifact_id": "credit-scoring-v3",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.035292+00:00",
+    "timestamp": "2026-10-12T14:36:26.343254+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -471,13 +482,13 @@
       "precision": 0.88,
       "demographic_parity_diff": 0.04
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "b8fe65b97e24853c898078a2731effabf2c0fd1df83d65f19349db493049f54f",
+    "parent_hash": "68ead189ee4542ef86a95d1de354f6b731b54e2d616adeb91feb60ababc6fd1e",
     "schema_version": 2,
     "run_id": "run-0001",
     "payload_hash": "bf2cc9d7b07e37d9cfe59474f656ef85691336e64092f10264013770df685e60",
@@ -485,7 +496,8 @@
     "off_chain_ref": "store/sha256/a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -494,18 +506,18 @@
       "Art.14",
       "Art.15"
     ],
-    "record_hash": "32cb4b23e01c509444e264f116b02dedbf18614087efd4f34d1c00ae9f0c8db6",
-    "issuer_signature": "0etpyTUSoioXonwU3yPsOABQo9743bTdcK+a1VlMi5zGvMWI9RKhSp+sOu6pyyb4H2yYhIaM0x5deFRrEfw3BQ==",
-    "chain_hash": "cc2f1fb3b878243c7fae04f4158996c11d634e53560603e963a09f06d913ce70"
+    "record_hash": "980e8c7f8ea3191882ae23a18b3084a774f07f47ffda5e282646187880cb8957",
+    "issuer_signature": "I6QOcRihuSkQVC4sM9Xf26ovaw2umzu0fuS0ffeIfT14VXnT4mXHp8zUktg3vNMbx1Gh8hwZltuuidILd3eCCg==",
+    "chain_hash": "efa4ff91f62801e6001532c487ddd1013795b4df0779d67d9f8b110952a2044e"
   },
   {
-    "evidence_id": "ev-0d96fcae-3071-4319-97ba-e4658351e6ea",
+    "evidence_id": "ev-75594bff-ed66-49d5-9294-1c7a86a10146",
     "scenario_id": "v2-external-ref",
     "event_type": "model_validation",
     "artifact_id": "credit-scoring-v3",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.037869+00:00",
+    "timestamp": "2026-10-12T14:36:26.344602+00:00",
     "decision": "approved",
     "reason": "all policy checks passed",
     "rule_id": "policy.all_checks_passed",
@@ -513,13 +525,13 @@
       "precision": 0.88,
       "demographic_parity_diff": 0.04
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "cc2f1fb3b878243c7fae04f4158996c11d634e53560603e963a09f06d913ce70",
+    "parent_hash": "efa4ff91f62801e6001532c487ddd1013795b4df0779d67d9f8b110952a2044e",
     "schema_version": 2,
     "run_id": "run-0001",
     "payload_hash": "182febeb8188fe42358f35478ba777cea8011d0d83cea1ba6e2abcb41fa228db",
@@ -527,7 +539,8 @@
     "off_chain_ref": "s3://models/credit-v3.joblib",
     "decision_inputs": {
       "risk_level": "low",
-      "human_approval": null
+      "human_approval": null,
+      "approval": null
     },
     "supports_requirements": [
       "Art.10(2)(f)",
@@ -535,18 +548,18 @@
       "Art.12",
       "Art.15"
     ],
-    "record_hash": "b3cfaeb64c4260d54307c3bd493f1dc4097159d70c014eb7899a8aee143c1c97",
-    "issuer_signature": "xXH6rp0TT8vniiUnFiPjlNHLrErgQdX0orPezMAyF9g2Xh8/R41oYXBntcugTMKpSCDb1ctK95WyQvKPf/fkBA==",
-    "chain_hash": "3821664390cba9896b355dd2432fcda51ead5e637a0482557a009b8348b325f1"
+    "record_hash": "52baa347a81993492e631a57ece2e4c0d2d25d04462f365dce88e00d0a0a9af5",
+    "issuer_signature": "mVpMnCITMM9heZRl6nuYT+XZe4nqTBUmrO7LZraRHXGWpvrDL35v+7c3vctm73DaZUGs4aJT8aO4BxhrfuuwCw==",
+    "chain_hash": "8f3f81d8206e618766ff945c69bd5a7ce2a02a4d41f2d2421e1a6cf4a012249b"
   },
   {
-    "evidence_id": "ev-5057209d-06ed-4c59-9f6b-7774225c1be8",
+    "evidence_id": "ev-281ba8ff-6057-441a-bfce-cb09a6b49919",
     "scenario_id": "v2-ref-mismatch",
     "event_type": "model_validation",
     "artifact_id": "credit-scoring-v3",
     "artifact_type": "model",
     "pipeline_stage": "validation",
-    "timestamp": "2026-10-12T09:51:45.040224+00:00",
+    "timestamp": "2026-10-12T14:36:26.345830+00:00",
     "decision": "rejected",
     "reason": "invalid input: off_chain_ref names a different digest from artifact_sha256",
     "rule_id": "input.malformed",
@@ -554,13 +567,13 @@
       "precision": 0.88,
       "demographic_parity_diff": 0.04
     },
-    "policy_id": "pol-c3d1fc49f36e",
-    "policy_hash": "c3d1fc49f36ea3117ba92ca233dee033922060bc16c2543d3fe8c6daf5faed4f",
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
     "issuer_id": "compliance-oracle-v1",
     "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
     "sig_alg": "Ed25519",
     "hash_alg": "SHA-256",
-    "parent_hash": "3821664390cba9896b355dd2432fcda51ead5e637a0482557a009b8348b325f1",
+    "parent_hash": "8f3f81d8206e618766ff945c69bd5a7ce2a02a4d41f2d2421e1a6cf4a012249b",
     "schema_version": 2,
     "run_id": null,
     "payload_hash": "93968382755c1832e5773670c138bb71cddd045fd46f2f616b6f4ea957ee02e8",
@@ -568,13 +581,120 @@
     "off_chain_ref": null,
     "decision_inputs": {
       "risk_level": "high",
-      "human_approval": true
+      "human_approval": true,
+      "approval": null
     },
     "supports_requirements": [
       "Art.12"
     ],
-    "record_hash": "5e8e4d9a68b9ff279ba4757a45a79234753a9fa928212171d0de67b7674e5fa0",
-    "issuer_signature": "YK32Yb02ZkZue/6HQELBiwehu3/TAq78qur/GplUvvqRACSt4qFo6dRhzXcLFyaRjMHlTerkBFISirPKvmuKCA==",
-    "chain_hash": "357696088f11dd542ae88797600be9be21bd3b6b129a8616db9ea2c01b33dd2d"
+    "record_hash": "9d3a40285eba3c0553af2893644f6d7dabecd8a053928912ac581ba011e3ddba",
+    "issuer_signature": "9SZWadNDvjne26MC9zQA8ui37Wbdpvef/03eWvSGZPdLd7yL98ea4WOuYBJlXTabix0gcSNPFNjgOlX8r5aGCw==",
+    "chain_hash": "c882309ffdfa2b0aceafa0bf571b96d582aab29e3613c0cc101bc7568339a90e"
+  },
+  {
+    "evidence_id": "ev-c09a6440-1ffb-4c29-b41c-cd29cffc7698",
+    "scenario_id": "v2-signed-approval",
+    "event_type": "deployment_request",
+    "artifact_id": "credit-scoring-v3",
+    "artifact_type": "model",
+    "pipeline_stage": "deployment",
+    "timestamp": "2026-10-12T14:36:26.347554+00:00",
+    "decision": "approved",
+    "reason": "all policy checks passed",
+    "rule_id": "policy.all_checks_passed",
+    "metrics": {
+      "precision": 0.88,
+      "demographic_parity_diff": 0.04
+    },
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "c882309ffdfa2b0aceafa0bf571b96d582aab29e3613c0cc101bc7568339a90e",
+    "schema_version": 2,
+    "run_id": "run-0001",
+    "payload_hash": "8fd031f21db7a29729bc56b4ac9e5cea4c0f5ac95275563f3ea7512939730056",
+    "artifact_hash": "a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
+    "off_chain_ref": "store/sha256/a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
+    "decision_inputs": {
+      "risk_level": "high",
+      "human_approval": null,
+      "approval": {
+        "approver_id": "approver-demo",
+        "statement": {
+          "type": "deployment-approval",
+          "artifact_sha256": "a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
+          "run_id": "run-0001",
+          "decision": "approve",
+          "approved_at": "2026-10-12T14:00:00+00:00"
+        },
+        "signature": "eIj17La5YbxB3bpAj8HlJVU5EIRqkshEzLG79zTUISQe8smYy4ABwUrv/RonUY/h/0FoAKyk0GmzU6RZeeO7AA=="
+      }
+    },
+    "supports_requirements": [
+      "Art.10(2)(f)",
+      "Art.11",
+      "Art.12",
+      "Art.14",
+      "Art.15"
+    ],
+    "record_hash": "66da47f2fdb1beec377b6720406f4ef101589f56bbdb15c965ca34cfbd1a0bae",
+    "issuer_signature": "fwjC0gP9Do16jzoGTJyxbPgMpe6uvg2BHBhDrMqKUCH7wvZhtPOyG/o0/wm0FVJqL3+dQjCgtiQVpssV55Y+Ag==",
+    "chain_hash": "08771fa899e9e0d6111404a7d061389f997cacfb60e124d2591df18138c31220"
+  },
+  {
+    "evidence_id": "ev-31450bc2-6055-4e67-a6d9-943820485eef",
+    "scenario_id": "v2-unauthorised-approval",
+    "event_type": "deployment_request",
+    "artifact_id": "credit-scoring-v3",
+    "artifact_type": "model",
+    "pipeline_stage": "deployment",
+    "timestamp": "2026-10-12T14:36:26.349386+00:00",
+    "decision": "rejected",
+    "reason": "approver approver-unknown is not authorised by the policy",
+    "rule_id": "oversight.approval_invalid",
+    "metrics": {
+      "precision": 0.88,
+      "demographic_parity_diff": 0.04
+    },
+    "policy_id": "pol-25538e9b90c8",
+    "policy_hash": "25538e9b90c8cb4e60d796d42aaf5da7575dd38fa1f41bfdde40f9712f877ad6",
+    "issuer_id": "compliance-oracle-v1",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "sig_alg": "Ed25519",
+    "hash_alg": "SHA-256",
+    "parent_hash": "08771fa899e9e0d6111404a7d061389f997cacfb60e124d2591df18138c31220",
+    "schema_version": 2,
+    "run_id": "run-0001",
+    "payload_hash": "fa7fc772b3acb09f0ff4e3b4ead6aa97f9a94522aa603aa16d75b54e934b8cbf",
+    "artifact_hash": "a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
+    "off_chain_ref": "store/sha256/a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
+    "decision_inputs": {
+      "risk_level": "high",
+      "human_approval": null,
+      "approval": {
+        "approver_id": "approver-unknown",
+        "statement": {
+          "type": "deployment-approval",
+          "artifact_sha256": "a836cbecc38933983d25c83b14d7770c6d7b6e65bd417b7a1b368558ba85845b",
+          "run_id": "run-0001",
+          "decision": "approve",
+          "approved_at": "2026-10-12T14:00:00+00:00"
+        },
+        "signature": "aBcCI62o5Qvs4JpES5sflo6bSWMHcCz1O1yI/qBg92oMmUs39QG8ktY3PiF/yPZMlu9tGGZ53v6HjNsOFReQBw=="
+      }
+    },
+    "supports_requirements": [
+      "Art.10(2)(f)",
+      "Art.11",
+      "Art.12",
+      "Art.14",
+      "Art.15"
+    ],
+    "record_hash": "bf434ad4cde40dedde7bce92e2757d3649d676d724b9fc626fda606d680399d1",
+    "issuer_signature": "+Y02GbcVg1MulSS3V/jOnX3A89T3vhNNh7EMiA83+m+AW6Y3Q81pzLN1bHppk4kgx1aKbYyMcXduCDdrW4W1Cg==",
+    "chain_hash": "957c721907fe6d2ba08ae9fc36de9597e008a1698f8c0cfa47c66f36591813ed"
   }
 ]

@@ -119,3 +119,14 @@ def public_key_fingerprint(key: IssuerKey | PublicIssuerKey) -> str:
         format=serialization.PublicFormat.Raw,
     )
     return hashlib.sha256(raw).hexdigest()
+
+
+def public_key_hex(key: IssuerKey | PublicIssuerKey) -> str:
+    """The raw Ed25519 public key in hexadecimal (64 digits).
+
+    The form a policy lists authorised approvers in, and the form the chaincode
+    registers issuers in."""
+    return key.public_key.public_bytes(
+        encoding=serialization.Encoding.Raw,
+        format=serialization.PublicFormat.Raw,
+    ).hex()

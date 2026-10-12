@@ -35,6 +35,13 @@ from canonical import (
     canonicaliser,
     record_body_bytes,
 )
+from approvals import (
+    APPROVAL_DENIED,
+    APPROVAL_INVALID,
+    authorised_approvers_error,
+    check_approval,
+    structure_error as approval_structure_error,
+)
 from artifact_store import digest_of_ref, is_sha256_hex
 from keys import (
     IssuerKey,
@@ -148,6 +155,18 @@ def _validate_policies(policies: dict) -> None:
         raise InvalidPolicyError(
             "require_human_approval_for_high_risk must be a boolean, got "
             f"{type(flag).__name__}"
+        )
+    # Signed approvals (WP6): optional, absent in the dissertation's policies.
+    if "authorised_approvers" in policies:
+        problem = authorised_approvers_error(policies["authorised_approvers"])
+        if problem:
+            raise InvalidPolicyError(problem)
+    required = policies.get("signed_approval_required_for", [])
+    if not isinstance(required, list) or not all(
+        isinstance(t, str) and t.strip() for t in required
+    ):
+        raise InvalidPolicyError(
+            "signed_approval_required_for must be a list of event types"
         )
 
 
@@ -475,6 +494,11 @@ def _validate_v2_fields(event_data: dict) -> str | None:
         named = digest_of_ref(ref)
         if ref.startswith("store/") and named != digest:
             return "off_chain_ref names a different digest from artifact_sha256"
+
+    if "approval" in event_data:
+        problem = approval_structure_error(event_data["approval"])
+        if problem:
+            return problem
     return None
 
 
@@ -525,10 +549,35 @@ def evaluate_event(
             "threshold.fairness",
         )
 
+    # Signed approval (version 2, WP6). An approval that is present is always
+    # checked; it is required for the event types the policy lists. A valid
+    # approval also satisfies the boolean rule below.
+    signed_approval = False
+    if schema_version >= SCHEMA_V2:
+        approval = event_data.get("approval")
+        if approval is not None:
+            rule, why = check_approval(
+                approval,
+                policies.get("authorised_approvers", {}),
+                event_data.get("artifact_sha256"),
+                event_data.get("run_id"),
+            )
+            if rule is not None:
+                return "rejected", why, rule
+            signed_approval = True
+        elif event_data.get("event_type") in policies.get(
+            "signed_approval_required_for", []
+        ):
+            return (
+                "rejected",
+                f"missing signed human approval for {event_data.get('event_type')}",
+                "oversight.approval_missing",
+            )
+
     if (
         policies["require_human_approval_for_high_risk"]
         and event_data.get("risk_level") == "high"
-        and not event_data.get("human_approval", False)
+        and not (event_data.get("human_approval", False) or signed_approval)
     ):
         return (
             "rejected",
@@ -567,7 +616,9 @@ def requirement_support(
     technical documentation of Art. 11. Version 1 is kept as shipped, where
     the bias metric was attached to Art. 10(3)."""
     covered = {"Art.12"}
-    if event_data.get("human_approval") is not None:
+    if event_data.get("human_approval") is not None or (
+        schema_version >= SCHEMA_V2 and event_data.get("approval") is not None
+    ):
         covered.add("Art.14")
     metrics = event_data.get("metrics", {})
     if "precision" in metrics or "demographic_parity_diff" in metrics:
@@ -590,18 +641,26 @@ def requirement_support(
     return sorted(covered)
 
 
-def decision_inputs_of(event_data: dict) -> dict:
+def decision_inputs_of(event_data: dict, malformed: bool = False) -> dict:
     """The inputs, beyond the metrics, that the policy decision read.
 
     Recorded in version 2 so that the decision can be re-executed from the
     record. Values that are not of the expected type are kept as text, so a
-    rejected event still records what it carried."""
-    approval = event_data.get("human_approval")
+    rejected event still records what it carried. A signed approval is kept
+    whole (statement and signature), so a third party can verify it with the
+    approver key in the archived policy; it is left out of a malformed event,
+    whose content has not been checked."""
+    flag = event_data.get("human_approval")
+    approval = event_data.get("approval")
     return {
         "risk_level": _optional_text(event_data.get("risk_level")),
         "human_approval": (
-            approval if approval is None or isinstance(approval, bool)
-            else _required_text(approval)
+            flag if flag is None or isinstance(flag, bool)
+            else _required_text(flag)
+        ),
+        "approval": (
+            None if malformed or not isinstance(approval, dict)
+            else json.loads(json.dumps(approval))
         ),
     }
 
@@ -877,7 +936,7 @@ class ComplianceOracle:
                 # to resolve it.
                 "artifact_hash": None if malformed else digest,
                 "off_chain_ref": None if malformed else ref,
-                "decision_inputs": decision_inputs_of(event_data),
+                "decision_inputs": decision_inputs_of(event_data, malformed),
                 "supports_requirements": coverage,
             })
 
