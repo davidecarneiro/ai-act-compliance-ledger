@@ -142,3 +142,41 @@ def test_metrics_in_the_ledger_are_the_computed_ones(case_run, frame):
         recorded = [r["metrics"] for r in ledger
                     if r["run_id"] == run_id and r["event_type"] == "model_validation"]
         assert recorded == [expected]
+
+
+# ----------------------------------------------------------------------
+# Seed-stability addendum
+# ----------------------------------------------------------------------
+
+def test_seed_stability_reproduces_the_main_run_at_seed_42(frame, case_run):
+    import seed_stability as ss
+    policy = json.loads(cc.POLICY_FILE.read_text(encoding="utf-8"))
+    observed = ss.observe(42, frame, policy, cc.approver_key())
+    summary = json.loads((case_run / "summary.json").read_text(encoding="utf-8"))
+    assert observed["v1"]["validation"] == summary["validation_metrics"]["v1"]
+    assert observed["v2"]["validation"] == summary["validation_metrics"]["v2"]
+    assert [b["psi"] for b in observed["monitoring"]] == [b["psi"] for b in summary["batches"]]
+    decisions = {e["n"]: e["decision"] for e in summary["events"]}
+    assert observed["v1"]["decision"] == decisions[4]
+    assert observed["v2"]["decision"] == decisions[8]
+    assert observed["deployment_v2"]["decision"] == decisions[10]
+    assert [b["decision"] for b in observed["monitoring"]] == [decisions[n] for n in range(11, 17)]
+
+
+def test_capping_only_applies_when_asked(frame):
+    # A partition whose test set has fewer than 48 subgroup applicants.
+    for seed in range(500):
+        test = cc.partition(frame, seed)["test"]
+        if int((frame.iloc[test]["checking_status"] == cc.DRIFT_VALUE).sum()) < 48:
+            break
+    with pytest.raises(ValueError):
+        cc.draw_batches(frame, test)
+    batches = cc.draw_batches(frame, test, cap=True)
+    assert batches[-1]["subgroup_count"] < 48 and len(batches[-1]["indices"]) == cc.BATCH_SIZE
+
+
+def test_wilson_interval():
+    import seed_stability as ss
+    assert ss.wilson(0, 500)[0] == 0.0
+    low, high = ss.wilson(219, 500)
+    assert low < 219 / 500 < high

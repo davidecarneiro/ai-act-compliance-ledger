@@ -328,3 +328,46 @@ Decisions: 11 approved, 4 rejected, 1 escalated.
 | Credit case tests (`prototype/credit_case/tests`) | 13/13, including a full run in a temporary folder that reproduces the committed one, and a swapped model caught by the artefact check and by recomputation |
 | Bridge (both versions), Go chaincode, interop | 4/4, 17/17, 6/6 + 4/4 |
 | `verify_delivery.py`, published OSCAL | 1,831/1,831, 18/18 |
+
+## WP4 addendum — stability of the gate decisions across partitions
+
+**Post hoc and exploratory**, decided after the main run (both models just
+above the parity bound, 32 applicants under 25 in the validation partition).
+Protocol addendum `protocols/wp4_supplementary_seed_stability.md`, committed
+before it was run and amended once before any result: a trial run on seeds
+40–44 stopped on an error (a test partition with fewer drift-subgroup
+applicants than the last batch needs); such batches now take all of them
+(`draw_batches(cap=True)`; 40 of 500 partitions, last batch; the case's code
+path is unchanged).
+
+`prototype/credit_case/seed_stability.py` (`make stability`): the case
+pipeline over partition seeds 0–499 under the committed policy, decisions by
+the engine's `evaluate_event`. Seed 42 reproduces the main run exactly
+(tested). Results: `experiments/article/wp4/seed_stability_20261012T160251Z.json`.
+
+| Over 500 partitions | v1 | v2 |
+| --- | --- | --- |
+| Validation precision, median [5th–95th pct.] | 0.793 [0.760–0.824] | 0.790 [0.755–0.822] |
+| Validation parity difference, median [IQR] | 0.151 [0.099–0.215] | 0.112 [0.053–0.168] |
+| Passes validation (Wilson 95 %) | 26 % [23–30] | 44 % [40–48] |
+| Rejected on precision | 0/500 | 0/500 |
+| Validation and test decisions agree | 58 % [53–62] | 49 % [45–53] |
+
+- v1 and v2 obtain different decisions in 20 % [17–24] of partitions;
+  reweighing lowers the parity difference in 80 % [76–83].
+- With a valid signed approval, the deployment request of v2 would be
+  approved in 44 % [40–48] of partitions.
+- Applicants under 25 in the validation partition: median 30 [5th–95th:
+  23–37].
+- The precision threshold never binds: the 5th percentile of validation
+  precision is 0.755. The pilot's precision (0.735, seed 7) lies below that
+  percentile, so the single-pilot calibration drew an unusually low value.
+- Drift alert rate (PSI > 0.25) by subgroup share: natural 2.4 % and 2.8 %;
+  0.50: 17 %; 0.65: 37 %; 0.80: 78 %; 0.95: 99 %.
+
+Reading for the article (section 7.1 and threats to validity): with these
+sample sizes, the gate's fairness decision on 200 validation applicants
+carries over to 200 unseen applicants about half the time. The evidence
+records exactly which decision was taken on which metric values; it cannot
+make a decision on a noisy estimate reliable. Thresholds on group metrics
+need the estimate's uncertainty, which the policy language does not express.

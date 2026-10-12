@@ -4,10 +4,11 @@
 #   tests   pytest suite of the case (runs the case once in a temporary folder)
 #   run     the case with seed 42 under the committed policy.json
 #   pilot   seed 7; refuses to overwrite policy.json (the policy is fixed)
+#   stability  seed-stability addendum: partition seeds 0-499 (post hoc, exploratory)
 
 PYTHON ?= python3
 
-.PHONY: setup tests run pilot
+.PHONY: setup tests run pilot stability
 
 setup:
 	$(PYTHON) -m pip install --break-system-packages -r requirements.txt
@@ -20,3 +21,6 @@ run:
 
 pilot:
 	$(PYTHON) credit_case.py pilot
+
+stability:
+	$(PYTHON) seed_stability.py
