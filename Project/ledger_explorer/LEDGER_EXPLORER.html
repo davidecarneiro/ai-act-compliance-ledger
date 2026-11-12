@@ -1815,6 +1815,32 @@ function canonicalJSON(v){
   if(Array.isArray(v)) return '[' + v.map(canonicalJSON).join(',') + ']';   // order preserved
   return '{' + Object.keys(v).sort().map(k => encStr(k) + ':' + canonicalJSON(v[k])).join(',') + '}';
 }
+/* Schema version 2 (article branch): RFC 8785 (JCS). Keys are sorted by
+   UTF-16 code units, which is the default order of Array.prototype.sort, and
+   strings and numbers are written as ECMAScript JSON.stringify writes them,
+   which is what RFC 8785 specifies. A record without schema_version is
+   version 1 and keeps canonicalJSON above (the dissertation's form). */
+function jcs(v){
+  if(v === null) return 'null';
+  if(typeof v === 'boolean') return v ? 'true' : 'false';
+  if(typeof v === 'number'){
+    if(!Number.isFinite(v)) throw new Error('number outside the RFC 8785 domain');
+    return JSON.stringify(v);
+  }
+  if(typeof v === 'string') return JSON.stringify(v);
+  if(isTaggedFloat(v)) return jcs(Number(v[FLOAT_TAG]));   // 0.0 is 0 in RFC 8785
+  if(Array.isArray(v)) return '[' + v.map(jcs).join(',') + ']';
+  return '{' + Object.keys(v).sort().map(k => JSON.stringify(k) + ':' + jcs(v[k])).join(',') + '}';
+}
+function schemaVersionOf(body){ return body && body.schema_version === 2 ? 2 : 1; }
+function canonicalBody(body){ return schemaVersionOf(body) === 2 ? jcs(body) : canonicalJSON(body); }
+/* Version 2 names the provisions a record supports supports_requirements;
+   version 1 called them requirements_covered. */
+function reqsOf(r){
+  if(r && Array.isArray(r.supports_requirements)) return r.supports_requirements;
+  if(r && Array.isArray(r.requirements_covered)) return r.requirements_covered;
+  return [];
+}
 function recordBody(r, override){
   const b = {};
   for(const k in r) if(!DERIVED.includes(k)) b[k] = r[k];
@@ -1885,7 +1911,7 @@ async function addIssuer(text, label){
 // Re-verifies a record from scratch. override={field:value} simulates tampering.
 async function verifyRecordClient(c, i, override){
   const r = c.records[i];
-  const body = canonicalJSON(recordBody(r, override));
+  const body = canonicalBody(recordBody(r, override));
   const recHashCalc = await sha256hex(body);
   // in a fragment, the first record links to a predecessor that is not present: its
   // chain_hash is checked against the parent_hash it carries, and the link is reported as not applicable
@@ -2060,7 +2086,7 @@ function filterRecords(c){
       (r.event_type||'').toLowerCase().includes(q) ||
       (evText(r.event_type)||'').toLowerCase().includes(q) ||
       (r.decision||'').includes(q) || (decText(r.decision)||'').includes(q) ||
-      (r.requirements_covered||[]).some(a=>a.toLowerCase().includes(q)) ||
+      reqsOf(r).some(a=>a.toLowerCase().includes(q)) ||
       (!state.auditor && (r.reason||'').toLowerCase().includes(q));
   });
 }
@@ -2117,7 +2143,7 @@ function annexIVPanel(){
     </tbody></table></div></details></div>`;
 }
 function openArticle(tag){ state.article = tag; go('aiact'); window.scrollTo(0,0); }
-function articleRecords(c, tag){ return c.records.filter(r => (r.requirements_covered||[]).includes(tag)); }
+function articleRecords(c, tag){ return c.records.filter(r => reqsOf(r).includes(tag)); }
 function exportArticle(chainId, tag){
   const c = DATA.chains.find(x=>x.id===chainId); if(!c || c.big) return;
   const recs = articleRecords(c, tag);
@@ -2148,7 +2174,7 @@ function allRefs(){
 function representativeCase(tag, mx){
   if(refLaw(tag) !== 'AIA') return '';
   const c = DATA.chains.find(x=>x.id==='canonico'); if(!c) return '';
-  const cands = c.records.filter(r=>(r.requirements_covered||[]).includes(tag));
+  const cands = c.records.filter(r=>reqsOf(r).includes(tag));
   if(!cands.length) return '';
   const r = cands.find(x=>x.decision==='rejected') || cands.find(x=>x.decision==='escalated') || cands[0];
   const m = /^(.*?) ([\d.]+) (below|above) threshold ([\d.]+)/.exec(r.reason||'');
@@ -2488,7 +2514,7 @@ async function mountChainClientVerify(c){
     const sample = c.sample || [];
     for(const r of sample){
       const body = {}; for(const k in r) if(!DERIVED.includes(k)) body[k] = r[k];
-      const bodyStr = canonicalJSON(body);
+      const bodyStr = canonicalBody(body);
       const recOk = (await sha256hex(bodyStr)) === r.record_hash;
       const prevChain = r.i > 0 ? c.records[r.i-1].chain_hash : GENESIS;
       const chainOk = (await sha256hex(prevChain + r.record_hash)) === r.chain_hash
@@ -2604,7 +2630,7 @@ function exportCSV(id){
   const cell = v => { const s = v == null ? '' : String(v); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; };
   const masked = k => state.auditor && AUDITOR_MASKED.includes(k);
   const lines = [cols.join(',')].concat(rows.map(r => cols.map(k =>
-    k==='position' ? r.i : masked(k) ? '[REDACTED]' : k==='requirements_covered' ? cell((r[k]||[]).join(' ')) : cell(r[k])).join(',')));
+    k==='position' ? r.i : masked(k) ? '[REDACTED]' : k==='requirements_covered' ? cell(reqsOf(r).join(' ')) : cell(r[k])).join(',')));
   try {
     const blob = new Blob(['\ufeff' + lines.join('\n')], {type:'text/csv;charset=utf-8'});
     const url = URL.createObjectURL(blob);
@@ -2711,7 +2737,7 @@ function openRec(chainId, i){
   // «At a glance»: what the record says, readable without opening the 23 fields
   // (respects the auditor view: masked fields stay masked)
   const gv = (k, html) => (state.auditor && AUDITOR_MASKED.includes(k)) ? `<span class="redacted">${redacted()}</span>` : html;
-  const arts = Array.isArray(r.requirements_covered) ? r.requirements_covered : [];
+  const arts = reqsOf(r);
   const glance = `<div class="glance"><h3>${esc(L('At a glance','Em resumo'))}</h3><div class="kv">
       <div class="k">${esc(L('Event','Evento'))}</div><div class="v plain">${evLabel(r.event_type)} <span class="vna mono">${esc(r.event_type||'')}</span></div>
       <div class="k">${esc(L('When','Quando'))}</div><div class="v plain">${fmtTs(r.timestamp)}</div>
@@ -3925,7 +3951,7 @@ function seededSample(items, n, seed){
 }
 function auditFrame(c, art){
   const pool = c.big ? (c.sample||[]) : c.records;
-  return art ? pool.filter(r=>(r.requirements_covered||[]).includes(art)) : pool;
+  return art ? pool.filter(r=>reqsOf(r).includes(art)) : pool;
 }
 function renderAudit(){
   const W = state.wb;
@@ -3978,7 +4004,7 @@ function renderAudit(){
 async function verifyAuditRecord(c, r){
   if(!c.big){ const v = await verifyRecordClient(c, r.i, null); return {rec:v.recHashOk, link: v.fragStart ? null : (v.chainOk && v.parentOk), sig:v.sigOk}; }
   const body = {}; for(const k in r) if(!DERIVED.includes(k)) body[k] = r[k];
-  const bodyStr = canonicalJSON(body);
+  const bodyStr = canonicalBody(body);
   const rec = (await sha256hex(bodyStr)) === r.record_hash;
   const prevChain = r.i > 0 ? c.records[r.i-1].chain_hash : GENESIS;
   const link = (await sha256hex(prevChain + r.record_hash)) === r.chain_hash && r.parent_hash === prevChain;
@@ -4020,7 +4046,7 @@ function drawAuditResults(){
       : L(`✘ ${R.items.filter(x=>!(x.v.rec && x.v.link && x.v.sig!==false)).length} of ${R.items.length} sampled records fail verification.`, `✘ ${R.items.filter(x=>!(x.v.rec && x.v.link && x.v.sig!==false)).length} de ${R.items.length} registos da amostra falham a verificação.`))}</div>
     ${c.big ? `<div class="note" style="margin-bottom:8px">${esc(L(`Sampling frame: the ${fmtInt((c.sample||[]).length)} complete records this HTML embeds for the chain (first, last and every Kth), not all ${fmtInt(c.n)}. The working paper records this frame.`,`População da amostra: os ${fmtInt((c.sample||[]).length)} registos completos que este HTML embebe para a cadeia (1.º, último e cada K-ésimo), não os ${fmtInt(c.n)}. O papel de trabalho regista esta população.`))}</div>` : ''}
     <div class="tbl-wrap"><table><thead><tr><th>#</th><th>${esc(t('th_event'))}</th><th>${esc(t('th_decision'))}</th><th>${esc(L('Articles','Artigos'))}</th><th>record_hash</th><th>${esc(L('link','ligação'))}</th><th>${esc(L('signature','assinatura'))}</th></tr></thead><tbody>
-    ${R.items.map(({r,v})=>`<tr class="rec" role="button" tabindex="0" onclick="openRec('${c.id}',${r.i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRec('${c.id}',${r.i})}"><td class="mono" data-l="#">${posOf(r)}</td><td data-l="${esc(t('th_event'))}">${evLabel(r.event_type)}</td><td data-l="${esc(t('th_decision'))}"><span class="pill ${esc(r.decision)}">${decLabel(r.decision)}</span></td><td class="mono" style="font-size:11px" data-l="${esc(L('Articles','Artigos'))}">${esc((r.requirements_covered||[]).join(' '))}</td><td data-l="record_hash">${mark(v.rec)}</td><td data-l="${esc(L('link','ligação'))}">${mark(v.link)}</td><td data-l="${esc(L('signature','assinatura'))}">${mark(v.sig)}</td></tr>`).join('')}
+    ${R.items.map(({r,v})=>`<tr class="rec" role="button" tabindex="0" onclick="openRec('${c.id}',${r.i})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRec('${c.id}',${r.i})}"><td class="mono" data-l="#">${posOf(r)}</td><td data-l="${esc(t('th_event'))}">${evLabel(r.event_type)}</td><td data-l="${esc(t('th_decision'))}"><span class="pill ${esc(r.decision)}">${decLabel(r.decision)}</span></td><td class="mono" style="font-size:11px" data-l="${esc(L('Articles','Artigos'))}">${esc(reqsOf(r).join(' '))}</td><td data-l="record_hash">${mark(v.rec)}</td><td data-l="${esc(L('link','ligação'))}">${mark(v.link)}</td><td data-l="${esc(L('signature','assinatura'))}">${mark(v.sig)}</td></tr>`).join('')}
     </tbody></table></div>
     <div class="note">${esc(L(`Chain ${chainTitle(c)} · seed «${R.seed}» · positions ${R.items.map(x=>x.r.i).join(', ')} · final anchor ${ (c.last_chain_hash||'').slice(0,16) }…`, `Cadeia ${chainTitle(c)} · semente «${R.seed}» · posições ${R.items.map(x=>x.r.i).join(', ')} · âncora final ${(c.last_chain_hash||'').slice(0,16)}…`))}${sigNA?' · '+esc(L('signatures not verifiable in this browser','assinaturas não verificáveis neste browser'))+' ('+esc(edHint())+')':''}</div>`;
   const b = document.getElementById('wb-export'); if(b) b.disabled = false;
@@ -4100,7 +4126,7 @@ async function recheckPaper(){
     for(let k=0;k<recs.length;k++){
       const r = recs[k];   // tagged floats: canonicalJSON handles them (reviveFloats would collapse 0.0→0)
       const body = {}; for(const key in r) if(!DERIVED.includes(key)) body[key] = r[key];
-      const bs = canonicalJSON(body);
+      const bs = canonicalBody(body);
       const v1 = (await sha256hex(bs)) === r.record_hash;
       const v2 = (await sha256hex((r.parent_hash||'') + r.record_hash)) === r.chain_hash;
       const v3 = isTrustedFp(r.issuer_pubkey_fingerprint) ? await verifySigFor(r.issuer_pubkey_fingerprint, r.issuer_signature||'', bs) : false;
@@ -4142,7 +4168,7 @@ function exportWorkingPaper(){
       sampling_frame: c.big ? `embedded complete sample (${(c.sample||[]).length} records)` : 'all records', auditor_view_on_screen: state.auditor},
     sampling: {method: 'seeded partial Fisher–Yates (seed → FNV-1a → mulberry32)', seed: R.seed, n: R.items.length, drawn_at: R.at},
     results: R.items.map(({r,v})=>({position: posOf(r), evidence_id: r.evidence_id, event_type: r.event_type, decision: r.decision,
-      requirements_covered: r.requirements_covered, record_hash: r.record_hash, chain_hash: r.chain_hash,
+      requirements_covered: reqsOf(r), record_hash: r.record_hash, chain_hash: r.chain_hash,
       checks: {record_hash: v.rec, link_to_previous: v.link, signature: v.sig}})),
     conclusion: AUDIT_CONCLUSION[auditVerdict(R)],
     confidentiality_note: state.auditor ? 'The auditor view masked reason, artifact_id, artifact_type and pipeline_stage on screen; this paper carries the complete records, because the hashes only reproduce from the complete content.' : null,
@@ -4212,7 +4238,7 @@ async function buildLocalChain(records, name, id){
   if(origin) recs.forEach((r,k)=>{ r._orig = origin.i + k; });   // position in the origin chain, for display and export
   for(let i=0;i<recs.length;i++){
     const r = recs[i], p = [];
-    const body = canonicalJSON(recordBody(r));
+    const body = canonicalBody(recordBody(r));
     if((await sha256hex(body)) !== r.record_hash) p.push(L('record_hash does not match the content','record_hash não corresponde ao conteúdo')); else rhOk++;
     const prev = i>0 ? recs[i-1].chain_hash : GENESIS;
     if(i === 0 && fragment) parentOk++;   // unknown origin, not a failure
@@ -4223,7 +4249,7 @@ async function buildLocalChain(records, name, id){
     if(p.length){ issues.push({i, problems: p}); bad.push(i); }
   }
   const decisions = {}, articles = {};
-  recs.forEach(r=>{ decisions[r.decision] = (decisions[r.decision]||0)+1; (r.requirements_covered||[]).forEach(a=>articles[a]=(articles[a]||0)+1); });
+  recs.forEach(r=>{ decisions[r.decision] = (decisions[r.decision]||0)+1; reqsOf(r).forEach(a=>articles[a]=(articles[a]||0)+1); });
   const fps = [...new Set(recs.map(r=>r.issuer_pubkey_fingerprint))];
   return {id, local: true, title: name, desc: '', badges: [], path: name, n: recs.length, records: recs, big: false,
     verification: {valid: !issues.length, total: recs.length, issues, bad_indices: bad, sig_checked: sigChecked && recs.length>0, sig_ok: sigOk,
@@ -4248,7 +4274,8 @@ function ledgerShapeError(recs){
     const r = recs[k];
     for(const f of ['evidence_id','event_type','timestamp','decision','parent_hash','record_hash','chain_hash'])
       if(!isStr(r[f])) return L(`Record ${k}: «${f}» must be a text string.`,`Registo ${k}: «${f}» tem de ser um texto.`);
-    if('requirements_covered' in r && !(Array.isArray(r.requirements_covered) && r.requirements_covered.every(isStr)))
+    if(('requirements_covered' in r && !(Array.isArray(r.requirements_covered) && r.requirements_covered.every(isStr))) ||
+       ('supports_requirements' in r && !(Array.isArray(r.supports_requirements) && r.supports_requirements.every(isStr))))
       return L(`Record ${k}: «requirements_covered» must be a list of references. Example: ["Art.12"].`,`Registo ${k}: «requirements_covered» tem de ser uma lista de referências. Exemplo: ["Art.12"].`);
     if('metrics' in r && r.metrics !== null && (typeof r.metrics !== 'object' || Array.isArray(r.metrics)))
       return L(`Record ${k}: «metrics» must be an object of numbers. Example: {"precision": 0.91}.`,`Registo ${k}: «metrics» tem de ser um objecto de números. Exemplo: {"precision": 0.91}.`);
@@ -4404,8 +4431,8 @@ function checkOscal(text, chainId, name){
   // 4. requirement identifiers
   const bad = [];
   Object.entries(pairs).forEach(([i,p])=>{ const r = c.records[i];
-    const expected = new Set((r.requirements_covered||[]).filter(isAIA).map(aiaControlId));
-    const others = (r.requirements_covered||[]).filter(t=>!isAIA(t));
+    const expected = new Set(reqsOf(r).filter(isAIA).map(aiaControlId));
+    const others = reqsOf(r).filter(t=>!isAIA(t));
     (p.finding.props||[]).filter(x=>x.name==='supports-requirement').forEach(x=>{ if(!expected.has(x.value)) bad.push(`#${i}: ${x.value}${others.length?` (${L('the record cites','o registo cita')} ${others.join(', ')})`:''}`); }); });
   row(!bad.length, bad.length ? L(`Requirement identifiers not justified by the record: ${bad.map(esc).join('; ')}. The exporter turns every reference into an AI Act identifier from its digits, so references to other laws become wrong AI Act articles.`,`Identificadores de requisito não justificados pelo registo: ${bad.map(esc).join('; ')}. O exportador transforma qualquer referência num identificador do AI Act a partir dos dígitos, pelo que referências a outras leis viram artigos do AI Act errados.`)
     : esc(L('Every requirement identifier is justified by an AI Act reference of its record.','Cada identificador de requisito é justificado por uma referência do AI Act do seu registo.')));
@@ -4462,7 +4489,7 @@ function renderConnect(){
           <div class="k">decision</div><div class="v plain"><span class="pill ${esc(e.decision)}">${decLabel(e.decision)}</span></div>
           <div class="k">rule_id</div><div class="v"><code>${esc(e.rule_id||'')}</code></div>
           <div class="k">reason</div><div class="v plain">${esc(e.reason)}</div>
-          <div class="k">requirements_covered</div><div class="v plain">${(e.requirements_covered||[]).map(a=>`<span class="badge">${esc(a)}</span>`).join(' ')}</div>
+          <div class="k">requirements_covered</div><div class="v plain">${reqsOf(e).map(a=>`<span class="badge">${esc(a)}</span>`).join(' ')}</div>
           <div class="k">${esc(L('sealed but not shown in the record','selado mas fora do registo'))}</div><div class="v plain">${e.sealed_only.length ? e.sealed_only.map(k=>`<code>${esc(k)}</code>`).join(' ') : '-'}</div>
         </div></div></div></div>`;
   const tOnly = ex('twin_telemetry_only'), ctx = ex('twin_with_context');
@@ -4615,7 +4642,7 @@ async function verifyPasted(){
         continue;
       }
       const body = {}; for(const k in r) if(!['record_hash','issuer_signature','chain_hash'].includes(k)) body[k]=r[k];
-      const bodyStr = canonicalJSON(body);
+      const bodyStr = canonicalBody(body);
       const recOk = (await sha256hex(bodyStr)) === r.record_hash;
       const chainOk = (await sha256hex((r.parent_hash||'') + r.record_hash)) === r.chain_hash;
       const idx = (data && Array.isArray(data.record_indices)) ? data.record_indices : null;
@@ -4667,7 +4694,7 @@ function searchHits(c, q){
     (r.event_type||'').toLowerCase().includes(q) ||
     (evText(r.event_type)||'').toLowerCase().includes(q) ||
     (r.decision||'').includes(q) || (decText(r.decision)||'').includes(q) ||
-    (r.requirements_covered||[]).some(a=>a.toLowerCase().includes(q)) ||
+    reqsOf(r).some(a=>a.toLowerCase().includes(q)) ||
     (!state.auditor && (r.reason||'').toLowerCase().includes(q)));
 }
 function searchTable(c, hits){
