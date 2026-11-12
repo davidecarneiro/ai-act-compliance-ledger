@@ -82,6 +82,10 @@ def test_measure_and_summarise_with_a_stand_in_client(prep, tmp_path, monkeypatc
         (n, r) for n in (1, 10, 50) for r in (1, 2, 3))
     exported = list(tmp_path.glob("credit_case_validation-fake_*/onchain_anchors.json"))
     assert exported and len(json.loads(exported[0].read_text())["anchors"]) == 16
+    c = json.loads((exported[0].parent / "configuration_c.json").read_text())
+    assert c["clean_check"]["valid"] and c["all_as_expected"]
+    assert {r["observed"] for r in c["tamper"].values()} == {"detected"}
+    assert c["q12"]["answerable"] == "yes" and c["q12"]["answer"]["organisations"] == ["Org1MSP"]
 
     summary = json.loads(rw.summarise([result_path], out_dir=tmp_path).read_text())
     per_n = summary["runs"][0]["per_n"]

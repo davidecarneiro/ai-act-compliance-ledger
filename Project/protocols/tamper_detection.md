@@ -94,3 +94,10 @@ act before anything reaches a ledger and are not repeated for C.
 
 Expected: every attack T1–T7b detected, since every record is anchored (no
 window after the last anchor).
+
+Correction (2026-11-12, same day, before configuration C is run on the
+network): C's check is B's check of every record (body, hashes, links and
+issuer signatures, as `ablation_arms.verify_signed`) **plus** the on-chain
+anchors. The first wording above listed only the anchor comparisons; under
+it, an alteration that leaves `record_hash` untouched (T1, T2) would pass.
+The runner's test with a stand-in client found it.

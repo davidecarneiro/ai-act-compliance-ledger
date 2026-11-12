@@ -263,6 +263,10 @@ def measure(prep: Path, label: str, client: Optional[Sequence[str]] = None,
         shutil.copy2(prep / "engine.pub.pem", case_out / "engine.pub.pem")
         (case_out / "onchain_anchors.json").write_text(
             json.dumps(exports["credit_case"], indent=1) + "\n", encoding="utf-8")
+        # Configuration C of the tamper experiment and Q12 of WP5, here, where
+        # the engine key that signed is (protocols/tamper_detection.md).
+        import fabric_c
+        fabric_c.evaluate(case_out)
     call = governance["calls"][0]
     output = {
         "protocol": PROTOCOL,
