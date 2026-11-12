@@ -517,3 +517,105 @@ ledger" for every ledger, including a local JSONL one; to be worded by schema
 version and ledger kind.
 
 Case tests 18/18.
+
+## WP7 — Batch anchoring on Fabric: code ready, measurement pending
+
+Protocol `protocols/wp7_fabric_anchoring.md`, committed before any
+measurement; steps for the Fabric machine in `protocols/RUNNING_MEASUREMENTS.md`.
+
+**What changed**
+
+- `compliance_ledger_sim/merkle.py`, `chaincode/merkle.go`: RFC 9162 Merkle
+  tree hash, inclusion paths and verification (leaf 0x00, node 0x01,
+  SHA-256). Roots equal the RFC 6962 reference values (certificate-
+  transparency test data, sizes 1–8); Python and Go produce identical roots
+  and paths for trees of 1 to 33 entries.
+- `batch_anchor.py`: signed batch anchor statements (Merkle root over the
+  batch's `record_hash` values, first and last sequence number, last
+  `chain_hash`, Ed25519 over RFC 8785), inclusion proofs, auditor checks.
+- Chaincode: `AnchorBatch` (registered issuer, signature, strict statement,
+  batches must follow one another per stream; submitter stamped),
+  `VerifyInclusion` (body, hashes, issuer signature, same issuer as the
+  anchor, proof to the anchored root) and `GetAnchors`. `SubmitEvidence` is
+  unchanged and is the N = 1 mode. Note: a path alone does not fix the tree
+  size (RFC 9162); the size is bound by the signed statement, and
+  `VerifyInclusion` requires the proof's size to equal it.
+- `gateway/anchorbench`: Go measurement client (Gateway SDK, persistent
+  connection, serial submission). Compiled and vetted here against the exact
+  module versions of `go.sum`, with the dependencies cloned from GitHub (the
+  Go module proxy is not reachable from this environment); not run against a
+  network.
+- `wp7/run_wp7.py`: prepare, measure (protocol order, fail-fast, BatchTimeout
+  and state database read from the network), summarise (latency,
+  durable-evidence throughput, queries, F5 series). `deploy/01_up_and_deploy.sh`
+  takes `BATCH_TIMEOUT` and `STATE_DB`.
+- `credit_case/fabric_c.py`: configuration C of the tamper experiment and Q12
+  of WP5, evaluated on the measurement machine right after the export of the
+  credit case's per-record anchors. C's check is B's check of every record
+  plus the on-chain anchors; the first wording of the protocol amendment
+  listed only the anchors, which would have missed T1 and T2 (found by the
+  runner's test, corrected in the protocol before C is run).
+
+**Checks (2026-11-12):** Go 22 tests + `TestPreparedWP7Inputs` (the
+chaincode accepts what `prepare` produces: per-record chain, anchors and
+100 inclusion pairs); Python batch-anchor tests 47; WP7 runner 5 (end to end
+with a stand-in client, including configuration C and Q12).
+
+## WP9 — Regeneration and reproducibility (in progress)
+
+**Regenerated under schema version 2** (`prototype/article/regenerate.py`;
+`experiments/article/wp9/run_20261112T223155Z/`):
+
+| Run | Events | Decisions | Chain | Re-execution | Against the published run |
+| --- | --- | --- | --- | --- | --- |
+| Canonical scenarios | 6 | 1 approved, 3 rejected, 1 escalated, 1 recorded | 6/6 | 6/6 | — |
+| Incident (Art. 73) | 3 | 2 escalated, 1 recorded; Art. 73 in 3/3 | 3/3 | 3/3 | — |
+| MultiFlow Muvu (Jan., Mar.) | 29 | 12 approved, 17 escalated | 29/29 | 29/29 | 29/29 batches identical |
+| MultiFlow Steel_Industry | 1,750 | 94 approved, 1,656 escalated | 1,750/1,750 | 1,750/1,750 | 1,750/1,750 batches identical |
+
+The MultiFlow runs are **replays**: the platform's CSV files
+(github.com/davidecarneiro/multiflow at `a0a9786`, the commit recorded with
+the published runs) go through the bridge's own logic as the messages the
+injection script publishes, not through Kafka. Each replayed batch has the
+scenario, decision and reason (with its drift score) of the published Kafka
+run. The 8 OSCAL exports are valid against the NIST schema.
+
+**Bridge** (`multiflow_bridge/bridge.py`): the dissertation's open limit on
+acquisition state is closed. The state (reference rows, batch being filled,
+counters, Kafka offsets) is saved after every message; a complete batch is
+written ahead as pending and recorded on restart only if the ledger lacks it;
+Kafka offsets are committed only after the state is saved; redelivered
+messages are skipped by offset. Input validation was already in place. Tests
+cover the three stop points and were checked by mutation (removing either
+safeguard makes a test fail). The ledger is `ledger.jsonl` under version 2;
+the run scripts reset the state with the ledger.
+
+**OSCAL wording:** version 2 exports say "Compliance Policy Engine" and call a
+record ledger-anchored only when it carries the submitter a ledger stamped;
+version 1 exports keep the dissertation's wording (compared with the
+`thesis-v1.0` exporter on the published ledger: only the objectives version,
+1.0 → 1.1 from WP6, and the timestamps differ).
+
+**Ledger Explorer:** verifies each record in the canonical form of its own
+version (RFC 8785 for version 2) and reads `supports_requirements`;
+`ledger_explorer/test_canonical.js` runs the page's own functions in Node on
+the RFC 8785 vectors and on v1 and v2 ledgers (all records recompute).
+
+**Figures** (`prototype/article/figures.py`): F4 from the WP3 growth run, F5
+from the WP7 summary (two panels, one line per BatchTimeout), F6 as the JSON
+excerpts of one finding, complete and redacted. Colours: the first four slots
+of a validated categorical palette, each with its own marker, dash and direct
+label (greyscale-safe). Only runs that count for the article are drawn;
+validation runs are stamped as such. Checked visually with the container's
+WP3 validation run and a synthetic WP7 summary; not committed.
+
+**`make article`** (`prototype/article/Makefile`): `make tests` runs every
+suite (Python under both versions, credit case, bridge, WP7 runner, Go,
+interop, Explorer, published evidence) — all pass on 2026-11-12;
+`make regenerate`; `make figures`.
+
+**Still open in WP9:** Zenodo deposit and `CITATION.cff` (wait for the
+authorship decision); Docker images not rebuilt or tested here (no Docker in
+this environment); the engine key that signed the 2026-10-12 runs was lost
+with a replaced cloud container — the runs stay verifiable with the public
+keys published beside them, and later runs are signed with a new key.
