@@ -74,3 +74,23 @@ same engine function, which verifies the approval against the policy.
 `experiments/article/tamper/tamper_<UTC time>.json`: per attack and
 configuration, the expected and the observed outcome and the issues the check
 reported. Produced by `prototype/credit_case/tamper_experiment.py`.
+
+## Amendment (2026-11-12, before configuration C is run): how C is evaluated
+
+Configuration C is the credit case's 16 records anchored one by one on the
+Fabric network (N = 1 batch anchors, stream `credit-case`, WP7 protocol), by
+the engine on the measurement machine. Its check is what a third party
+holding the provider's copy of the ledger and the on-chain anchors (exported
+with `GetAnchors`, each carrying the submitting organisation stamped by the
+chaincode) can verify: every anchor's issuer signature, that the anchors
+follow one another, and that each record's hash and `chain_hash` match its
+anchor. The attacks T1–T7b are applied to the provider's copy exactly as for
+B+; the on-chain anchors are not attacked, since rewriting them needs both
+organisations to endorse (the WP7 governance check records that one
+organisation alone is refused). T7a and T7b re-sign with the engine's key,
+so C is evaluated on the measurement machine, right after the export
+(`credit_case/fabric_c.py`, called by `run_wp7.py measure`). T8, T9a and T9b
+act before anything reaches a ledger and are not repeated for C.
+
+Expected: every attack T1–T7b detected, since every record is anchored (no
+window after the last anchor).
