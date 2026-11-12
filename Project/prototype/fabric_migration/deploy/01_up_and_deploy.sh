@@ -18,6 +18,12 @@
 #
 #   bash 01_up_and_deploy.sh
 #
+# WP7 (protocols/wp7_fabric_anchoring.md) sets two parameters, both optional:
+#   BATCH_TIMEOUT=250ms  writes the orderer BatchTimeout into the test network's
+#                        configtx.yaml before the network comes up (default: as
+#                        found, 2s in fabric-samples; a .bak copy is kept)
+#   STATE_DB=couchdb     brings the peers up with CouchDB instead of LevelDB
+#
 # Prerequisite: 00_setup_fabric.sh already run. If the pull or the daemon hangs,
 # use 'docker desktop stop' followed by 'docker desktop start' ('restart' is not enough).
 # =====================================================================
@@ -32,6 +38,7 @@ CCNAME="compliance"
 IMAGETAG="2.5.10"
 POLICY="AND('Org1MSP.peer','Org2MSP.peer')"
 CA_FLAG=$([ "${FABRIC_CA:-1}" = "1" ] && echo "-ca" || echo "")
+DB_FLAG=$([ "${STATE_DB:-leveldb}" = "couchdb" ] && echo "-s couchdb" || echo "")
 
 export PATH="$SAMPLES/bin:$PATH"
 export FABRIC_CFG_PATH="$SAMPLES/config"
@@ -49,9 +56,15 @@ echo "=== 1/4 Tear down the previous network ==="
 cd "$TESTNET"
 ./network.sh down || true
 
-echo "=== 2/4 Bring up the two-org network and channel '$CHANNEL' (Fabric $IMAGETAG) ==="
-# shellcheck disable=SC2086  # CA_FLAG is empty or a single word on purpose
-./network.sh up createChannel $CA_FLAG -c "$CHANNEL" -i "$IMAGETAG"
+if [ -n "${BATCH_TIMEOUT:-}" ]; then
+  echo "=== 1b/4 Orderer BatchTimeout = $BATCH_TIMEOUT (configtx/configtx.yaml) ==="
+  sed -i.bak -E "s/^([[:space:]]*BatchTimeout:).*/\1 ${BATCH_TIMEOUT}/" configtx/configtx.yaml
+fi
+grep -E "^[[:space:]]*(BatchTimeout|MaxMessageCount):" configtx/configtx.yaml
+
+echo "=== 2/4 Bring up the two-org network and channel '$CHANNEL' (Fabric $IMAGETAG, ${STATE_DB:-leveldb}) ==="
+# shellcheck disable=SC2086  # CA_FLAG and DB_FLAG are empty or fixed words on purpose
+./network.sh up createChannel $CA_FLAG $DB_FLAG -c "$CHANNEL" -i "$IMAGETAG"
 
 echo "=== 3/4 Vendor the Go dependencies (offline, deterministic CCaaS build) ==="
 ( cd "$CC_SRC" && go mod vendor )

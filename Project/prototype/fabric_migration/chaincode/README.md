@@ -18,6 +18,9 @@ dissertation prints that version. This folder holds the corrected one.
 | `VerifyChain()` | any member | Walks the records from the genesis and checks each `record_hash`, the Ed25519 signature against the registered key, the `parent_hash` link and the `chain_hash` |
 | `GetEvidence(evidenceID)` | any member | Returns the stored JSON of one record |
 | `QueryByRequirement(article)` | any member | Returns, as a JSON array, the stored records whose `requirements_covered` lists the article |
+| `AnchorBatch(anchorJSON)` | as `SubmitEvidence` | WP7: records one signed batch anchor (RFC 9162 Merkle root over N records' `record_hash`, first and last sequence number, last `chain_hash`); the issuer must be registered, the signature must verify over the statement's RFC 8785 form, and the batch must follow the previous one of its stream; stamps the submitter's MSP identity |
+| `VerifyInclusion(recordJSON, proofJSON)` | any member | WP7: checks that a record (body, hashes, issuer signature) is in an anchored batch at the position its inclusion proof claims; returns a JSON result |
+| `GetAnchors(stream)` | any member | WP7: the anchors of a stream in order, with the submitter stamps, and the stream head |
 
 The verification key never comes from the caller: a submitter cannot pair a
 forged record with a key of its own choosing. The two queries return the stored
@@ -67,8 +70,15 @@ the version 2 fixtures from the Python issuer.
 
 ## Tests (no network needed)
 
-`go test -mod=vendor ./...` runs **17 tests**, all passing, from the vendored
-dependencies and without network access. The ten of the dissertation:
+`go test -mod=vendor ./...` runs **23 tests** (one of them,
+`TestPreparedWP7Inputs`, only when `INTEROP_WP7_PREP` names a folder prepared
+by `../wp7/run_wp7.py prepare`), all passing, from the vendored dependencies
+and without network access. Batch anchoring (WP7, `anchors_test.go`): Merkle
+roots and paths identical to Python's on shared vectors that include the RFC
+6962 reference roots; the Python issuer's anchors accepted in order and every
+record proven included; replayed, skipping, altered and malformed anchors
+refused; altered records and wrong proofs reported as not included. The ten of
+the dissertation:
 
 - `TestContractBootstraps` builds the contract with `contractapi.NewChaincode`,
   as the executable does at start-up, and checks that the queries return a null

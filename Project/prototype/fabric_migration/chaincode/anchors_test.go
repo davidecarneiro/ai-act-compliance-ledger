@@ -300,3 +300,92 @@ func TestVerifyInclusionRejects(t *testing.T) {
 		t.Fatalf("unanchored record: %+v", r)
 	}
 }
+
+// The inputs run_wp7.py prepares for the Fabric measurements are accepted by
+// the chaincode: the per-record chain by SubmitEvidence, the anchors by
+// AnchorBatch, and every inclusion pair by VerifyInclusion. Set
+// INTEROP_WP7_PREP to the prepared folder (tests/test_run_wp7.py does).
+func TestPreparedWP7Inputs(t *testing.T) {
+	dir := os.Getenv("INTEROP_WP7_PREP")
+	if dir == "" {
+		t.Skip("INTEROP_WP7_PREP not set")
+	}
+	read := func(name string) []byte {
+		b, err := os.ReadFile(dir + "/" + name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return b
+	}
+	lines := func(name string) []string {
+		var out []string
+		for _, l := range strings.Split(string(read(name)), "\n") {
+			if strings.TrimSpace(l) != "" {
+				out = append(out, l)
+			}
+		}
+		return out
+	}
+	var manifest struct {
+		Stream struct {
+			InclusionStream string `json:"inclusion_stream"`
+		} `json:"stream"`
+		CreditCase *struct{} `json:"credit_case"`
+	}
+	if err := json.Unmarshal(read("manifest.json"), &manifest); err != nil {
+		t.Fatal(err)
+	}
+	cc := new(ComplianceContract)
+	stub := shimtest.NewMockStub("compliance", nil)
+	ctx := new(contractapi.TransactionContext)
+	ctx.SetStub(stub)
+	setCreator(t, stub, registryAdminMSP)
+	stub.MockTransactionStart("reg")
+	if err := cc.RegisterIssuer(ctx, strings.TrimSpace(string(read("pubkey.txt")))); err != nil {
+		t.Fatal(err)
+	}
+	stub.MockTransactionEnd("reg")
+	tx := 0
+	submit := func(fn func() error) {
+		tx++
+		stub.MockTransactionStart(fmt.Sprintf("t%d", tx))
+		defer stub.MockTransactionEnd(fmt.Sprintf("t%d", tx))
+		if err := fn(); err != nil {
+			t.Fatalf("transaction %d: %v", tx, err)
+		}
+	}
+	chain := append(lines("chain_warmup.jsonl"), lines("chain_r1.jsonl")...)
+	for _, rec := range chain {
+		submit(func() error { return cc.SubmitEvidence(ctx, rec) })
+	}
+	res, err := cc.VerifyChain(ctx)
+	if err != nil || res != fmt.Sprintf("chain valid: %d records", len(chain)) {
+		t.Fatalf("VerifyChain: %q %v", res, err)
+	}
+	stream := manifest.Stream.InclusionStream // "n<N>-r1"
+	n := strings.TrimPrefix(strings.SplitN(stream, "-", 2)[0], "n")
+	for _, file := range []string{"anchors_warmup.jsonl", "anchors_n" + n + "_r1.jsonl"} {
+		for _, a := range lines(file) {
+			submit(func() error { return cc.AnchorBatch(ctx, a) })
+		}
+	}
+	pairs := lines("inclusion_pairs.jsonl")
+	for i, p := range pairs {
+		var pair struct {
+			Record json.RawMessage `json:"record"`
+			Proof  json.RawMessage `json:"proof"`
+		}
+		if err := json.Unmarshal([]byte(p), &pair); err != nil {
+			t.Fatal(err)
+		}
+		if r := inclusion(t, cc, ctx, string(pair.Record), string(pair.Proof)); !r.Included {
+			t.Fatalf("pair %d: %+v", i, r)
+		}
+	}
+	if manifest.CreditCase != nil {
+		for _, a := range lines("anchors_credit_case.jsonl") {
+			submit(func() error { return cc.AnchorBatch(ctx, a) })
+		}
+	}
+	t.Logf("%d chain records, %d inclusion pairs accepted", len(chain), len(pairs))
+}

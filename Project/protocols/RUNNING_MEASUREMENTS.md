@@ -42,7 +42,57 @@ commit it on a branch), together with the commit hash and any note.
 Run it once. If it has to be repeated (interrupted, machine busy), keep both
 files and say why.
 
-## WP7 — Fabric anchoring
+## WP7 — Fabric anchoring (about 1 hour of machine time, mostly waiting)
 
-Instructions will be added here with the WP7 scripts, before any
-measurement.
+Protocol: `protocols/wp7_fabric_anchoring.md`. It needs the Fabric test
+network of the dissertation (`fabric_migration/00_setup_fabric.sh` already
+run, Docker running) and Go 1.24 or later. Run WP3 first, or on another day:
+the two must not overlap.
+
+In the same virtual environment, add the credit case's dependencies (the
+credit case is anchored on the chain too):
+
+    pip install -r Project/prototype/credit_case/requirements.txt
+
+**1. Prepare the inputs** (no network needed, about a minute; the engine signs
+with its own key, created on first use):
+
+    cd Project/prototype/fabric_migration/wp7
+    python3 run_wp7.py prepare --out ~/wp7-prep
+
+**2. BatchTimeout 2 s, LevelDB** (about 40 minutes):
+
+    cd ../deploy && BATCH_TIMEOUT=2s bash 01_up_and_deploy.sh
+    cd ../wp7 && caffeinate -i python3 run_wp7.py measure --prep ~/wp7-prep --label <machine-name>-bt2s
+
+**3. BatchTimeout 250 ms, LevelDB** (about 8 minutes):
+
+    cd ../deploy && BATCH_TIMEOUT=250ms bash 01_up_and_deploy.sh
+    cd ../wp7 && caffeinate -i python3 run_wp7.py measure --prep ~/wp7-prep --label <machine-name>-bt250ms
+
+**4. CouchDB, queries only** (about 5 minutes):
+
+    cd ../deploy && BATCH_TIMEOUT=250ms STATE_DB=couchdb bash 01_up_and_deploy.sh
+    cd ../wp7 && caffeinate -i python3 run_wp7.py measure --prep ~/wp7-prep --label <machine-name>-couchdb --queries-only
+
+On Linux, drop `caffeinate -i`. Each `01_up_and_deploy.sh` takes the network
+down and brings a fresh one up, so every run starts from an empty ledger. The
+same `~/wp7-prep` folder serves the three runs; do not prepare it again in
+between.
+
+**5. Summary and tear-down:**
+
+    python3 run_wp7.py summarise ../../../experiments/article/wp7/fabric_<machine-name>-*.json
+    cd ~/fabric-workspace/fabric-samples/test-network && ./network.sh down
+    mv configtx/configtx.yaml.bak configtx/configtx.yaml    # restores BatchTimeout 2s
+
+**Send back** everything the runs wrote under
+`Project/experiments/article/wp7/` (three `fabric_*.json` files, the
+`credit_case_*` folder, the `summary_*.json` file), `~/wp7-prep/manifest.json`,
+the commit hash and any note. If a run stops with an error, keep what it
+wrote and send the message: the runner stops at the first failed submission
+rather than continue with a broken network.
+
+A single-organisation endorsement check is part of each run: it is expected
+to be refused (`ENDORSEMENT_POLICY_FAILURE`), and the runner records the
+refusal; a message about it is not an error.

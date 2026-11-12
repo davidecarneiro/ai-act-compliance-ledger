@@ -30,3 +30,5 @@ prototype/fabric_migration/gateway/gateway-measure
 # script (label validation-*); measurement-machine runs are committed.
 experiments/article/wp3/_work/
 experiments/article/wp3/ablation_validation-*.json
+# WP7 runner caches
+prototype/fabric_migration/wp7/__pycache__/
