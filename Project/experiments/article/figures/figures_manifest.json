@@ -1,0 +1,25 @@
+{
+ "generated_at": "2026-11-12T22:48:59.799904+00:00",
+ "figures": [
+  {
+   "figure": "F4",
+   "missing": "no WP3 run"
+  },
+  {
+   "figure": "F5",
+   "missing": "no WP7 summary"
+  },
+  {
+   "figure": "F6",
+   "files": [
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F6_finding_complete.json",
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F6_finding_redacted.json"
+   ],
+   "source": "/home/claude/ai-act-compliance-ledger/Project/experiments/article/wp4/run_20261012T145744Z/ledger.jsonl",
+   "source_sha256": "79021e180f3ffc0225f4462b09d633d3bcab720290801696018c773f319699ac",
+   "chain_valid": true,
+   "signatures_verified": true,
+   "note": "record 8 of the credit case (validation of v2, fairness gate), exported with the current exporter"
+  }
+ ]
+}

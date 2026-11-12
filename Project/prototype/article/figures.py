@@ -184,14 +184,28 @@ def figure_f5(wp7: Path, out: Path) -> Dict:
 
 
 def figure_f6(out: Path) -> Optional[Dict]:
-    """JSON excerpts of one finding, complete and redacted, from the credit case."""
+    """JSON excerpts of one finding, complete and redacted, from the credit case.
+
+    Exported afresh from the run's ledger with the current exporter, not read
+    from the run's archived exports: those were written before the exporter
+    took the article's terms (Compliance Policy Engine; "permissioned ledger"
+    only for records a ledger stamped), and the figure shows the exporter as
+    the article describes it. The ledger is the run's own, and its signatures
+    are checked against the public keys published with the run."""
+    import oscal_exporter
+    from ledger_store import read_ledger
+
     runs = sorted((EXPERIMENTS_DIR / "wp4").glob("run_*"))
     if not runs:
         return None
     run = runs[0]
+    ledger = read_ledger(run / "ledger.jsonl")
+    chain_ok = oscal_exporter.verify_chain_structure(ledger)
+    signatures_ok = oscal_exporter.verify_signatures(ledger, keys_dir=run / "keys")
     excerpts = {}
     for variant in ("complete", "redacted"):
-        doc = json.loads((run / f"oscal_assessment_results_{variant}.json").read_text(encoding="utf-8"))
+        doc = oscal_exporter.to_oscal_sar(ledger, chain_valid=chain_ok, redacted=variant == "redacted",
+                                          signatures_verified=signatures_ok)
         result = doc["assessment-results"]["results"][0]
         # The finding on the validation of model v2 (record 8): the fairness gate.
         finding = result["findings"][7]
@@ -201,7 +215,10 @@ def figure_f6(out: Path) -> Optional[Dict]:
         path = out / f"F6_finding_{variant}.json"
         path.write_text(json.dumps(excerpts[variant], indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return {"figure": "F6", "files": [str(out / f"F6_finding_{v}.json") for v in excerpts],
-            "source": str(run), "note": "record 8 of the credit case (validation of v2, fairness gate)"}
+            "source": str(run / "ledger.jsonl"), "source_sha256": _sha(run / "ledger.jsonl"),
+            "chain_valid": chain_ok, "signatures_verified": signatures_ok,
+            "note": "record 8 of the credit case (validation of v2, fairness gate), "
+                    "exported with the current exporter"}
 
 
 def _save(fig, out: Path, name: str) -> List[str]:

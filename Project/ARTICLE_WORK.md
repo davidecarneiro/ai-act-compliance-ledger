@@ -609,6 +609,15 @@ label (greyscale-safe). Only runs that count for the article are drawn;
 validation runs are stamped as such. Checked visually with the container's
 WP3 validation run and a synthetic WP7 summary; not committed.
 
+F6 is exported afresh from the credit case's `ledger.jsonl` with the current
+exporter, not read from the run's archived exports: those were written on
+2026-10-12, before the exporter took the article's terms ("Compliance Policy
+Engine"; "permissioned ledger" only for records a ledger stamped), and still
+say "Compliance Oracle". The ledger is unchanged; chain and signatures verify
+against the public keys published with the run (manifest:
+`chain_valid: true`, `signatures_verified: true`). The two excerpts
+(`experiments/article/figures/F6_finding_*.json`) are committed.
+
 **`make article`** (`prototype/article/Makefile`): `make tests` runs every
 suite (Python under both versions, credit case, bridge, WP7 runner, Go,
 interop, Explorer, published evidence) — all pass on 2026-11-12;
