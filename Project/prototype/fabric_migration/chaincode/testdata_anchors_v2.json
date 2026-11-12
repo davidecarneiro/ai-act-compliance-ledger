@@ -1,0 +1,235 @@
+{
+ "ledger": "testdata_ledger_v2.json",
+ "n": 5,
+ "stream": "fixture",
+ "anchors": [
+  {
+   "statement": {
+    "type": "evidence-batch-anchor",
+    "stream": "fixture",
+    "first_seq": 1,
+    "last_seq": 5,
+    "size": 5,
+    "merkle_root": "7512780e626d93e1575d06af45131e7f702a04d2e88351949a0f365f25d97fce",
+    "head_chain_hash": "909f8ba1c45a0f85ef0760bb7a74c47bbf818aeb479a87ef6bd455626da9cf62",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "tree": "rfc9162-sha256",
+    "anchored_at": "2026-11-12T00:00:00+00:00"
+   },
+   "signature": "BIZ9ZyDXA1vw7u55xgDnk1WfSX+QrWLYqSGL2PQ6qCkO80rX2kfkgNarQE8sxci+RXvPfKaLRtkB9GKu+AMhAQ=="
+  },
+  {
+   "statement": {
+    "type": "evidence-batch-anchor",
+    "stream": "fixture",
+    "first_seq": 6,
+    "last_seq": 10,
+    "size": 5,
+    "merkle_root": "d6dcbab44db9115c6304508d934685ceaa23a4f5da22cde840551c9627c2c99c",
+    "head_chain_hash": "ed03a8c25f4b56f345500bf1b660c14c7cdb1a7cbac0b16df9d722e1aaae65f3",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "tree": "rfc9162-sha256",
+    "anchored_at": "2026-11-12T00:00:00+00:00"
+   },
+   "signature": "c9sKsB8/1DbEBXP2vZ48eoNQkbtEUNC+TDSI6gxm3CZh3fmSx2FLVDksZ3zlCoGAFlmHZme+Q1PQwpbKJhQ7Dg=="
+  },
+  {
+   "statement": {
+    "type": "evidence-batch-anchor",
+    "stream": "fixture",
+    "first_seq": 11,
+    "last_seq": 15,
+    "size": 5,
+    "merkle_root": "2f09fdbb51095ba6c21ff4e1f90212dc6bf228e648909673666709de27e96305",
+    "head_chain_hash": "08771fa899e9e0d6111404a7d061389f997cacfb60e124d2591df18138c31220",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "tree": "rfc9162-sha256",
+    "anchored_at": "2026-11-12T00:00:00+00:00"
+   },
+   "signature": "U4KfqvSX4Or1ekuxVLBVf5ZhahqAvPbI598ht49AURZcs1VHfCS65GvSOreKl4DBaRh/cCNqqG9hX6p8D9TGAA=="
+  },
+  {
+   "statement": {
+    "type": "evidence-batch-anchor",
+    "stream": "fixture",
+    "first_seq": 16,
+    "last_seq": 16,
+    "size": 1,
+    "merkle_root": "4e43473581112e603ca28de9f5f23311592fbcfe77ce61721af2e93f1025b5ca",
+    "head_chain_hash": "957c721907fe6d2ba08ae9fc36de9597e008a1698f8c0cfa47c66f36591813ed",
+    "issuer_pubkey_fingerprint": "838006e84912935f06247501f19c7192c7232a795c824f3846f4a2406e6363be",
+    "tree": "rfc9162-sha256",
+    "anchored_at": "2026-11-12T00:00:00+00:00"
+   },
+   "signature": "VtHrX2MRhmr1Hz/Lh+KVuqQrH7bI01btykyGMwzzI1xnG6gvJt2kiD4df7hP7B5Sz3SCUKP3/4K/bqljsoFXBQ=="
+  }
+ ],
+ "proofs": [
+  {
+   "stream": "fixture",
+   "first_seq": 1,
+   "leaf_index": 0,
+   "tree_size": 5,
+   "path": [
+    "ecaca80d014ba75de1477ffd025a2346c5b3e9d0de9518eff7a8bddc81199e9d",
+    "6442661f937fc33dce89884cf41c9e2140cc4cee5336712dfd8c803fb8a8f5ba",
+    "04e32718c06c767337a23ae4dd28a042f9cd595076ebbf212789816c60db411c"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 1,
+   "leaf_index": 1,
+   "tree_size": 5,
+   "path": [
+    "a968fb6aac78d127e8f4a53b2b5a47ab9166e64811b5788928e5af4eb37249cb",
+    "6442661f937fc33dce89884cf41c9e2140cc4cee5336712dfd8c803fb8a8f5ba",
+    "04e32718c06c767337a23ae4dd28a042f9cd595076ebbf212789816c60db411c"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 1,
+   "leaf_index": 2,
+   "tree_size": 5,
+   "path": [
+    "2ea5ef4f86e985193723080e494b343131c3d7954331a295d31c46926a4c6022",
+    "a455b5c99650e1d808bce0445e638a94619d0e96cc3850e24a9b8c9dc66c7276",
+    "04e32718c06c767337a23ae4dd28a042f9cd595076ebbf212789816c60db411c"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 1,
+   "leaf_index": 3,
+   "tree_size": 5,
+   "path": [
+    "1733266f383761f6700c414631fe605b88b412c7cbb69423e08bab2122bc627d",
+    "a455b5c99650e1d808bce0445e638a94619d0e96cc3850e24a9b8c9dc66c7276",
+    "04e32718c06c767337a23ae4dd28a042f9cd595076ebbf212789816c60db411c"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 1,
+   "leaf_index": 4,
+   "tree_size": 5,
+   "path": [
+    "fd08c98f2970db0e0b15eaa50fa43e4e3977266ba7c264b4fd93c5dd4f8ed773"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 6,
+   "leaf_index": 0,
+   "tree_size": 5,
+   "path": [
+    "628673a252852bb03a27c76ff5a90579eec83256176f8b4e8b810b76fcb2a4f6",
+    "fc1cac54d7fa7261d51ee6ce365a5efc2e010097718351a541b96e446f9256d7",
+    "445277a98c836b5218a5373cf3130bf58404cff16b8a1ac68569d90843779846"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 6,
+   "leaf_index": 1,
+   "tree_size": 5,
+   "path": [
+    "acd7148b6679eee0f4da059013dc22bdc79db68e38573d2a8f01ef0d9371eba3",
+    "fc1cac54d7fa7261d51ee6ce365a5efc2e010097718351a541b96e446f9256d7",
+    "445277a98c836b5218a5373cf3130bf58404cff16b8a1ac68569d90843779846"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 6,
+   "leaf_index": 2,
+   "tree_size": 5,
+   "path": [
+    "a144a96399338df9881ce732e2e34d7472d1d1137d4337dd232dc44acbaa0705",
+    "4ea3f79d35b2c16fd56a78a263a3a42f844607201ce5f4f643603e4e9ef5c288",
+    "445277a98c836b5218a5373cf3130bf58404cff16b8a1ac68569d90843779846"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 6,
+   "leaf_index": 3,
+   "tree_size": 5,
+   "path": [
+    "ee127c50f724bd258b2bf95bf2ac1966968d224b0c5a5b3f5795460a817c1ef2",
+    "4ea3f79d35b2c16fd56a78a263a3a42f844607201ce5f4f643603e4e9ef5c288",
+    "445277a98c836b5218a5373cf3130bf58404cff16b8a1ac68569d90843779846"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 6,
+   "leaf_index": 4,
+   "tree_size": 5,
+   "path": [
+    "d2521afb773a798cc0a4accd891096b4914b5ef0a69541206c0d3a073ed9ddff"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 11,
+   "leaf_index": 0,
+   "tree_size": 5,
+   "path": [
+    "39acd4f7bfe5a703d48728bb5791b210c3f974b26f27e24f963205e3f02e7f1f",
+    "4c0d1db6ed797bf771b0d587b2dc565ecb67b25607f6c40868b3da5dce928127",
+    "c182b6111d50f835cf890ac971dfd03b2bfeb4f584eb889d1bef1ebcf8a1d032"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 11,
+   "leaf_index": 1,
+   "tree_size": 5,
+   "path": [
+    "005153df083bbf99eb2e0f97103f9f0b6fbe559f9cbb922bbef130a9ca9c7eb3",
+    "4c0d1db6ed797bf771b0d587b2dc565ecb67b25607f6c40868b3da5dce928127",
+    "c182b6111d50f835cf890ac971dfd03b2bfeb4f584eb889d1bef1ebcf8a1d032"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 11,
+   "leaf_index": 2,
+   "tree_size": 5,
+   "path": [
+    "c7086e907e591c38bacb9f1f594c4d67ecaa39220725d2d9328ed94e16602b63",
+    "5b62748bd46224296ab019d99c71f439ae5b10f2419ff72151083801dc40f458",
+    "c182b6111d50f835cf890ac971dfd03b2bfeb4f584eb889d1bef1ebcf8a1d032"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 11,
+   "leaf_index": 3,
+   "tree_size": 5,
+   "path": [
+    "3700c8c68909130115145a336090e7146521dbf2f8ea49f6d145f905d79c07dd",
+    "5b62748bd46224296ab019d99c71f439ae5b10f2419ff72151083801dc40f458",
+    "c182b6111d50f835cf890ac971dfd03b2bfeb4f584eb889d1bef1ebcf8a1d032"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 11,
+   "leaf_index": 4,
+   "tree_size": 5,
+   "path": [
+    "a4e8cdad3f177493ae000aeed09d79e7d02060a623ce29945c342302920e2441"
+   ]
+  },
+  {
+   "stream": "fixture",
+   "first_seq": 16,
+   "leaf_index": 0,
+   "tree_size": 1,
+   "path": []
+  }
+ ]
+}
