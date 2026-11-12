@@ -1,0 +1,137 @@
+{
+ "generated_at": "2026-11-12T22:31:55.526637+00:00",
+ "schema_version": 2,
+ "environment": {
+  "platform": "Linux-6.18.44-fc-v378-x86_64-with-glibc2.39",
+  "python": "3.13.18"
+ },
+ "multiflow": {
+  "repository": "https://github.com/davidecarneiro/multiflow.git",
+  "commit": "a0a97863181eb4cc158c32bad70cf6a1d415081c"
+ },
+ "table_t8": [
+  {
+   "run": "scenarios",
+   "events": 6,
+   "decisions": {
+    "approved": 1,
+    "escalated": 1,
+    "recorded": 1,
+    "rejected": 3
+   },
+   "chain": "6/6",
+   "chain_valid": true,
+   "reexecution": {
+    "match": 6
+   },
+   "rules": {
+    "audit.query_recorded": 1,
+    "monitoring.drift_alert": 1,
+    "oversight.approval_missing": 1,
+    "policy.all_checks_passed": 1,
+    "threshold.fairness": 1,
+    "threshold.precision": 1
+   }
+  },
+  {
+   "run": "incident",
+   "events": 3,
+   "decisions": {
+    "escalated": 2,
+    "recorded": 1
+   },
+   "chain": "3/3",
+   "chain_valid": true,
+   "reexecution": {
+    "match": 3
+   },
+   "rules": {
+    "audit.query_recorded": 1,
+    "incident.reportable": 2
+   },
+   "art73_supported": "3/3"
+  },
+  {
+   "run": "multiflow_muvu",
+   "events": 29,
+   "decisions": {
+    "approved": 12,
+    "escalated": 17
+   },
+   "chain": "29/29",
+   "chain_valid": true,
+   "reexecution": {
+    "match": 29
+   },
+   "rules": {
+    "monitoring.drift_alert": 17,
+    "policy.all_checks_passed": 12
+   },
+   "replay": true,
+   "datasets": {
+    "Muvu_Janeiro.csv": {
+     "sha256": "1adcd8d372982336e40826c216cba0610172af3290f558260333b060bd2e74d4",
+     "lines": 409
+    },
+    "Muvu_Marco.csv": {
+     "sha256": "a7a12aa7a5abe08344b388288b28e3267b82584e979a0e548d99920cc40f0fde",
+     "lines": 203
+    }
+   },
+   "bridge_stats": {
+    "batches": 29,
+    "unusable": 0,
+    "wrong_width": 0,
+    "reference_rows": 20,
+    "left_over": 12
+   },
+   "comparison_with_published": {
+    "published_ledger": "runs/multiflow_run_real/ledger.json",
+    "published_events": 29,
+    "same_length": true,
+    "batches_identical": 29,
+    "first_difference": null,
+    "compared": "scenario_id, decision and reason (which carries the drift score) per batch"
+   }
+  },
+  {
+   "run": "multiflow_steel",
+   "events": 1750,
+   "decisions": {
+    "approved": 94,
+    "escalated": 1656
+   },
+   "chain": "1750/1750",
+   "chain_valid": true,
+   "reexecution": {
+    "match": 1750
+   },
+   "rules": {
+    "monitoring.drift_alert": 1656,
+    "policy.all_checks_passed": 94
+   },
+   "replay": true,
+   "datasets": {
+    "Steel_Industry.csv": {
+     "sha256": "b53f129f33a23b5f8ecca25d5adfff1666f22871e46b41a7fb9787224d4dbdab",
+     "lines": 35040
+    }
+   },
+   "bridge_stats": {
+    "batches": 1750,
+    "unusable": 1,
+    "wrong_width": 0,
+    "reference_rows": 20,
+    "left_over": 19
+   },
+   "comparison_with_published": {
+    "published_ledger": "runs/multiflow_run_steel/ledger.json",
+    "published_events": 1750,
+    "same_length": true,
+    "batches_identical": 1750,
+    "first_difference": null,
+    "compared": "scenario_id, decision and reason (which carries the drift score) per batch"
+   }
+  }
+ ]
+}

@@ -41,7 +41,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 BASE_DIR = Path(__file__).parent
 from paths import EXPERIMENTS_DIR  # noqa: E402
-from canonical import record_body_bytes  # noqa: E402
+from canonical import SCHEMA_V2, record_body_bytes, schema_version_of  # noqa: E402
 from ledger_store import read_ledger  # noqa: E402
 from simulator import (  # noqa: E402
     GENESIS_HASH,
@@ -105,19 +105,46 @@ def _control_id(article: str) -> str:
 
 REDACTED_PLACEHOLDER = "[REDACTED — AI Act Art. 78 confidentiality]"
 
+# Version 1 exports keep the dissertation's wording byte for byte; version 2
+# uses the article's term for the component and does not call a record
+# ledger-anchored unless the record carries the submitter a ledger stamped.
+ENGINE_V1 = "Compliance Oracle"
+ENGINE_V2 = "Compliance Policy Engine"
+
+
+def _version(record: dict) -> int:
+    try:
+        return schema_version_of(record)
+    except Exception:
+        return 1
+
+
+def _engine_label(record: dict) -> str:
+    return ENGINE_V2 if _version(record) >= SCHEMA_V2 else ENGINE_V1
+
+
+def _document_engine_label(ledger: List[dict]) -> str:
+    return ENGINE_V2 if any(_version(r) >= SCHEMA_V2 for r in ledger) else ENGINE_V1
+
+
+def _evidence_description(record: dict) -> str:
+    anchors = (f"record_hash={record.get('record_hash')}; "
+               f"chain_hash={record.get('chain_hash')}; "
+               f"signature_alg={record.get('sig_alg')}.")
+    if _version(record) < SCHEMA_V2:
+        return "Hash-anchored evidence in the permissioned ledger. " + anchors
+    where = (f" Committed to the permissioned ledger by {record['submitter_msp']}."
+             if record.get("submitter_msp") else "")
+    return "Evidence record, signed by its issuer and hash-chained. " + anchors + where
+
 
 def _build_observation(record: dict, redacted: bool = False) -> dict:
     full_description = (
-        f"Compliance Oracle decision '{record.get('decision')}' for "
+        f"{_engine_label(record)} decision '{record.get('decision')}' for "
         f"artifact {record.get('artifact_id')} at stage "
         f"{record.get('pipeline_stage')}. Reason: {record.get('reason')}."
     )
-    full_evidence_description = (
-        f"Hash-anchored evidence in the permissioned ledger. "
-        f"record_hash={record.get('record_hash')}; "
-        f"chain_hash={record.get('chain_hash')}; "
-        f"signature_alg={record.get('sig_alg')}."
-    )
+    full_evidence_description = _evidence_description(record)
     return {
         "uuid": _uuid_for(record["evidence_id"], "obs"),
         # The title must NOT copy arbitrary text from the source. scenario_id is
@@ -366,7 +393,7 @@ def _build_finding(record: dict, redacted: bool = False) -> dict:
         )
 
     full_finding_description = (
-        f"The Compliance Oracle rendered decision "
+        f"The {_engine_label(record)} rendered decision "
         f"'{record.get('decision')}' on {record.get('timestamp')}. "
         f"Technical objective: {proposition} "
         f"This states a technical fact about the evaluation, not a judgement "
@@ -519,7 +546,7 @@ def _results_description(ledger: List[dict]) -> str:
     n_scen = len(scenarios)
     scen_noun = "identifier" if n_scen == 1 else "identifiers"
     return (
-        f"{total} evidence {noun} produced by the Compliance Oracle "
+        f"{total} evidence {noun} produced by the {_document_engine_label(ledger)} "
         f"prototype across {n_scen} distinct scenario {scen_noun}."
     )
 
@@ -623,6 +650,7 @@ def to_oscal_sar(
         ledger[0].get("issuer_pubkey_fingerprint") if ledger else "unknown"
     )
 
+    engine = _document_engine_label(ledger)
     observations = [_build_observation(r, redacted=redacted) for r in ledger]
     findings = [
         _build_finding(r, redacted=redacted)
@@ -636,7 +664,7 @@ def to_oscal_sar(
             "metadata": {
                 "title": (
                     "AI Act Compliance Assessment Results — "
-                    "Compliance Oracle prototype"
+                    f"{engine} prototype"
                 ),
                 "last-modified": now,
                 "version": "1.0.0",
@@ -645,7 +673,7 @@ def to_oscal_sar(
                     {
                         "uuid": _uuid_for(issuer_fingerprint, "party"),
                         "type": "organization",
-                        "name": "Compliance Oracle issuer",
+                        "name": f"{engine} issuer",
                         "props": [
                             {
                                 "name": "ed25519-fingerprint",
@@ -661,7 +689,7 @@ def to_oscal_sar(
             "results": [
                 {
                     "uuid": _uuid_for("results-0", "res"),
-                    "title": "Compliance Oracle execution",
+                    "title": f"{engine} execution",
                     "description": _results_description(ledger),
                     "start": ledger[0]["timestamp"] if ledger else now,
                     "end": ledger[-1]["timestamp"] if ledger else now,

@@ -11,12 +11,24 @@ differs from the reference rows is skipped, logged as it happens and counted.
 A partial batch waits in memory for more rows; it is never submitted, and its
 size is reported only when a finite stream ends (as in the tests).
 
+Acquisition state (reference rows, the batch being filled, the batch counter,
+skip counts and, from Kafka, the last offset processed per partition) is
+written to OUT_DIR/bridge_state.json after every message, so a restarted
+bridge resumes with the same reference instead of silently taking a new one,
+and skips messages Kafka delivers again. A complete batch is written to the
+state as pending before it goes to the ledger: on a restart, a pending batch
+is recorded only if the ledger does not already hold it. From Kafka, offsets
+are committed only after the state that includes the message is saved, so a
+new run starts after the last committed message, as before.
+
 This illustrative indicator is not a validated general-purpose drift
 detector. Precision, demographic-parity difference and human approval are
 configured inputs, not measurements or approvals obtained from the stream.
 
 Configuration: KAFKA_BOOTSTRAP, STREAM_TOPIC, BATCH_SIZE, MODEL_ID,
-MODEL_PRECISION, MODEL_DP_DIFF, ORACLE_PATH and OUT_DIR."""
+MODEL_PRECISION, MODEL_DP_DIFF, ORACLE_PATH, OUT_DIR and LEDGER_FILE (default
+ledger.jsonl, append-only, under schema version 2; ledger.json under
+EVIDENCE_SCHEMA_VERSION=1, as in the dissertation)."""
 
 from __future__ import annotations  # lazy annotations: allows `list[float] | None` on Python 3.9 (host)
 
@@ -30,6 +42,8 @@ from pathlib import Path
 
 # The thesis prototype is copied to /oracle when the container is built.
 sys.path.insert(0, os.getenv("ORACLE_PATH", "/oracle"))
+from canonical import CURRENT_SCHEMA_VERSION  # noqa: E402
+from ledger_store import read_ledger  # noqa: E402
 from simulator import ComplianceOracle  # noqa: E402
 
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP", "kafka:29092")
@@ -39,6 +53,9 @@ MODEL_ID = os.getenv("MODEL_ID", "multiflow-stream-model")
 MODEL_PRECISION = float(os.getenv("MODEL_PRECISION", "0.85"))
 MODEL_DP_DIFF = float(os.getenv("MODEL_DP_DIFF", "0.03"))
 OUT_DIR = os.getenv("OUT_DIR", "/out")
+LEDGER_FILE = os.getenv("LEDGER_FILE") or (
+    "ledger.jsonl" if CURRENT_SCHEMA_VERSION >= 2 else "ledger.json")
+STATE_FILE = "bridge_state.json"
 if BATCH_SIZE < 1:
     sys.exit(f"BATCH_SIZE must be a positive integer, got {BATCH_SIZE}")
 
@@ -112,25 +129,109 @@ def build_event(batch_n: int, score: float, rows: int, topic: str) -> dict:
     }
 
 
-def run(consume_messages, stats: dict | None = None):
+def _state_path() -> Path:
+    return Path(OUT_DIR) / STATE_FILE
+
+
+def load_state() -> dict | None:
+    path = _state_path()
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def save_state(state: dict) -> None:
+    """Atomic replace: a reader sees the old state or the new one."""
+    path = _state_path()
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(state, separators=(",", ":")), encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def _recorded_batches(ledger_path: Path) -> int:
+    """Highest batch number in the ledger (from its scenario_id)."""
+    if not ledger_path.exists():
+        return 0
+    last = 0
+    for record in read_ledger(ledger_path):
+        scenario = str(record.get("scenario_id") or "")
+        if "-batch-" in scenario:
+            try:
+                last = max(last, int(scenario.rsplit("-batch-", 1)[1]))
+            except ValueError:
+                pass
+    return last
+
+
+def run(consume_messages, stats: dict | None = None, on_checkpoint=None):
     """Testable core: takes an iterable of messages and processes them.
 
-    Kept separate from Kafka consumption so that unit tests need no broker.
-    If a dict is passed as stats, it is filled with the counts of rows used,
-    skipped and left in an incomplete final batch.
+    Each item is a message, or a (position, message) pair where position is
+    (topic, partition, offset), as main() passes from Kafka; on_checkpoint is
+    called after each save of the state (main() commits the Kafka offset
+    there). Kept separate
+    from Kafka consumption so that unit tests need no broker. If a dict is
+    passed as stats, it is filled with the counts of rows used, skipped and
+    left in an incomplete final batch.
     """
     os.makedirs(OUT_DIR, exist_ok=True)
-    oracle = ComplianceOracle(ledger_file=Path(OUT_DIR) / "ledger.json")
-    reference, batch, batch_n = [], [], 0
-    n_cols = None
-    unusable = wrong_width = 0
+    ledger_path = Path(OUT_DIR) / LEDGER_FILE
+    oracle = ComplianceOracle(ledger_file=ledger_path)
+    state = load_state() or {"reference": [], "batch": [], "batch_n": 0, "n_cols": None,
+                             "unusable": 0, "wrong_width": 0, "positions": {}, "pending": None}
+    if state["batch_n"] or state["reference"]:
+        print(f"[bridge] resuming: {len(state['reference'])} reference row(s), "
+              f"{len(state['batch'])} row(s) in the current batch, "
+              f"{state['batch_n']} batch(es) recorded", flush=True)
+    reference, batch, batch_n = state["reference"], state["batch"], state["batch_n"]
+    n_cols = state["n_cols"]
+    unusable, wrong_width = state["unusable"], state["wrong_width"]
+    positions = state["positions"]
+    pending = state.get("pending")
 
-    for msg in consume_messages:
+    def checkpoint(position=None):
+        if position is not None:
+            positions[f"{position[0]}:{position[1]}"] = position[2]
+        save_state({"reference": reference, "batch": batch, "batch_n": batch_n,
+                    "n_cols": n_cols, "unusable": unusable, "wrong_width": wrong_width,
+                    "positions": positions, "pending": pending})
+        if on_checkpoint is not None:
+            on_checkpoint()
+
+    def record_pending():
+        nonlocal pending
+        record = oracle.process_mlops_event(
+            build_event(pending["batch_n"], pending["score"], pending["rows"], STREAM_TOPIC))
+        print(f"[bridge] batch={pending['batch_n']} rows={pending['rows']} "
+              f"drift_score={pending['score']} decision={record['decision']} "
+              f"chain_hash={record['chain_hash'][:12]}…", flush=True)
+        pending = None
+
+    if pending is not None:
+        if _recorded_batches(ledger_path) >= pending["batch_n"]:
+            print(f"[bridge] batch {pending['batch_n']} is already in the ledger", flush=True)
+            pending = None
+        else:
+            print(f"[bridge] recording batch {pending['batch_n']}, complete before the stop",
+                  flush=True)
+            record_pending()
+        checkpoint()
+
+    for item in consume_messages:
+        position = None
+        if isinstance(item, tuple) and len(item) == 2 and isinstance(item[0], tuple):
+            position, msg = item
+            done = positions.get(f"{position[0]}:{position[1]}")
+            if done is not None and position[2] <= done:
+                continue                      # delivered again after a restart
+        else:
+            msg = item
         row = parse_csv_row(msg)
         if row is None:
             unusable += 1
             print(f"[bridge] skipped unusable message #{unusable} "
                   f"(not an object, or not comma-separated finite numbers)", flush=True)
+            checkpoint(position)
             continue
         if n_cols is None:
             n_cols = len(row)  # the first usable row fixes the width
@@ -138,20 +239,23 @@ def run(consume_messages, stats: dict | None = None):
             wrong_width += 1
             print(f"[bridge] skipped row #{wrong_width} with {len(row)} column(s); "
                   f"the reference has {n_cols}", flush=True)
+            checkpoint(position)
             continue
         if len(reference) < BATCH_SIZE:
             reference.append(row)
+            checkpoint(position)
             continue
         batch.append(row)
         if len(batch) >= BATCH_SIZE:
+            # Written ahead: the complete batch is in the saved state before
+            # it reaches the ledger, and leaves it once recorded.
             batch_n += 1
-            score = drift_score(reference, batch)
-            record = oracle.process_mlops_event(
-                build_event(batch_n, score, len(batch), STREAM_TOPIC))
-            print(f"[bridge] batch={batch_n} rows={len(batch)} "
-                  f"drift_score={score} decision={record['decision']} "
-                  f"chain_hash={record['chain_hash'][:12]}…", flush=True)
+            pending = {"batch_n": batch_n, "score": drift_score(reference, batch),
+                       "rows": len(batch)}
             batch = []
+            checkpoint(position)
+            record_pending()
+        checkpoint(position)
 
     if unusable or wrong_width:
         print(f"[bridge] skipped {unusable} unusable message(s) and "
@@ -181,6 +285,9 @@ def main():
                 value_deserializer=decode_message,
                 auto_offset_reset="earliest",
                 group_id="compliance-bridge",
+                # Offsets are committed after the state is saved (on_checkpoint),
+                # never ahead of it; bridge_state.json skips redelivered messages.
+                enable_auto_commit=False,
             )
             break
         except Exception as exc:
@@ -190,7 +297,8 @@ def main():
     else:
         sys.exit("Kafka unreachable after 30 attempts")
     print("[bridge] connected, waiting for the MultiFlow stream…", flush=True)
-    run(m.value for m in consumer)
+    run((((m.topic, m.partition, m.offset), m.value) for m in consumer),
+        on_checkpoint=consumer.commit)
 
 
 if __name__ == "__main__":

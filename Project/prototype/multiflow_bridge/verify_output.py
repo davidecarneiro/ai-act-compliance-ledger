@@ -17,18 +17,23 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, os.getenv("ORACLE_PATH", "/oracle"))
+from canonical import CURRENT_SCHEMA_VERSION  # noqa: E402
+from ledger_store import read_ledger  # noqa: E402
 from simulator import ComplianceOracle  # noqa: E402
 import oscal_exporter  # noqa: E402
 
 OUT_DIR = Path(os.getenv("OUT_DIR", "/out"))
-LEDGER = OUT_DIR / "ledger.json"
+# Same rule as bridge.py: ledger.jsonl (append-only) under schema version 2,
+# ledger.json under EVIDENCE_SCHEMA_VERSION=1; LEDGER_FILE overrides.
+LEDGER = OUT_DIR / (os.getenv("LEDGER_FILE") or (
+    "ledger.jsonl" if CURRENT_SCHEMA_VERSION >= 2 else "ledger.json"))
 
 
 def main() -> int:
     if not LEDGER.exists():
         print(f"no ledger at {LEDGER}: the bridge has not processed any batch yet")
         return 1
-    ledger = json.loads(LEDGER.read_text())
+    ledger = read_ledger(LEDGER)
     if not isinstance(ledger, list) or not ledger:
         print(f"{LEDGER} holds no records: there is nothing to verify")
         return 1

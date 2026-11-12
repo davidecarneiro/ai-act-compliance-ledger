@@ -105,7 +105,8 @@ mkdir -p "$RUN_DIR"
 # An earlier run must not pass for this one: if a ledger is already archived,
 # its hash is kept to confirm at the end that it was replaced.
 ANTES=""
-[ -f "$RUN_DIR/ledger.json" ] && ANTES=$(shasum -a 256 "$RUN_DIR/ledger.json" | cut -d" " -f1)
+LEDGER_NAME=ledger.jsonl; [ "${EVIDENCE_SCHEMA_VERSION:-2}" = "1" ] && LEDGER_NAME=ledger.json
+[ -f "$RUN_DIR/$LEDGER_NAME" ] && ANTES=$(shasum -a 256 "$RUN_DIR/$LEDGER_NAME" | cut -d" " -f1)
 
 # The run must have produced a chain. A non-empty folder is not enough: the
 # commit file below would make it non-empty even if nothing had been copied.
@@ -113,13 +114,13 @@ ANTES=""
   echo "ERROR: $MULTIFLOW/compliance_out does not exist. The bridge produced no"
   echo "       evidence, so there is nothing to archive. See: docker logs compliance_bridge"
   exit 1; }
-cp "$MULTIFLOW"/compliance_out/* "$RUN_DIR/" && rm -f "$RUN_DIR"/*.lock || {
+cp "$MULTIFLOW"/compliance_out/* "$RUN_DIR/" && rm -f "$RUN_DIR"/*.lock "$RUN_DIR"/*.tmp || {
   echo "ERROR: copying the artefacts to $RUN_DIR failed."; exit 1; }
-[ -s "$RUN_DIR/ledger.json" ] || {
-  echo "ERROR: $RUN_DIR/ledger.json is missing or empty. A run is not archived"
+[ -s "$RUN_DIR/$LEDGER_NAME" ] || {
+  echo "ERROR: $RUN_DIR/$LEDGER_NAME is missing or empty. A run is not archived"
   echo "       without the chain it produced."
   exit 1; }
-if [ -n "$ANTES" ] && [ "$ANTES" = "$(shasum -a 256 "$RUN_DIR/ledger.json" | cut -d" " -f1)" ]; then
+if [ -n "$ANTES" ] && [ "$ANTES" = "$(shasum -a 256 "$RUN_DIR/$LEDGER_NAME" | cut -d" " -f1)" ]; then
   echo "ERROR: the ledger in $RUN_DIR is byte for byte the one of the earlier run."
   echo "       Either the bridge did not run, or the same file was copied again."
   exit 1
