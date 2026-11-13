@@ -54,10 +54,11 @@ expected.
    use"); no measurement ran and nothing was written. The two stale containers
    were removed (`docker rm -f`, no volumes) before the 250 ms bring-up was
    repeated unchanged, and again before the CouchDB bring-up. The two
-   containers from the CouchDB run are still present after the final
-   tear-down.
+   containers from the CouchDB run were left behind by the final tear-down
+   and were removed the same way afterwards.
 
 ## Tear-down
 
 `network.sh down` done; `configtx/configtx.yaml.orig` moved back
-(BatchTimeout 2s, as shipped).
+(BatchTimeout 2s, as shipped); leftover chaincode containers removed. No
+container is left running.
