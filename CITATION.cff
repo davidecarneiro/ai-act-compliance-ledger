@@ -1,0 +1,66 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, its evidence ledgers or its protocols, please cite
+  them as below. The article they support is in preparation.
+title: >-
+  Verifiable compliance evidence for high-risk AI under the EU AI Act:
+  code, evidence ledgers and experiment protocols
+type: software
+authors:
+  - given-names: Davide Rua
+    family-names: Carneiro
+    affiliation: >-
+      CIICESI, School of Technology and Management, Technical University of
+      Porto, Felgueiras, Portugal; INESC TEC, Porto, Portugal
+  - given-names: Rui Pedro Teixeira
+    name-particle: de
+    family-names: Sousa
+    affiliation: School of Technology and Management, Technical University of Porto, Portugal
+  - given-names: Guilherme
+    family-names: Palumbo
+    affiliation: >-
+      CIICESI, School of Technology and Management, Technical University of
+      Porto, Felgueiras, Portugal
+  - given-names: Diogo
+    family-names: Torres
+    affiliation: INESC TEC, Porto, Portugal
+repository-code: https://github.com/davidecarneiro/ai-act-compliance-ledger
+abstract: >-
+  A compliance-as-code architecture that turns EU AI Act obligations for
+  high-risk AI systems into third-party-verifiable evidence records: a
+  Compliance Policy Engine with fail-closed validation, Ed25519-signed and
+  hash-chained records (RFC 8785 canonical form), OSCAL 1.1.2 assessment
+  results with selective disclosure, and per-record or batched anchoring on
+  Hyperledger Fabric. Includes the credit-scoring and MultiFlow cases, the
+  pre-registered experiment protocols, every result file and the scripts that
+  draw the figures. Branch `article`; the dissertation's version is the tag
+  `thesis-v1.0`.
+keywords:
+  - EU AI Act
+  - compliance-as-code
+  - tamper-evident logging
+  - OSCAL
+  - Hyperledger Fabric
+  - MLOps
+  - selective disclosure
+references:
+  - type: thesis
+    title: >-
+      Blockchain for Compliance, Auditability and Traceability of Technical
+      Documentation in the AI Act
+    authors:
+      - given-names: Rui Pedro Teixeira
+        name-particle: de
+        family-names: Sousa
+    thesis-type: Master's dissertation, Master in Digital Legal Practices
+    institution:
+      name: School of Management and Technology, Polytechnic of Porto
+    year: 2026
+    month: 10
+  - type: software
+    title: ai-act-compliance-ledger (original repository of the dissertation)
+    authors:
+      - given-names: Rui Pedro Teixeira
+        name-particle: de
+        family-names: Sousa
+    repository-code: https://github.com/RuiTeixeiraSousa/ai-act-compliance-ledger
