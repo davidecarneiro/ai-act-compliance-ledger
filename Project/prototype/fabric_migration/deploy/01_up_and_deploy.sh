@@ -21,7 +21,8 @@
 # WP7 (protocols/wp7_fabric_anchoring.md) sets two parameters, both optional:
 #   BATCH_TIMEOUT=250ms  writes the orderer BatchTimeout into the test network's
 #                        configtx.yaml before the network comes up (default: as
-#                        found, 2s in fabric-samples; a .bak copy is kept)
+#                        found, 2s in fabric-samples; the file as shipped is
+#                        kept once as configtx.yaml.orig)
 #   STATE_DB=couchdb     brings the peers up with CouchDB instead of LevelDB
 #
 # Prerequisite: 00_setup_fabric.sh already run. If the pull or the daemon hangs,
@@ -58,7 +59,11 @@ cd "$TESTNET"
 
 if [ -n "${BATCH_TIMEOUT:-}" ]; then
   echo "=== 1b/4 Orderer BatchTimeout = $BATCH_TIMEOUT (configtx/configtx.yaml) ==="
-  sed -i.bak -E "s/^([[:space:]]*BatchTimeout:).*/\1 ${BATCH_TIMEOUT}/" configtx/configtx.yaml
+  # The file as fabric-samples ships it is saved once, as .orig, and every run
+  # edits from that copy: a .bak written on each run would hold the previous
+  # run's value after the second run, and the original would be lost.
+  [ -f configtx/configtx.yaml.orig ] || cp configtx/configtx.yaml configtx/configtx.yaml.orig
+  sed -E "s/^([[:space:]]*BatchTimeout:).*/\1 ${BATCH_TIMEOUT}/" configtx/configtx.yaml.orig > configtx/configtx.yaml
 fi
 grep -E "^[[:space:]]*(BatchTimeout|MaxMessageCount):" configtx/configtx.yaml
 

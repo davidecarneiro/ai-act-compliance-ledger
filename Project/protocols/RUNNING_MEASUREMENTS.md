@@ -6,6 +6,17 @@ folder, recorded before it was run; please do not change parameters. If
 anything has to differ from what is written here, note it and send the note
 back with the results.
 
+## Measurement machine (recorded 2026-11-13, before any measurement)
+
+The WP3 and WP7 measurements that enter the article run on Davide Carneiro's
+Mac: Apple M4 Pro (14 cores), 24 GB, macOS 26.6.2, Docker Desktop with 14 CPUs
+and 8 GB. Label: `davide-m4pro`. The commands are launched by Claude Code on
+that machine, which waits idle while each measurement runs and starts nothing
+else until it ends. This replaces the earlier plan to measure on Rui Sousa's
+Intel MacBook, where the dissertation's Fabric numbers were taken; the Fabric
+setup runs on arm64 for the first time (Fabric 2.5 publishes arm64 images).
+No parameter of the protocols changes.
+
 ## Before any measurement
 
 1. Check out branch `article` of `davidecarneiro/ai-act-compliance-ledger`
@@ -84,7 +95,7 @@ between.
 
     python3 run_wp7.py summarise ../../../experiments/article/wp7/fabric_<machine-name>-*.json
     cd ~/fabric-workspace/fabric-samples/test-network && ./network.sh down
-    mv configtx/configtx.yaml.bak configtx/configtx.yaml    # restores BatchTimeout 2s
+    mv configtx/configtx.yaml.orig configtx/configtx.yaml    # restores the file as shipped (BatchTimeout 2s)
 
 **Send back** everything the runs wrote under
 `Project/experiments/article/wp7/` (three `fabric_*.json` files, the
