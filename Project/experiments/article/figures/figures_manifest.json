@@ -1,13 +1,57 @@
 {
- "generated_at": "2026-11-12T22:48:59.799904+00:00",
+ "generated_at": "2026-11-13T10:37:44.166274+00:00",
  "figures": [
   {
    "figure": "F4",
-   "missing": "no WP3 run"
+   "files": [
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F4_latency_vs_ledger_size.pdf",
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F4_latency_vs_ledger_size.png"
+   ],
+   "source": "../../experiments/article/wp3/ablation_davide-m4pro_20261113T090759Z.json",
+   "source_sha256": "0eb76ce31541d51d6ad98c98ac504e9ab38854219800a29ace4eaa187e5d4ead",
+   "label": "davide-m4pro",
+   "validation": false,
+   "environment": {
+    "cpu": "Apple M4 Pro",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "workdir_filesystem": "/dev/disk3s5 on /System/Volumes/Data (apfs, local, journaled, nobrowse, protect, root data)"
+   }
   },
   {
    "figure": "F5",
-   "missing": "no WP7 summary"
+   "files": [
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F5_anchoring_vs_batch_size.pdf",
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F5_anchoring_vs_batch_size.png"
+   ],
+   "source": "../../experiments/article/wp7/summary_20261113T102316Z.json",
+   "source_sha256": "251d12797b20c782a81addcdbd82df94c33dfa0f96ab477971024a39f50fd73c",
+   "validation": false,
+   "stream_rate": {
+    "source": "/home/claude/ai-act-compliance-ledger/Project/experiments/runs/multiflow_run_steel/ledger.json",
+    "source_sha256": "f58c1ab188ce563e51ad7227b686842d3e96d460d10883c7aadcd39f45695ef2",
+    "events": 1750,
+    "span_s": 80.703253,
+    "events_per_s": 21.671988860225994
+   },
+   "panel_c": {
+    "note": "measured anchor latency (median) + (N - 1)/(2 rate); None where throughput < rate (serial anchoring cannot keep up)",
+    "expected_s": {
+     "2s": {
+      "1": null,
+      "10": null,
+      "50": 3.158637537164094,
+      "100": 4.312755330188679,
+      "500": 13.551443674385364
+     },
+     "250ms": {
+      "1": null,
+      "10": 0.4847083027444254,
+      "50": 1.4085325371640938,
+      "100": 2.5627133301886795,
+      "500": 11.801927674385363
+     }
+    }
+   }
   },
   {
    "figure": "F6",

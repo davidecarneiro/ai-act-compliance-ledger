@@ -532,6 +532,44 @@ def run(out_dir: Path = OUT_DIR) -> Path:
     return path
 
 
+def merge_fabric_q12(wp5_file: Path, c_folder: Path, out_dir: Path = OUT_DIR) -> Path:
+    """Replace Q12 in C (the stand-in) with the answer from the Fabric run.
+
+    The protocol leaves Q12 in C to the WP7 run: the chaincode stamps the
+    submitting organisation on each anchor. ``c_folder`` is a
+    ``credit_case_<label>_<time>`` folder of WP7, whose ``configuration_c.json``
+    ``fabric_c.py`` wrote from the on-chain export. Nothing else in the matrix
+    changes; Table T10 is recomputed. The output names both sources.
+    """
+    wp5_file, c_folder = Path(wp5_file), Path(c_folder)
+    data = json.loads(wp5_file.read_text(encoding="utf-8"))
+    fabric = json.loads((c_folder / "configuration_c.json").read_text(encoding="utf-8"))
+    q12 = fabric["q12"]
+    if not fabric["clean_check"]["valid"]:
+        raise ValueError(f"{c_folder}: the on-chain check failed; Q12 cannot be taken from it")
+    standin = data["matrix"]["Q12"]["C"]
+    data["matrix"]["Q12"]["C"] = {
+        "answerable": q12["answerable"],
+        "verifiable": q12["verifiable"],
+        "answer": q12["answer"],
+        "source": f"{c_folder.name}/configuration_c.json (Fabric, submitter_msp stamped by the chaincode)",
+        "stand_in_answer": standin,
+    }
+    data["table_t10"] = condensed(data["matrix"])
+    data["fabric_q12"] = {"wp5_file": wp5_file.name, "wp7_folder": c_folder.name,
+                          "merged_at": datetime.now(timezone.utc).isoformat()}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"{wp5_file.stem}_fabric_q12.json"
+    path.write_text(json.dumps(data, indent=1, default=str) + "\n", encoding="utf-8")
+    return path
+
+
 if __name__ == "__main__":
-    run()
+    if len(sys.argv) == 4 and sys.argv[1] == "--fabric-q12":
+        # python3 answerability.py --fabric-q12 <answerability_*.json> <wp7 credit_case folder>
+        merged = merge_fabric_q12(Path(sys.argv[2]), Path(sys.argv[3]))
+        print(json.dumps(json.loads(merged.read_text(encoding="utf-8"))["table_t10"]))
+        print(f"saved to {merged}")
+    else:
+        run()
     sys.exit(0)

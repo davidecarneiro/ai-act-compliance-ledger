@@ -5,9 +5,14 @@
 
 * F4: latency per event against ledger size, per arm of the ablation
   (``experiments/article/wp3/ablation_<label>_*.json``, growth run).
-* F5: anchoring on Fabric, two panels against records per anchor N:
-  durable-evidence throughput and durable latency per record, one line per
-  orderer BatchTimeout (``experiments/article/wp7/summary_*.json``).
+* F5: anchoring on Fabric, three panels against records per anchor N, one
+  line per orderer BatchTimeout (``experiments/article/wp7/summary_*.json``):
+  (a) durable-evidence throughput, with the event rate of the live MultiFlow
+  Steel_Industry run as a reference line; (b) the measured anchor latency
+  (saturated mode); (c) the expected time from emission to durable evidence
+  at that rate, the measured latency plus the analytic mean wait for the
+  batch to fill, (N - 1)/(2 rate), omitted where serial anchoring is slower
+  than the stream (protocol WP7, estimands).
 * F6: the same OSCAL finding, complete and redacted, as two JSON excerpts for
   the article to typeset side by side (from the credit case's exports).
 
@@ -141,16 +146,50 @@ def _seconds(value) -> float:
         return float("inf")
 
 
+STREAM_LEDGER = "runs/multiflow_run_steel/ledger.json"
+
+
+def stream_rate(ledger_file: Optional[Path] = None) -> Dict:
+    """Event rate of the live MultiFlow Steel_Industry run (published, v1).
+
+    Events over the time from the first record to the last: the rate at which
+    the dissertation's live Kafka run produced evidence, used as the arrival
+    rate for the analytic wait to fill a batch."""
+    from paths import PUBLISHED_DIR
+
+    path = ledger_file or PUBLISHED_DIR / STREAM_LEDGER
+    records = json.loads(Path(path).read_text(encoding="utf-8"))
+    stamps = [datetime.fromisoformat(r["timestamp"].replace("Z", "+00:00")) for r in records]
+    span = (stamps[-1] - stamps[0]).total_seconds()
+    return {"source": str(path), "source_sha256": _sha(path), "events": len(records),
+            "span_s": span, "events_per_s": (len(records) - 1) / span}
+
+
+def expected_latency_s(anchor_ms: float, n: int, throughput: float, rate: float) -> Optional[float]:
+    """Mean time from emission to durable evidence at arrival rate ``rate``.
+
+    The measured latency of the anchor (saturated mode) plus the mean wait for
+    the batch to fill, (N - 1)/(2 rate) (protocol WP7, estimands). None when
+    serial anchoring cannot keep up with the stream (throughput below rate):
+    the queue then grows without bound."""
+    if throughput < rate:
+        return None
+    return anchor_ms / 1000 + (n - 1) / (2 * rate)
+
+
 def figure_f5(wp7: Path, out: Path) -> Dict:
     data = json.loads(wp7.read_text(encoding="utf-8"))
     runs = [r for r in data["runs"] if not r.get("queries_only")
             and len(r["per_n"]) > 2]
-    fig, (left, right) = plt.subplots(1, 2, figsize=(DOUBLE, 66 * MM))
-    for ax in (left, right):
+    rate = stream_rate()
+    lam = rate["events_per_s"]
+    fig, (left, mid, right) = plt.subplots(1, 3, figsize=(DOUBLE, 64 * MM))
+    for ax in (left, mid, right):
         _axes(ax)
         ax.set_xscale("log")
         ax.set_xlabel("Records per anchor, N")
     validation = any(str(r.get("label", "")).startswith("validation") for r in runs)
+    expected_rows = {}
     # Colour follows the setting: the longer BatchTimeout (2 s, the
     # dissertation's) takes slot 1 whichever runs are present.
     for k, run in enumerate(sorted(runs, key=lambda r: -_seconds(r["environment"].get("batch_timeout")))):
@@ -161,26 +200,47 @@ def figure_f5(wp7: Path, out: Path) -> Dict:
         style = dict(color=SLOTS[k], linestyle=DASHES[k], linewidth=1.6, marker=MARKERS[k],
                      markersize=4, markeredgecolor="white", markeredgewidth=0.6)
         left.plot(ns, thr, label=f"BatchTimeout {bt}", **style)
-        right.plot(ns, [q["median"] for q in lat], label=f"BatchTimeout {bt}", **style)
-        right.fill_between(ns, [q["q1"] for q in lat], [q["q3"] for q in lat],
-                           color=SLOTS[k], alpha=0.12, linewidth=0)
+        mid.plot(ns, [q["median"] for q in lat], label=f"BatchTimeout {bt}", **style)
+        mid.fill_between(ns, [q["q1"] for q in lat], [q["q3"] for q in lat],
+                         color=SLOTS[k], alpha=0.12, linewidth=0)
+        exp = [(n, expected_latency_s(q["median"], n, t, lam)) for n, q, t in zip(ns, lat, thr)]
+        expected_rows[str(bt)] = {str(n): e for n, e in exp}
+        kept = [(n, e) for n, e in exp if e is not None]
+        if kept:
+            right.plot([n for n, _ in kept], [e for _, e in kept], **style)
+            right.annotate(f"{bt}", xy=kept[0], xytext=(-5, 0), textcoords="offset points",
+                           fontsize=7, color=INK, va="center", ha="right")
         left.annotate(f"{bt}", xy=(ns[-1], thr[-1]), xytext=(4, 0), textcoords="offset points",
                       fontsize=7, color=INK, va="center")
+    left.axhline(lam, color=MUTED, linewidth=0.8, linestyle=(0, (2, 2)))
+    left.annotate(f"MultiFlow run\n{lam:.1f} events/s", xy=(850, lam), xytext=(0, -4),
+                  textcoords="offset points", fontsize=6.5, color=MUTED, va="top", ha="right",
+                  linespacing=1.1)
+    right.text(0.03, 0.97, "Points omitted where serial\nanchoring is slower\nthan the stream",
+               transform=right.transAxes, fontsize=6.5, color=MUTED, va="top", linespacing=1.1)
     left.set_yscale("log")
     left.set_ylabel("Durable records per second")
-    left.set_title("(a) Durable-evidence throughput", loc="left")
-    right.set_ylabel("Durable latency per record (ms)")
-    right.set_ylim(bottom=0)
-    right.set_title("(b) Latency to durable evidence (median, IQR)", loc="left")
-    for ax in (left, right):
-        ax.set_xticks([1, 10, 50, 100, 500])
+    left.set_title("(a) Throughput", loc="left")
+    mid.set_ylabel("Latency per record (ms)")
+    mid.set_ylim(bottom=0)
+    mid.set_title("(b) Anchor latency (median, IQR)", loc="left")
+    right.set_yscale("log")
+    right.set_ylabel("Emission to durable evidence (s)")
+    right.set_title(f"(c) Expected at {lam:.1f} events/s", loc="left")
+    for ax in (left, mid, right):
+        ax.set_xticks([1, 10, 100, 500])
+        ax.set_xlim(0.7, 900)
         ax.get_xaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
+    right.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: f"{v:g}"))
     left.legend(loc="upper left", frameon=False)
     _stamp(fig, validation, ", ".join(str(r.get("label")) for r in runs))
     fig.tight_layout()
     paths = _save(fig, out, "F5_anchoring_vs_batch_size")
     return {"figure": "F5", "files": paths, "source": str(wp7), "source_sha256": _sha(wp7),
-            "validation": validation}
+            "validation": validation, "stream_rate": rate,
+            "panel_c": {"note": "measured anchor latency (median) + (N - 1)/(2 rate); "
+                                "None where throughput < rate (serial anchoring cannot keep up)",
+                        "expected_s": expected_rows}}
 
 
 def figure_f6(out: Path) -> Optional[Dict]:

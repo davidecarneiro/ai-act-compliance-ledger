@@ -219,3 +219,30 @@ def test_answerability_matrix(tmp_path):
     assert approvals and all(d["authorised_and_verifies"] for d in approvals)
     # The redacted export discloses none of the checked items.
     assert m["Q14"]["D"]["answer"]["disclosed"] == []
+
+
+def test_fabric_q12_replaces_only_the_stand_in(tmp_path):
+    import answerability as an
+    wp5 = an.run(out_dir=tmp_path)
+    before = json.loads(wp5.read_text(encoding="utf-8"))
+    folder = tmp_path / "credit_case_test"
+    folder.mkdir()
+    fabric = {"clean_check": {"valid": True},
+              "q12": {"answerable": "yes", "verifiable": "yes",
+                      "answer": {"organisations": ["Org1MSP"], "records": 16, "anchors": 16}}}
+    (folder / "configuration_c.json").write_text(json.dumps(fabric), encoding="utf-8")
+    after = json.loads(an.merge_fabric_q12(wp5, folder, out_dir=tmp_path).read_text(encoding="utf-8"))
+    assert after["matrix"]["Q12"]["C"]["answerable"] == "yes"
+    assert after["matrix"]["Q12"]["C"]["stand_in_answer"] == before["matrix"]["Q12"]["C"]
+    # Every other cell is untouched; only C's row of Table T10 can change.
+    for q in before["matrix"]:
+        for c in an.CONFIGURATIONS:
+            if (q, c) != ("Q12", "C"):
+                assert after["matrix"][q][c] == before["matrix"][q][c]
+    assert {k: v for k, v in after["table_t10"].items() if k != "C"} == \
+        {k: v for k, v in before["table_t10"].items() if k != "C"}
+    # A failed on-chain check is refused.
+    fabric["clean_check"]["valid"] = False
+    (folder / "configuration_c.json").write_text(json.dumps(fabric), encoding="utf-8")
+    with pytest.raises(ValueError):
+        an.merge_fabric_q12(wp5, folder, out_dir=tmp_path)

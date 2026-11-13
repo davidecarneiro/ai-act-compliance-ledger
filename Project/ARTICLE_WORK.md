@@ -628,3 +628,63 @@ authorship decision); Docker images not rebuilt or tested here (no Docker in
 this environment); the engine key that signed the 2026-10-12 runs was lost
 with a replaced cloud container — the runs stay verifiable with the public
 keys published beside them, and later runs are signed with a new key.
+
+## WP3 and WP7 — measurements on `davide-m4pro` (2026-11-13)
+
+Run by Claude Code on Davide Carneiro's Mac (Apple M4 Pro, 14 cores, 24 GB,
+macOS 26.6.2, Python 3.12.7; Docker Desktop with 14 CPUs and 8 GB; Fabric
+2.5.10 arm64 images), from commit `443c604`, which recorded the machine
+before any measurement. Run note with the deviations:
+`experiments/article/wp7/NOTE_davide-m4pro_20261113.md`.
+
+Files that count: `wp3/ablation_davide-m4pro_20261113T090759Z.json`;
+`wp7/fabric_davide-m4pro-bt2s_20261113T090921Z.json`,
+`-bt250ms_20261113T101547Z.json`, `-couchdb_20261113T102152Z.json`, and
+`wp7/summary_20261113T102316Z.json` built from those three. The first WP3 run
+(`074543Z`) and the first 2 s run (`074915Z`) ran beside seven unrelated
+containers and are superseded; they stay in the repository, and their numbers
+agree with the repeats (W1 signature cost 0.018 against 0.017 ms; total
+0.076 against 0.068 ms). `figures.py` picks the newest counting file, which is
+the repeat; `make article` therefore draws the right ones.
+
+**WP3** (W1, median of round medians, ms): A 0.262, B0 0.312, B 0.331,
+B+ 0.338. Paired: canonical form, hashing and append-only persistence
+(B0 − A) 0.048; Ed25519 signature (B − B0) 0.017; verifiable log against a
+database row (B − A) 0.068; anchoring every 100 events amortised (mean
+B+ − B) −0.001, with the anchor operation itself at 0.080. W2 agrees (B − A
+0.059). No growth with ledger size up to 10,000 records (Figure F4); every
+arm's ledger verifies after the growth run.
+
+**WP7.** Every submission, anchor and query succeeded; the single-organisation
+anchor was refused with `ENDORSEMENT_POLICY_FAILURE` in all three bring-ups.
+Durable latency per record is the BatchTimeout plus about 28 ms, whatever N:
+2 s gives 2,028 ms at N = 1 and 2,039 ms at N = 500; 250 ms gives 278 and
+289 ms. Throughput grows with N: 0.49 records/s at N = 1 and 2 s (the
+dissertation's 0.5), 245 at N = 500; at 250 ms, 3.6 and 1,730.
+`VerifyInclusion` 1.6 ms median on both state databases; inclusion proofs
+337 bytes at N = 10 to 673 at N = 500.
+
+`VerifyChain` is not comparable across the two state databases as run: the
+queries-only CouchDB bring-up submits one repetition of the per-record chain
+(201 records), the LevelDB bring-ups three (601). Medians: 206 ms over 601
+records on LevelDB (0.34 ms per record), 102 ms over 201 on CouchDB (0.51 ms
+per record). The article reports both chain lengths. The first call of each
+query includes a warm-up of several seconds, which is inside the 20 calls of
+`VerifyChain` and raises its 95th percentile in the 2 s run (438 ms).
+
+**Configuration C** (both counting runs, independently re-checked here for
+the clean ledger and T1–T6b with the published public key): clean 16/16
+records against 16 anchors; T1–T7b all detected. **Q12** in C: every anchor
+submitted by `Org1MSP`, verifiable. `answerability.py --fabric-q12` replaces
+the stand-in's Q12 in C with this answer and recomputes Table T10:
+`wp5/answerability_20261012T161816Z_fabric_q12.json` (C: 13 of 13 answerable
+and verifiable).
+
+**Figure F5** gains a third panel. Panels (a) and (b) are measured; (c) is
+the expected time from emission to durable evidence at the event rate of the
+live MultiFlow Steel_Industry run (1,750 events in 80.7 s, 21.7 events/s,
+from the published ledger): the measured anchor latency plus the analytic
+mean wait for the batch to fill, (N − 1)/(2·rate), as the protocol's
+estimands provide, and no point where serial anchoring is slower than the
+stream (N = 1 at both timeouts, N = 10 at 2 s). The rate is the live run's,
+not the plant's: the CSV has no timestamps.
