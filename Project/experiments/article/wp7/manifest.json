@@ -1,0 +1,49 @@
+{
+ "protocol": "Project/protocols/wp7_fabric_anchoring.md",
+ "prepared_at": "2026-11-13T07:48:02.447555+00:00",
+ "small": false,
+ "issuer_fingerprint": "745319400129502ec4afbf1eb1bda50d0d40510e0e29627a0ad5d8a09f02e3c8",
+ "per_record": {
+  "warmup": 1,
+  "repetitions": 3,
+  "records_each": 200
+ },
+ "stream": {
+  "records": 1000,
+  "batch_sizes": [
+   10,
+   50,
+   100,
+   500
+  ],
+  "inclusion_stream": "n100-r1",
+  "inclusion_sample": 100
+ },
+ "proof_size_bytes": {
+  "10": {
+   "median": 337.0,
+   "max": 337
+  },
+  "50": {
+   "median": 472.0,
+   "max": 472
+  },
+  "100": {
+   "median": 540.0,
+   "max": 540
+  },
+  "500": {
+   "median": 673.0,
+   "max": 675
+  },
+  "1": {
+   "median": 0,
+   "max": 0,
+   "note": "N = 1 submits the record itself; no proof"
+  }
+ },
+ "credit_case": {
+  "records": 16,
+  "ledger": "credit_case/ledger.jsonl"
+ }
+}

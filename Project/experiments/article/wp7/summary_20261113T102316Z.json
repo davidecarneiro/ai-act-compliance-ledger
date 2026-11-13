@@ -1,0 +1,551 @@
+{
+ "generated_at": "2026-11-13T10:23:16.003976+00:00",
+ "protocol": "Project/protocols/wp7_fabric_anchoring.md",
+ "sources": [
+  "../../../experiments/article/wp7/fabric_davide-m4pro-bt2s_20261113T090921Z.json",
+  "../../../experiments/article/wp7/fabric_davide-m4pro-bt250ms_20261113T101547Z.json",
+  "../../../experiments/article/wp7/fabric_davide-m4pro-couchdb_20261113T102152Z.json"
+ ],
+ "runs": [
+  {
+   "label": "davide-m4pro-bt2s",
+   "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.12.7",
+    "batch_timeout": "2s",
+    "max_message_count": "10",
+    "containers": [
+     "",
+     "ca_orderer hyperledger/fabric-ca:latest",
+     "ca_org1 hyperledger/fabric-ca:latest",
+     "ca_org2 hyperledger/fabric-ca:latest",
+     "orderer.example.com hyperledger/fabric-orderer:latest",
+     "peer0.org1.example.com hyperledger/fabric-peer:latest",
+     "peer0.org2.example.com hyperledger/fabric-peer:latest",
+     "peer0org1_compliance_ccaas compliance_ccaas_image:latest",
+     "peer0org2_compliance_ccaas compliance_ccaas_image:latest"
+    ],
+    "state_database": "LevelDB",
+    "orderers": 1,
+    "docker": "29.8.0"
+   },
+   "per_n": {
+    "1": {
+     "transaction_latency_ms": {
+      "n": 600,
+      "median": 2028.497,
+      "q1": 2025.751,
+      "q3": 2031.12,
+      "p95": 2036.387
+     },
+     "durable_latency_ms_per_record": {
+      "n": 600,
+      "median": 2028.497,
+      "q1": 2025.751,
+      "q3": 2031.12,
+      "p95": 2036.387
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       0.492,
+       0.492,
+       0.492
+      ],
+      "median": 0.492
+     },
+     "proof_size_bytes": {
+      "median": 0,
+      "max": 0,
+      "note": "N = 1 submits the record itself; no proof"
+     }
+    },
+    "10": {
+     "transaction_latency_ms": {
+      "n": 300,
+      "median": 2027.994,
+      "q1": 2025.422,
+      "q3": 2030.285,
+      "p95": 2038.699
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 2027.994,
+      "q1": 2025.422,
+      "q3": 2030.285,
+      "p95": 2038.699
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       4.927,
+       4.927,
+       4.92
+      ],
+      "median": 4.927
+     },
+     "proof_size_bytes": {
+      "median": 337.0,
+      "max": 337
+     }
+    },
+    "50": {
+     "transaction_latency_ms": {
+      "n": 60,
+      "median": 2028.146,
+      "q1": 2026.036,
+      "q3": 2030.125,
+      "p95": 2047.743
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 2028.146,
+      "q1": 2026.036,
+      "q3": 2030.125,
+      "p95": 2047.743
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       24.633,
+       24.613,
+       24.635
+      ],
+      "median": 24.633
+     },
+     "proof_size_bytes": {
+      "median": 472.0,
+      "max": 472
+     }
+    },
+    "100": {
+     "transaction_latency_ms": {
+      "n": 30,
+      "median": 2028.701,
+      "q1": 2024.606,
+      "q3": 2032.415,
+      "p95": 2049.181
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 2028.701,
+      "q1": 2024.542,
+      "q3": 2032.553,
+      "p95": 2054.87
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       49.166,
+       49.298,
+       49.254
+      ],
+      "median": 49.254
+     },
+     "proof_size_bytes": {
+      "median": 540.0,
+      "max": 540
+     }
+    },
+    "500": {
+     "transaction_latency_ms": {
+      "n": 6,
+      "median": 2038.887,
+      "q1": 2033.818,
+      "q3": 2044.339,
+      "p95": 2049.576
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 2038.887,
+      "q1": 2033.797,
+      "q3": 2044.488,
+      "p95": 2051.272
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       245.601,
+       245.201,
+       244.789
+      ],
+      "median": 245.201
+     },
+     "proof_size_bytes": {
+      "median": 673.0,
+      "max": 675
+     }
+    }
+   },
+   "queries_ms": {
+    "verify-inclusion": {
+     "n": 100,
+     "median": 1.637,
+     "q1": 1.557,
+     "q3": 1.754,
+     "p95": 2.276
+    },
+    "verify-chain": {
+     "n": 20,
+     "median": 205.823,
+     "q1": 201.744,
+     "q3": 209.365,
+     "p95": 438.349
+    }
+   },
+   "verify_inclusion_included": 100,
+   "verify_inclusion_calls": 100,
+   "governance_check": {
+    "refused": true,
+    "code": "ENDORSEMENT_POLICY_FAILURE",
+    "error": "transaction 06a37ae5541a0717785c9fc230b4f840eac69ae71704ff4b660eec96fc7d3400 failed to commit with status code 10 (ENDORSEMENT_POLICY_FAILURE)"
+   }
+  },
+  {
+   "label": "davide-m4pro-bt250ms",
+   "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.12.7",
+    "batch_timeout": "250ms",
+    "max_message_count": "10",
+    "containers": [
+     "",
+     "ca_orderer hyperledger/fabric-ca:latest",
+     "ca_org1 hyperledger/fabric-ca:latest",
+     "ca_org2 hyperledger/fabric-ca:latest",
+     "orderer.example.com hyperledger/fabric-orderer:latest",
+     "peer0.org1.example.com hyperledger/fabric-peer:latest",
+     "peer0.org2.example.com hyperledger/fabric-peer:latest",
+     "peer0org1_compliance_ccaas compliance_ccaas_image:latest",
+     "peer0org2_compliance_ccaas compliance_ccaas_image:latest"
+    ],
+    "state_database": "LevelDB",
+    "orderers": 1,
+    "docker": "29.8.0"
+   },
+   "per_n": {
+    "1": {
+     "transaction_latency_ms": {
+      "n": 600,
+      "median": 277.567,
+      "q1": 275.431,
+      "q3": 279.658,
+      "p95": 283.14
+     },
+     "durable_latency_ms_per_record": {
+      "n": 600,
+      "median": 277.567,
+      "q1": 275.431,
+      "q3": 279.658,
+      "p95": 283.14
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       3.611,
+       3.597,
+       3.592
+      ],
+      "median": 3.597
+     },
+     "proof_size_bytes": {
+      "median": 0,
+      "max": 0,
+      "note": "N = 1 submits the record itself; no proof"
+     }
+    },
+    "10": {
+     "transaction_latency_ms": {
+      "n": 300,
+      "median": 277.067,
+      "q1": 275.303,
+      "q3": 278.978,
+      "p95": 281.7
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 277.067,
+      "q1": 275.303,
+      "q3": 278.978,
+      "p95": 281.7
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       36.134,
+       36.071,
+       35.987
+      ],
+      "median": 36.071
+     },
+     "proof_size_bytes": {
+      "median": 337.0,
+      "max": 337
+     }
+    },
+    "50": {
+     "transaction_latency_ms": {
+      "n": 60,
+      "median": 278.041,
+      "q1": 276.553,
+      "q3": 280.694,
+      "p95": 299.673
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 278.041,
+      "q1": 276.553,
+      "q3": 280.694,
+      "p95": 299.673
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       167.033,
+       179.69,
+       179.463
+      ],
+      "median": 179.463
+     },
+     "proof_size_bytes": {
+      "median": 472.0,
+      "max": 472
+     }
+    },
+    "100": {
+     "transaction_latency_ms": {
+      "n": 30,
+      "median": 278.659,
+      "q1": 276.922,
+      "q3": 279.906,
+      "p95": 294.046
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 278.659,
+      "q1": 276.892,
+      "q3": 280.117,
+      "p95": 295.611
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       355.112,
+       359.69,
+       356.56
+      ],
+      "median": 356.56
+     },
+     "proof_size_bytes": {
+      "median": 540.0,
+      "max": 540
+     }
+    },
+    "500": {
+     "transaction_latency_ms": {
+      "n": 6,
+      "median": 289.371,
+      "q1": 276.759,
+      "q3": 301.443,
+      "p95": 303.164
+     },
+     "durable_latency_ms_per_record": {
+      "n": 3000,
+      "median": 289.371,
+      "q1": 275.674,
+      "q3": 302.348,
+      "p95": 303.436
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       1730.05,
+       1713.949,
+       1744.698
+      ],
+      "median": 1730.05
+     },
+     "proof_size_bytes": {
+      "median": 673.0,
+      "max": 675
+     }
+    }
+   },
+   "queries_ms": {
+    "verify-inclusion": {
+     "n": 100,
+     "median": 1.591,
+     "q1": 1.492,
+     "q3": 1.838,
+     "p95": 2.497
+    },
+    "verify-chain": {
+     "n": 20,
+     "median": 202.065,
+     "q1": 199.775,
+     "q3": 209.913,
+     "p95": 218.833
+    }
+   },
+   "verify_inclusion_included": 100,
+   "verify_inclusion_calls": 100,
+   "governance_check": {
+    "refused": true,
+    "code": "ENDORSEMENT_POLICY_FAILURE",
+    "error": "transaction 3a7761db508c8fcd3d157623e55e082471f9531f597d7b4bd93ef3d69bd09f8a failed to commit with status code 10 (ENDORSEMENT_POLICY_FAILURE)"
+   }
+  },
+  {
+   "label": "davide-m4pro-couchdb",
+   "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.12.7",
+    "batch_timeout": "250ms",
+    "max_message_count": "10",
+    "containers": [
+     "",
+     "ca_orderer hyperledger/fabric-ca:latest",
+     "ca_org1 hyperledger/fabric-ca:latest",
+     "ca_org2 hyperledger/fabric-ca:latest",
+     "couchdb0 couchdb:3.4.2",
+     "couchdb1 couchdb:3.4.2",
+     "orderer.example.com hyperledger/fabric-orderer:latest",
+     "peer0.org1.example.com hyperledger/fabric-peer:latest",
+     "peer0.org2.example.com hyperledger/fabric-peer:latest",
+     "peer0org1_compliance_ccaas compliance_ccaas_image:latest",
+     "peer0org2_compliance_ccaas compliance_ccaas_image:latest"
+    ],
+    "state_database": "CouchDB",
+    "orderers": 1,
+    "docker": "29.8.0"
+   },
+   "per_n": {
+    "1": {
+     "transaction_latency_ms": {
+      "n": 200,
+      "median": 287.58,
+      "q1": 285.545,
+      "q3": 289.649,
+      "p95": 293.478
+     },
+     "durable_latency_ms_per_record": {
+      "n": 200,
+      "median": 287.58,
+      "q1": 285.545,
+      "q3": 289.649,
+      "p95": 293.478
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       3.476
+      ],
+      "median": 3.476
+     },
+     "proof_size_bytes": {
+      "median": 0,
+      "max": 0,
+      "note": "N = 1 submits the record itself; no proof"
+     }
+    },
+    "100": {
+     "transaction_latency_ms": {
+      "n": 10,
+      "median": 287.292,
+      "q1": 285.798,
+      "q3": 289.042,
+      "p95": 300.754
+     },
+     "durable_latency_ms_per_record": {
+      "n": 1000,
+      "median": 287.292,
+      "q1": 285.58,
+      "q3": 289.377,
+      "p95": 310.016
+     },
+     "throughput_records_per_s": {
+      "per_repetition": [
+       346.552
+      ],
+      "median": 346.552
+     },
+     "proof_size_bytes": {
+      "median": 540.0,
+      "max": 540
+     }
+    }
+   },
+   "queries_ms": {
+    "verify-inclusion": {
+     "n": 100,
+     "median": 1.629,
+     "q1": 1.529,
+     "q3": 1.821,
+     "p95": 3.066
+    },
+    "verify-chain": {
+     "n": 20,
+     "median": 102.079,
+     "q1": 101.52,
+     "q3": 103.211,
+     "p95": 106.951
+    }
+   },
+   "verify_inclusion_included": 100,
+   "verify_inclusion_calls": 100,
+   "governance_check": {
+    "refused": true,
+    "code": "ENDORSEMENT_POLICY_FAILURE",
+    "error": "transaction 0d6332010c808c1abba46b7dcbf82ce33e02a62ccfe9df8714d81ed674ae20ae failed to commit with status code 10 (ENDORSEMENT_POLICY_FAILURE)"
+   }
+  }
+ ],
+ "figure_f5": {
+  "2s/LevelDB": {
+   "1": {
+    "throughput": 0.492,
+    "durable_latency_median_ms": 2028.497
+   },
+   "10": {
+    "throughput": 4.927,
+    "durable_latency_median_ms": 2027.994
+   },
+   "50": {
+    "throughput": 24.633,
+    "durable_latency_median_ms": 2028.146
+   },
+   "100": {
+    "throughput": 49.254,
+    "durable_latency_median_ms": 2028.701
+   },
+   "500": {
+    "throughput": 245.201,
+    "durable_latency_median_ms": 2038.887
+   }
+  },
+  "250ms/LevelDB": {
+   "1": {
+    "throughput": 3.597,
+    "durable_latency_median_ms": 277.567
+   },
+   "10": {
+    "throughput": 36.071,
+    "durable_latency_median_ms": 277.067
+   },
+   "50": {
+    "throughput": 179.463,
+    "durable_latency_median_ms": 278.041
+   },
+   "100": {
+    "throughput": 356.56,
+    "durable_latency_median_ms": 278.659
+   },
+   "500": {
+    "throughput": 1730.05,
+    "durable_latency_median_ms": 289.371
+   }
+  },
+  "250ms/CouchDB": {
+   "1": {
+    "throughput": 3.476,
+    "durable_latency_median_ms": 287.58
+   },
+   "100": {
+    "throughput": 346.552,
+    "durable_latency_median_ms": 287.292
+   }
+  }
+ }
+}

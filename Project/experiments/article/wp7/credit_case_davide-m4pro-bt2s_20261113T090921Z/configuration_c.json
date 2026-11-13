@@ -1,0 +1,113 @@
+{
+ "generated_at": "2026-11-13T09:44:06.429147+00:00",
+ "protocols": [
+  "Project/protocols/tamper_detection.md",
+  "Project/protocols/wp5_answerability.md"
+ ],
+ "configuration": "C (Fabric, every record anchored, N = 1)",
+ "clean_check": {
+  "valid": true,
+  "records": 16,
+  "anchors": 16,
+  "issues": []
+ },
+ "tamper": {
+  "T1": {
+   "description": "alter a field of an intermediate record",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "record 7: body does not match record_hash",
+    "record 7: signature does not verify"
+   ]
+  },
+  "T2": {
+   "description": "alter only the signature",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "record 7: signature does not verify"
+   ]
+  },
+  "T3": {
+   "description": "alter and recompute every hash, without the key",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "record 7: signature does not verify",
+    "record 8: signature does not verify",
+    "record 9: signature does not verify"
+   ]
+  },
+  "T4": {
+   "description": "swap two records",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "record 7: parent_hash does not link to the previous record",
+    "record 8: parent_hash does not link to the previous record",
+    "record 9: parent_hash does not link to the previous record"
+   ]
+  },
+  "T5": {
+   "description": "delete an intermediate record",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "record 7: parent_hash does not link to the previous record",
+    "anchor [8, 8]: Merkle root differs from the records",
+    "anchor [8, 8]: head chain_hash differs"
+   ]
+  },
+  "T6a": {
+   "description": "truncate a suffix that crosses an anchor",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "anchor [14, 14]: the ledger has only 13 records (truncated)",
+    "anchor [15, 15]: the ledger has only 13 records (truncated)",
+    "anchor [16, 16]: the ledger has only 13 records (truncated)"
+   ]
+  },
+  "T6b": {
+   "description": "truncate a suffix after the last anchor",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "anchor [16, 16]: the ledger has only 15 records (truncated)"
+   ]
+  },
+  "T7a": {
+   "description": "rewrite with the issuer's key, crossing an anchor",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "anchor [8, 8]: Merkle root differs from the records",
+    "anchor [8, 8]: head chain_hash differs",
+    "anchor [9, 9]: Merkle root differs from the records"
+   ]
+  },
+  "T7b": {
+   "description": "rewrite with the issuer's key, after the last anchor",
+   "observed": "detected",
+   "expected": "detected",
+   "issues": [
+    "anchor [16, 16]: Merkle root differs from the records",
+    "anchor [16, 16]: head chain_hash differs"
+   ]
+  }
+ },
+ "all_as_expected": true,
+ "q12": {
+  "answerable": "yes",
+  "verifiable": "yes",
+  "answer": {
+   "organisations": [
+    "Org1MSP"
+   ],
+   "records": 16,
+   "anchors": 16
+  },
+  "note": "submitter_msp is stamped by the chaincode on each anchor, under the AND endorsement policy"
+ }
+}
