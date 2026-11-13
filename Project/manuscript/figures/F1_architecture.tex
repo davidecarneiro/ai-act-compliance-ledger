@@ -1,0 +1,36 @@
+% Figure: components and trust boundaries (dashed).
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw=black!55, rounded corners=2pt, align=left, inner sep=4pt, text width=#1},
+  main/.style={draw=blue!70!black, thick, fill=blue!7, rounded corners=2pt, align=left, inner sep=4pt, text width=#1},
+  zone/.style={draw=black!45, dashed, rounded corners=4pt},
+  arr/.style={-{Stealth[length=2mm]}, black!65},
+  lab/.style={font=\scriptsize, text=black!70}]
+% provider zone
+\draw[zone] (0,0) rectangle (17,-5.3);
+\node[anchor=north west, font=\footnotesize\bfseries] at (0.15,-0.1) {Provider};
+\node[anchor=north west, lab] at (1.55,-0.15) {runs the pipeline, the engine, both stores and the issuer's signing key};
+\node[box=3.7cm] (src) at (2.25,-1.75) {\textbf{Event source}\\ ML pipeline, or the Kafka bus it already uses};
+\node[main=4.3cm] (cpe) at (7.55,-1.75) {\textbf{Compliance Policy Engine}\\ validates and decides; signs and chains records};
+\node[box=3.6cm] (ev) at (13.0,-1.75) {\textbf{Evidence store}\\ append-only JSONL, one record per line};
+\node[box=3.7cm] (art) at (2.25,-4.15) {\textbf{Artefact store}\\ files under their SHA-256};
+\node[box=3.6cm] (ex) at (13.0,-4.15) {\textbf{OSCAL exporter}\\ complete or redacted};
+% network zone
+\draw[zone] (0,-6.2) rectangle (8.7,-9.4);
+\node[anchor=north west, font=\footnotesize\bfseries] at (0.15,-6.3) {Fabric network};
+\node[anchor=north west, lab] at (0.15,-6.75) {Org1 and Org2, each with a copy};
+\node[box=7.9cm] (cc) at (4.35,-8.3) {\textbf{Chaincode}\\ issuer registry, records and batch anchors; endorsed by Org1 AND Org2, ordered by Raft};
+% auditor zone
+\draw[zone] (9.3,-6.2) rectangle (17,-9.4);
+\node[anchor=north west, font=\footnotesize\bfseries] at (9.45,-6.3) {Auditor};
+\node[anchor=north west, lab] at (9.45,-6.75) {public key only};
+\node[box=7.2cm] (vf) at (13.15,-8.3) {\textbf{Verifier}\\ recomputes hashes, signatures and links; reads anchors and checks inclusion proofs};
+% connectors
+\draw[arr] (src) -- (cpe);
+\draw[arr] (cpe) -- (ev);
+\draw[arr] (src) -- node[right, lab] {artefacts} (art);
+\draw[arr] (ev) -- (ex);
+\draw[arr] (cpe.south) -- node[left, lab, pos=0.55] {records or signed batch anchors} (cpe.south |- cc.north);
+\draw[arr] (ex.south) -- node[right, lab, pos=0.42] {export and ledger copy} (ex.south |- vf.north);
+\draw[arr] (vf.west) -- (cc.east);
+\end{tikzpicture}

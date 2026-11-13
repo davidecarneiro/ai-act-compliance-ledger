@@ -1,0 +1,60 @@
+\section{From obligations to verifiable evidence}
+\label{sec:derivation}
+
+An obligation becomes verifiable evidence through four narrowing steps, and each step must say what the resulting record cannot show. This section defines the steps (4.1), applies them to seven provisions (4.2), specifies the record they produce (4.3) and fixes the meaning of the link between a record and an article (4.4).
+
+\subsection{Derivation method}
+
+The derivation runs from the legal text to a mechanism a third party can check. Each step has an operational definition, so that two analysts applying it to the same provision should arrive at comparable results.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Obligation:} the legal text, at the level of the paragraph or point on which the argument depends.
+\item
+  \textbf{Pipeline requirement:} what must be recorded, at which stage, by whom and in which format.
+\item
+  \textbf{Evidence:} the fields of the record and, where needed, the artefact kept off chain under a digest.
+\item
+  \textbf{Mechanism:} what makes the evidence verifiable: a hash, a signature, a policy rule, an anchor.
+\end{enumerate}
+
+A fifth element closes every derivation: what the evidence does not establish. It names the part of the obligation that remains outside the record, and it is the limit beyond which no claim built on the record may go.
+
+Figure~\ref{fig:derivation} applies the method to Art. 14. The obligation is effective oversight by natural persons. The pipeline requirement is that deploying a model of a high-risk system needs an approval recorded by an overseer the policy authorises. The evidence is the approver's signed statement, bound to the \path{artifact_hash} and \path{run_id} of the model it approves, together with the record of the deployment decision. The mechanisms are the approver's Ed25519 signature, the \path{oversight.*} rules of the engine and the chaining of both records. None of this establishes that the overseer was competent, that the oversight was effective, or that the measures of Art. 14(4) were in place.
+
+\begin{figure}[t]
+\centering
+\input{figures/F3_derivation}
+\caption{Derivation of Art.~14 in four steps. Each step narrows the one above it; the last box is the limit beyond which no claim built on the record may go.}
+\label{fig:derivation}
+\end{figure}
+
+\subsection{The obligation-to-evidence matrix}
+
+Table~\ref{tab:matrix} applies the derivation to the seven provisions in scope. Its last column is the one this article adds: for every row, it states what the evidence leaves unproven.
+
+\input{tables/matrix}
+
+Three rows show the pattern. Art. 12 is the only provision every record supports, because every event is recorded, including a rejected one; the record proves what was written, never what was left unwritten, so completeness needs an external anchor (Section~6.4). Art. 14 is where a signature changes what can be proven: without it the record shows that a flag was set, with it the record shows who approved which artefact in which run. Art. 72 is supported by an alert, which is the monitoring duty working as intended, not a breach of it.
+
+\subsection{Evidence model}
+
+Every event produces one evidence record whose fields fall into five groups (Table~\ref{tab:fields}). Version 2 of the model is the one evaluated in this article; records of version 1, the dissertation's, remain verifiable because each record declares its version and the verifier uses that version's canonical form.
+
+\input{tables/fields}
+
+Two commitments keep the event and the artefact apart. The \path{payload_hash} is the SHA-256 digest of the event as the engine received it; the \path{artifact_hash} is the digest of the artefact file itself (dataset, model, report), retrievable through \path{off_chain_ref} from a content-addressed store. The \path{decision_inputs} keep what the decision read beyond the metrics, including a signed approval in full, so that the decision can be re-executed from the record and the archived policy. The \path{run_id} ties together the events of one execution or release.
+
+The canonical body is every field except \path{record_hash}, \path{issuer_signature} and \path{chain_hash}, which are derived from it (Section~5.3). Personal data in clear and the artefacts themselves never enter the record: only digests, references and metrics do. Direct identifiers in an event are replaced by keyed pseudonyms before any hash is computed (Section~5.4).
+
+The dissertation's version 1 differed in three ways. It sealed only the event payload, under the name \path{artifact_hash}; it did not keep the decision inputs, so a decision could not be re-executed; and it could not correlate the events of one run.
+
+\subsection{Semantics of the normative binding}
+
+The link between a record and an article states relevance as evidence, not compliance. It is derived from the fields the event carries: a bias metric makes the record relevant to Art. 10(2)(f), a dataset digest to Art. 10(3), any artefact digest to Art. 11, an approval to Art. 14, a drift indicator to Art. 72. Hence the field name \path{supports_requirements}: a record supports the assessment of a provision; it never decides it.
+
+The OSCAL export keeps the same distinction. Each finding targets a technical objective (\path{obj-*}), such as \path{obj-fairness-threshold} or \path{obj-drift-alert-raised}, whose status the engine can determine. The articles travel with the finding as \path{supports-requirement} properties in an \path{aia-*} namespace, and a \path{legal-assessment} property is set to \path{not-performed}.
+
+An earlier version of the exporter shows why this is a condition of correctness rather than a detail of format. It reported each finding as an article ``satisfied'' or ``not satisfied'', and drew two wrong inferences. A drift alert appeared as Art. 72 not satisfied, when the alert is Art. 72 working. A rejected malformed input appeared as Art. 12 not satisfied, when recording the rejection is Art. 12 being served. Separating the objectives a machine can assess from the articles only a lawyer can assess removed both errors.

@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\caption{Latency per event (ms) on the physical machine: median of round medians [IQR over 2,000 events] and 95th percentile. W1: the dissertation's approved validation event; W2: the six canonical scenarios in turn.}
+\label{tab:cost}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}Lcccc@{}}
+\toprule
+Arm or paired difference & W1 median [IQR] & W1 P95 & W2 median [IQR] & W2 P95 \\
+\midrule
+A, SQLite row & 0.26 [0.24 to 0.31] & 0.50 & 0.29 [0.26 to 0.32] & 0.45 \\
+B0, hash chain & 0.31 [0.29 to 0.35] & 0.44 & 0.33 [0.30 to 0.37] & 0.52 \\
+B, signed & 0.33 [0.30 to 0.37] & 0.48 & 0.34 [0.31 to 0.39] & 0.52 \\
+B+, anchored every 100 events & 0.34 [0.31 to 0.38] & 0.46 & 0.35 [0.32 to 0.40] & 0.52 \\
+\midrule
+B0 $-$ A: canonical form, hashing, append-only file & 0.048 [0.0015 to 0.082] & 0.14 & 0.045 [0.011 to 0.079] & 0.15 \\
+B $-$ B0: Ed25519 signature & 0.017 [$-$0.016 to 0.053] & 0.11 & 0.016 [$-$0.019 to 0.052] & 0.12 \\
+B $-$ A: verifiable log against a database row & 0.068 [0.022 to 0.098] & 0.16 & 0.059 [0.026 to 0.096] & 0.16 \\
+B+ $-$ B: anchoring & 0.0069 [$-$0.027 to 0.039] & 0.099 & 0.0088 [$-$0.027 to 0.043] & 0.12 \\
+\bottomrule
+\end{tabularx}
+\end{table*}

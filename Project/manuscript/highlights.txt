@@ -1,0 +1,5 @@
+AI Act obligations mapped to evidence records with explicit evidentiary limits
+Signing costs little; ledger cost lies in distributed ordering
+Batched anchoring trades audit granularity for durable-evidence throughput
+OSCAL selective disclosure preserves integrity anchors for Art. 78 audits
+Evaluated on real credit-scoring and industrial data streams

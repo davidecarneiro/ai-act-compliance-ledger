@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{Evaluation criteria and where they are measured.}
+\label{tab:criteria}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.27\columnwidth}Lc@{}}
+\toprule
+Criterion & How it is measured & Section \\
+\midrule
+Functional correctness & Canonical scenarios, the incident sequence, a boundary matrix of malformed inputs, re-execution of every decision & 6.2, 6.3 \\
+Tamper evidence & Attacks T1--T9 on the credit-scoring ledger, in each configuration & 6.4 \\
+Cost & A four-arm ablation of the integrity layer; anchoring on a Fabric network & 6.5, 6.6 \\
+Auditability & Fourteen audit questions (Q1--Q14) derived from the legal text, in four configurations & 6.7 \\
+Controlled disclosure & Redaction tests; questions Q13 and Q14 on the redacted export & 5.5, 6.7 \\
+Interoperability and conformance & Validation against the OSCAL schemas; parity between the Python issuer and the Go chaincode & 6.8 \\
+\bottomrule
+\end{tabularx}
+\end{table}

@@ -1,0 +1,14 @@
+\begin{table*}[t]
+\caption{Environments. Timings come only from the physical machine.}
+\label{tab:env}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}LL@{}}
+\toprule
+Environment & Hardware and software & Used for \\
+\midrule
+Cloud container & Linux x86\_64; Python 3.13; scikit-learn 1.9.1; Go 1.24.7 & Functional correctness, the credit-scoring case, regeneration of the dissertation's runs, tamper attacks in A--B+, answerability; no timing is reported from it \\
+Physical machine & Apple M4 Pro (14 cores), 24\,GB; macOS 26.6.2; Python 3.12.7; APFS & Cost ablation (Section~6.5) \\
+Same machine, Docker Desktop 29.8.0 (14 CPUs, 8\,GB) & Hyperledger Fabric 2.5.10 (arm64 images); two organisations, one CA each, one Raft orderer; LevelDB, and CouchDB 3.4.2 for a query run & Anchoring (Section~6.6), configuration C of the tamper experiment, audit question Q12 \\
+\bottomrule
+\end{tabularx}
+\end{table*}

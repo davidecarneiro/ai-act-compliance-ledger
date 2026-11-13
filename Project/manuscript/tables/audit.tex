@@ -1,0 +1,15 @@
+\begin{table}[t]
+\caption{Audit questions per configuration: number asked (Q), answerable yes / partial / no (Y/P/N), and answers verifiable by a third party (V). Q14, a check that the redacted export discloses nothing it should withhold, applies only to D.}
+\label{tab:audit}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}Lccc@{}}
+\toprule
+Configuration & Q & Y/P/N & V \\
+\midrule
+A, plain SQLite log & 13 & 3/2/8 & 0 \\
+B, signed log, policy archive, artefact store & 13 & 10/2/1 & 6 (+6 in part) \\
+C, B anchored on the ledger, complete OSCAL export & 13 & 13/0/0 & 13 \\
+D, redacted OSCAL export only & 14 & 3/5/6 & 0 \\
+\bottomrule
+\end{tabularx}
+\end{table}

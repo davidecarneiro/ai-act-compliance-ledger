@@ -1,0 +1,16 @@
+\begin{table}[t]
+\caption{Fields of the evidence record (version 2), by function.}
+\label{tab:fields}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.24\columnwidth}L@{}}
+\toprule
+Group & Fields \\
+\midrule
+Identity & \path{evidence_id}, \path{run_id}, \path{scenario_id}, \path{event_type}, \path{artifact_id}, \path{artifact_type}, \path{pipeline_stage}, \path{timestamp} \\
+Commitments on content & \path{payload_hash}, \path{artifact_hash}, \path{off_chain_ref} \\
+Decision & \path{decision}, \path{reason}, \path{rule_id}, \path{metrics}, \path{decision_inputs}, \path{policy_id}, \path{policy_hash} \\
+Normative link & \path{supports_requirements} \\
+Provenance and cryptography & \path{schema_version}, \path{issuer_id}, \path{issuer_pubkey_fingerprint}, \path{sig_alg}, \path{hash_alg}, \path{parent_hash}, \path{record_hash}, \path{issuer_signature}, \path{chain_hash} \\
+\bottomrule
+\end{tabularx}
+\end{table}

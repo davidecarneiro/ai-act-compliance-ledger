@@ -1,0 +1,113 @@
+%% Computer Standards & Interfaces (Elsevier) -- els-cas-templates, double column.
+%% Compile with pdfLaTeX + BibTeX (Overleaf: default settings).
+%% Items still to complete are marked TODO (search for it).
+\documentclass[a4paper,fleqn]{cas-dc}
+
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{booktabs,tabularx,array}
+\usepackage[inline]{enumitem}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc}
+\usepackage{newunicodechar}
+\usepackage{url}
+
+\setlength{\emergencystretch}{3em}
+\def\UrlBreaks{\do\.\do\_\do\-\do\/\do\,\do\(\do\)\do\'\do\:}
+\Urlmuskip=0mu plus 0.5mu
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+
+\lstdefinestyle{json}{basicstyle=\ttfamily\scriptsize, columns=fullflexible,
+  breaklines=true, frame=single, rulecolor=\color{black!30}, xleftmargin=2pt,
+  xrightmargin=2pt, aboveskip=3pt, belowskip=0pt, showstringspaces=false}
+
+% pandoc output uses these two macros
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\def\pandocbounded#1{#1}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Verifiable compliance evidence for high-risk AI}
+\shortauthors{D.R. Carneiro et al.}
+
+\title [mode = title]{Verifiable, minimally disclosed compliance evidence for high-risk AI: signed evidence chains, OSCAL and Hyperledger Fabric under the EU AI Act}
+
+% TODO: ORCID of each author, as [orcid=0000-0000-0000-0000] after the name.
+\author[1,2]{Davide Rua Carneiro}
+\cormark[1]
+\ead{dcarneiro@estg.ipp.pt}
+
+% TODO: confirm Rui Sousa's affiliation.
+\author[3]{Rui Pedro Teixeira de Sousa}
+
+\author[1]{Guilherme Palumbo}
+
+\author[2]{Diogo Torres}
+
+\affiliation[1]{organization={CIICESI, School of Technology and Management, Technical University of Porto},
+  postcode={4610-156}, city={Felgueiras}, country={Portugal}}
+\affiliation[2]{organization={INESC TEC}, addressline={Rua Dr. Roberto Frias},
+  postcode={4200-465}, city={Porto}, country={Portugal}}
+\affiliation[3]{organization={School of Technology and Management, Technical University of Porto},
+  postcode={4610-156}, city={Felgueiras}, country={Portugal}}
+
+\cortext[1]{Corresponding author}
+
+\begin{abstract}
+The EU AI Act requires providers of high-risk AI systems to demonstrate compliance through records, yet the records that machine-learning pipelines keep can only be vouched for by whoever produced them. We present and evaluate a compliance-as-code architecture that turns AI Act obligations into evidence records a third party can verify. A derivation method maps seven provisions to pipeline requirements, evidence and mechanisms, and states for each what the evidence does not establish. A Compliance Policy Engine issues Ed25519-signed, hash-chained records in RFC 8785 canonical form, exports them as OSCAL 1.1.2 assessment results with selective disclosure for Art.~78, and anchors them on Hyperledger Fabric per record or in Merkle batches. We evaluate the artefact on canonical scenarios, a credit-scoring pipeline, an industrial data stream, a four-arm ablation, a Fabric network and fourteen audit questions. A verifiable log adds 0.068\,ms per event to a database row, of which the signature takes 0.017\,ms. On the ledger, every transaction waits for the orderer's batch timeout, and batching raises durable throughput from 0.49 to 245 records per second at the default timeout. Signatures detect any alteration of a record, an external anchor adds truncation and insider rewriting up to the last anchor, and no configuration detects events withheld or forged at the source. The evidence establishes the integrity and provenance of recorded decisions, not their truth or legal sufficiency. OSCAL catalogues for the AI Act and canonical JSON with cross-implementation conformance tests would make such evidence portable.
+\end{abstract}
+
+\begin{highlights}
+\item AI Act obligations mapped to evidence records with explicit evidentiary limits
+\item Signing costs little; ledger cost lies in distributed ordering
+\item Batched anchoring trades audit granularity for durable-evidence throughput
+\item OSCAL selective disclosure preserves integrity anchors for Art. 78 audits
+\item Evaluated on real credit-scoring and industrial data streams
+\end{highlights}
+
+\begin{keywords}
+EU AI Act \sep compliance-as-code \sep tamper-evident logging \sep OSCAL \sep Hyperledger Fabric \sep MLOps \sep selective disclosure
+\end{keywords}
+
+\maketitle
+
+\input{sections/01-introduction}
+\input{sections/02-background}
+\input{sections/03-approach}
+\input{sections/04-derivation}
+\input{sections/05-architecture}
+\input{sections/06-evaluation}
+\input{sections/07-discussion}
+\input{sections/08-threats}
+\input{sections/09-conclusion}
+\input{sections/10-declarations}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs}
+
+% ---------------------------------------------------------------- biographies
+% TODO: the journal asks for a biography (up to 100 words) and a passport-style
+% photograph of each author; put the photographs in figures/ and use
+% \bio{figures/<file>} ... \endbio instead of \bio{} ... \endbio.
+\bio{}
+Davide Rua Carneiro is a Coordinating Professor at the School of Technology and Management of the Technical University of Porto, where he directs the Master's programme in Computer Engineering, and a researcher at INESC TEC. His research addresses applied artificial intelligence in industrial and organisational settings, including data-stream platforms, multi-agent systems and the governance and compliance of AI systems. % TODO: check and complete
+\endbio
+
+\bio{}
+Rui Pedro Teixeira de Sousa [TODO: biography].
+\endbio
+
+\bio{}
+Guilherme Palumbo [TODO: biography].
+\endbio
+
+\bio{}
+Diogo Torres [TODO: biography].
+\endbio
+
+\end{document}

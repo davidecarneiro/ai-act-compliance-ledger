@@ -1,0 +1,466 @@
+% References of the article. Numbered style (elsarticle-num); the journal
+% applies its own style at proof. Entries marked "CHECK" must be compared with
+% the publisher's version before submission; preprints must be checked for a
+% published version.
+
+% ---------------------------------------------------------------- legal sources
+@misc{ai_act,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2024/1689 of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act)},
+  howpublished = {Official Journal of the European Union, L series, 12 July 2024},
+  year         = {2024},
+  note         = {{ELI}: \url{http://data.europa.eu/eli/reg/2024/1689/oj}}
+}
+
+@misc{omnibus_2026,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2026/1744 of 8 July 2026 amending Regulations ({EU}) 2024/1689, ({EU}) 2018/1139 and ({EU}) 2023/1230 as regards the simplification of the implementation of harmonised rules on artificial intelligence (Digital Omnibus on {AI})},
+  howpublished = {Official Journal of the European Union, L series, 24 July 2026},
+  year         = {2026},
+  note         = {{ELI}: \url{http://data.europa.eu/eli/reg/2026/1744/oj}}
+}
+
+@misc{gdpr,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2016/679 of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data (General Data Protection Regulation)},
+  howpublished = {Official Journal of the European Union, L 119, 4 May 2016, pp. 1--88},
+  year         = {2016}
+}
+
+@misc{eidas_2024,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Regulation ({EU}) 2024/1183 of 11 April 2024 amending Regulation ({EU}) No 910/2014 as regards establishing the European Digital Identity Framework},
+  howpublished = {Official Journal of the European Union, L series, 30 April 2024},
+  year         = {2024}
+}
+
+@misc{qel_2025,
+  author       = {{European Commission}},
+  title        = {Commission Implementing Regulation ({EU}) 2025/2531 of 16 December 2025 laying down rules for the application of Regulation ({EU}) No 910/2014 as regards reference standards and specifications for qualified electronic ledgers},
+  howpublished = {Official Journal of the European Union, L series, 17 December 2025},
+  year         = {2025},
+  note         = {{ELI}: \url{http://data.europa.eu/eli/reg_impl/2025/2531/oj}}
+}
+
+@misc{pld_2024,
+  author       = {{European Parliament and Council of the European Union}},
+  title        = {Directive ({EU}) 2024/2853 of 23 October 2024 on liability for defective products and repealing Council Directive 85/374/{EEC}},
+  howpublished = {Official Journal of the European Union, L series, 18 November 2024},
+  year         = {2024}
+}
+
+@misc{edpb_2026,
+  author       = {{European Data Protection Board}},
+  title        = {Guidelines 02/2025 on processing of personal data through blockchain technologies, version 2.0},
+  howpublished = {Adopted on 7 July 2026},
+  year         = {2026},
+  url          = {https://www.edpb.europa.eu/system/files/2026-07/edpb_guidelines_202502_blockchain_v2_en.pdf}
+}
+
+@misc{iso24970,
+  author       = {{ISO/IEC JTC 1/SC 42}},
+  title        = {{prEN ISO/IEC} 24970: Artificial intelligence -- {AI} system logging},
+  howpublished = {Draft standard; formal vote closed 23 October 2026, not yet published},
+  year         = {2026}
+}
+
+% ---------------------------------------------------------------- tamper-evident logging and ledgers
+@article{haber1991,
+  author  = {Haber, Stuart and Stornetta, W. Scott},
+  title   = {How to time-stamp a digital document},
+  journal = {Journal of Cryptology},
+  volume  = {3},
+  number  = {2},
+  pages   = {99--111},
+  year    = {1991},
+  doi     = {10.1007/BF00196791}
+}
+
+@article{schneier1999,
+  author  = {Schneier, Bruce and Kelsey, John},
+  title   = {Secure audit logs to support computer forensics},
+  journal = {ACM Transactions on Information and System Security},
+  volume  = {2},
+  number  = {2},
+  pages   = {159--176},
+  year    = {1999},
+  doi     = {10.1145/317087.317089}
+}
+
+@inproceedings{crosby2009,
+  author    = {Crosby, Scott A. and Wallach, Dan S.},
+  title     = {Efficient data structures for tamper-evident logging},
+  booktitle = {Proceedings of the 18th {USENIX} Security Symposium},
+  pages     = {317--334},
+  year      = {2009}
+}
+
+@inproceedings{merkle1987,
+  author    = {Merkle, Ralph C.},
+  title     = {A digital signature based on a conventional encryption function},
+  booktitle = {Advances in Cryptology -- {CRYPTO} '87},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {293},
+  pages     = {369--378},
+  publisher = {Springer},
+  year      = {1988},
+  doi       = {10.1007/3-540-48184-2_32}
+}
+
+@techreport{rfc9162,
+  author      = {Laurie, Ben and Messeri, Eran and Stradling, Rob},
+  title       = {Certificate Transparency Version 2.0},
+  type        = {RFC},
+  number      = {9162},
+  institution = {Internet Engineering Task Force},
+  year        = {2021},
+  doi         = {10.17487/RFC9162}
+}
+
+@inproceedings{newman2022,
+  author    = {Newman, Zachary and Meyers, John Speed and Torres-Arias, Santiago},
+  title     = {Sigstore: Software signing for everybody},
+  booktitle = {Proceedings of the 2022 {ACM} {SIGSAC} Conference on Computer and Communications Security ({CCS})},
+  pages     = {2353--2367},
+  year      = {2022},
+  doi       = {10.1145/3548606.3560596},
+  note      = {CHECK pages}
+}
+
+@techreport{rfc3161,
+  author      = {Adams, Carlisle and Cain, Pat and Pinkas, Denis and Zuccherato, Robert},
+  title       = {Internet {X.509} Public Key Infrastructure Time-Stamp Protocol ({TSP})},
+  type        = {RFC},
+  number      = {3161},
+  institution = {Internet Engineering Task Force},
+  year        = {2001},
+  doi         = {10.17487/RFC3161}
+}
+
+@inproceedings{androulaki2018,
+  author    = {Androulaki, Elli and Barger, Artem and Bortnikov, Vita and Cachin, Christian and Christidis, Konstantinos and De Caro, Angelo and Enyeart, David and Ferris, Christopher and Laventman, Gennady and Manevich, Yacov and Muralidharan, Srinivasan and Murthy, Chet and Nguyen, Binh and Sethi, Manish and Singh, Gari and Smith, Keith and Sorniotti, Alessandro and Stathakopoulou, Chrysoula and Vukoli\'{c}, Marko and Cocco, Sharon Weed and Yellick, Jason},
+  title     = {Hyperledger {Fabric}: A distributed operating system for permissioned blockchains},
+  booktitle = {Proceedings of the Thirteenth {EuroSys} Conference},
+  pages     = {30:1--30:15},
+  year      = {2018},
+  doi       = {10.1145/3190508.3190538}
+}
+
+@inproceedings{ongaro2014,
+  author    = {Ongaro, Diego and Ousterhout, John},
+  title     = {In search of an understandable consensus algorithm},
+  booktitle = {Proceedings of the 2014 {USENIX} Annual Technical Conference},
+  pages     = {305--319},
+  year      = {2014}
+}
+
+@article{regueiro2021,
+  author  = {Regueiro, Cristina and Seco, Iñaki and Gutiérrez-Agüero, Iván and Urquizu, Borja and Mansell, Jason},
+  title   = {A blockchain-based audit trail mechanism: Design and implementation},
+  journal = {Algorithms},
+  volume  = {14},
+  number  = {12},
+  pages   = {341},
+  year    = {2021},
+  doi     = {10.3390/a14120341}
+}
+
+@article{lu2020,
+  author  = {Lu, Ning and Zhang, Yongxin and Shi, Wenbo and Kumari, Saru and Choo, Kim-Kwang Raymond},
+  title   = {A secure and scalable data integrity auditing scheme based on {Hyperledger Fabric}},
+  journal = {Computers \& Security},
+  volume  = {92},
+  pages   = {101741},
+  year    = {2020},
+  doi     = {10.1016/j.cose.2020.101741}
+}
+
+@misc{shi2022,
+  author        = {Shi, Zeshun and Bergers, Jeroen and Korsmit, Ken and Zhao, Zhiming},
+  title         = {{AUDITEM}: Toward an automated and efficient data integrity verification model using blockchain},
+  year          = {2022},
+  eprint        = {2207.00370},
+  archiveprefix = {arXiv},
+  doi           = {10.48550/arXiv.2207.00370},
+  note          = {Preprint; CHECK for a published version}
+}
+
+@article{sychowiec2025,
+  author  = {Sychowiec, Jakub and Zieli\'{n}ski, Zbigniew},
+  title   = {A blockchain-based framework for secure data stream dissemination in federated {IoT} environments},
+  journal = {Electronics},
+  volume  = {14},
+  number  = {10},
+  pages   = {2067},
+  year    = {2025},
+  doi     = {10.3390/electronics14102067}
+}
+
+@article{ural2023,
+  author  = {Ural, Ozgur and Yoshigoe, Kenji},
+  title   = {Survey on blockchain-enhanced machine learning},
+  journal = {IEEE Access},
+  volume  = {11},
+  pages   = {145331--145362},
+  year    = {2023},
+  doi     = {10.1109/ACCESS.2023.3344669}
+}
+
+@inproceedings{alamillo2024,
+  author    = {Alamillo, Ignacio and Schwalm, Steffen and Stoecker, Christoph and Thiermann, Rainer},
+  title     = {Qualified ledgers -- breakthrough for proven security and legal trust in {DLT} through {eIDAS2} regulation?},
+  booktitle = {Open Identity Summit 2024},
+  editor    = {Ro{\ss}nagel, Heiko and Schunck, Christian H. and Sousa, Filipe},
+  pages     = {195--200},
+  publisher = {Gesellschaft f{\"u}r Informatik e.V.},
+  year      = {2024},
+  doi       = {10.18420/OID2024_19}
+}
+
+% ---------------------------------------------------------------- compliance evidence and the AI Act
+@misc{oscal,
+  author       = {{National Institute of Standards and Technology}},
+  title        = {Open Security Controls Assessment Language ({OSCAL}), version 1.1.2},
+  year         = {2024},
+  url          = {https://pages.nist.gov/OSCAL/}
+}
+
+@misc{ugarte2026,
+  author        = {Ugarte, R. C. and Guisado, M. {\'A}. P. and Berlanga de Jes{\'u}s, A. and L{\'o}pez, J. M. M.},
+  title         = {Making {AI} compliance evidence machine-readable},
+  year          = {2026},
+  eprint        = {2604.13767},
+  archiveprefix = {arXiv},
+  doi           = {10.48550/arXiv.2604.13767},
+  note          = {Preprint; CHECK for a published version}
+}
+
+@misc{buscemi2026,
+  author        = {Buscemi, A. and Deckenbrunnen, T. and Kabir, F. and Mishchenko, K. and Mowla, N.},
+  title         = {Assessing high-risk {AI} systems under the {EU} {AI} {Act}: From legal requirements to technical verification},
+  year          = {2026},
+  eprint        = {2512.13907},
+  archiveprefix = {arXiv},
+  doi           = {10.48550/arXiv.2512.13907},
+  note          = {Preprint; CHECK for a published version}
+}
+
+@inproceedings{lucaj2025,
+  author    = {Lucaj, Laura and Loosley, Alex and Jonsson, Hakan and Gasser, Urs and van der Smagt, Patrick},
+  title     = {{TechOps}: Technical documentation templates for the {AI} {Act}},
+  booktitle = {Proceedings of the {AAAI/ACM} Conference on {AI}, Ethics, and Society},
+  volume    = {8},
+  pages     = {1647--1660},
+  note      = {Issue 2},
+  year      = {2025},
+  doi       = {10.1609/aies.v8i2.36663}
+}
+
+@misc{marino2024,
+  author        = {Marino, Bill and Chaudhary, Yaqub and Pi, Yulu and Yew, Rui-Jie and Aleksandrov, Preslav and Rahman, Carwyn and Shen, William F. and Robinson, Isaac and Lane, Nicholas D.},
+  title         = {Compliance cards: Automated {EU} {AI} {Act} compliance analyses amidst a complex {AI} supply chain},
+  year          = {2024},
+  eprint        = {2406.14758},
+  archiveprefix = {arXiv},
+  doi           = {10.48550/arXiv.2406.14758},
+  note          = {Preprint; CHECK for a published version}
+}
+
+@inproceedings{palumbo2025,
+  author    = {Palumbo, Guilherme and Guimar{\~a}es, Miguel and Carneiro, Davide and Marreiros, Goreti and Alves, Victor},
+  title     = {Observability-driven {AI} governance: A framework for compliance and audit readiness under the {EU} {AI} {Act}},
+  booktitle = {New Trends in Disruptive Technologies, Tech Ethics and Artificial Intelligence ({DiTTET} 2025)},
+  volume    = {1465},
+  pages     = {402--413},
+  publisher = {Springer},
+  year      = {2025},
+  doi       = {10.1007/978-3-031-99474-6_36}
+}
+
+@article{ramos2024,
+  author  = {Ramos, Simona and Ellul, Joshua},
+  title   = {Blockchain for artificial intelligence ({AI}): Enhancing compliance with the {EU} {AI} {Act} through distributed ledger technology. {A} cybersecurity perspective},
+  journal = {International Cybersecurity Law Review},
+  volume  = {5},
+  number  = {1},
+  pages   = {1--20},
+  year    = {2024},
+  doi     = {10.1365/s43439-023-00107-9}
+}
+
+@article{arnold2019,
+  author  = {Arnold, Matthew and Bellamy, Rachel K. E. and Hind, Michael and Houde, Stephanie and Mehta, Sameep and Mojsilovi\'{c}, Aleksandra and Nair, Ravi and Ramamurthy, Karthikeyan Natesan and Olteanu, Alexandra and Piorkowski, David and Reimer, Darrell and Richards, John and Tsay, Jason and Varshney, Kush R.},
+  title   = {{FactSheets}: Increasing trust in {AI} services through supplier's declarations of conformity},
+  journal = {IBM Journal of Research and Development},
+  volume  = {63},
+  number  = {4/5},
+  pages   = {6:1--6:13},
+  year    = {2019},
+  doi     = {10.1147/JRD.2019.2942288}
+}
+
+@article{hacker2022,
+  author  = {Hacker, Philipp and Naumann, Felix and Friedrich, Tobias and Grundmann, Stefan and Lehmann, Anja and Zech, Herbert},
+  title   = {{AI} compliance -- challenges of bridging data science and law},
+  journal = {Journal of Data and Information Quality},
+  volume  = {14},
+  number  = {3},
+  pages   = {1--4},
+  year    = {2022},
+  doi     = {10.1145/3531532}
+}
+
+@misc{opa,
+  author       = {{Open Policy Agent contributors}},
+  title        = {Open Policy Agent},
+  howpublished = {Cloud Native Computing Foundation project},
+  url          = {https://www.openpolicyagent.org/},
+  year         = {2026}
+}
+
+% ---------------------------------------------------------------- data protection
+@techreport{finck2018,
+  author      = {Finck, Mich{\`e}le},
+  title       = {Blockchains and data protection in the {European} {Union}},
+  type        = {Research Paper},
+  number      = {18-01},
+  institution = {Max Planck Institute for Innovation and Competition},
+  year        = {2018},
+  url         = {https://ssrn.com/abstract=3080322}
+}
+
+@inproceedings{ateniese2017,
+  author    = {Ateniese, Giuseppe and Magri, Bernardo and Venturi, Daniele and Andrade, Ewerton},
+  title     = {Redactable blockchain -- or -- rewriting history in {Bitcoin} and friends},
+  booktitle = {2017 {IEEE} European Symposium on Security and Privacy ({EuroS\&P})},
+  pages     = {111--126},
+  year      = {2017},
+  doi       = {10.1109/EuroSP.2017.37}
+}
+
+% ---------------------------------------------------------------- method
+@article{peffers2007,
+  author  = {Peffers, Ken and Tuunanen, Tuure and Rothenberger, Marcus A. and Chatterjee, Samir},
+  title   = {A design science research methodology for information systems research},
+  journal = {Journal of Management Information Systems},
+  volume  = {24},
+  number  = {3},
+  pages   = {45--77},
+  year    = {2007},
+  doi     = {10.2753/MIS0742-1222240302}
+}
+
+@article{venable2016,
+  author  = {Venable, John and Pries-Heje, Jan and Baskerville, Richard},
+  title   = {{FEDS}: A framework for evaluation in design science research},
+  journal = {European Journal of Information Systems},
+  volume  = {25},
+  number  = {1},
+  pages   = {77--89},
+  year    = {2016},
+  doi     = {10.1057/ejis.2014.36}
+}
+
+@book{wohlin2012,
+  author    = {Wohlin, Claes and Runeson, Per and H{\"o}st, Martin and Ohlsson, Magnus C. and Regnell, Bj{\"o}rn and Wessl{\'e}n, Anders},
+  title     = {Experimentation in Software Engineering},
+  publisher = {Springer},
+  year      = {2012},
+  doi       = {10.1007/978-3-642-29044-2}
+}
+
+% ---------------------------------------------------------------- standards used by the artefact
+@techreport{rfc8785,
+  author      = {Rundgren, Anders and Jordan, Bret and Erdtman, Samuel},
+  title       = {{JSON} Canonicalization Scheme ({JCS})},
+  type        = {RFC},
+  number      = {8785},
+  institution = {Internet Engineering Task Force},
+  year        = {2020},
+  doi         = {10.17487/RFC8785}
+}
+
+@techreport{rfc8032,
+  author      = {Josefsson, Simon and Liusvaara, Ilari},
+  title       = {Edwards-Curve Digital Signature Algorithm ({EdDSA})},
+  type        = {RFC},
+  number      = {8032},
+  institution = {Internet Engineering Task Force},
+  year        = {2017},
+  doi         = {10.17487/RFC8032}
+}
+
+@techreport{rfc8259,
+  author      = {Bray, Tim},
+  title       = {The {JavaScript} Object Notation ({JSON}) Data Interchange Format},
+  type        = {RFC},
+  number      = {8259},
+  institution = {Internet Engineering Task Force},
+  year        = {2017},
+  doi         = {10.17487/RFC8259}
+}
+
+% ---------------------------------------------------------------- data, cases and fairness
+@misc{hofmann1994,
+  author       = {Hofmann, Hans},
+  title        = {Statlog ({German} Credit Data)},
+  howpublished = {UCI Machine Learning Repository},
+  year         = {1994},
+  doi          = {10.24432/C5NC77}
+}
+
+@article{kamiran2012,
+  author  = {Kamiran, Faisal and Calders, Toon},
+  title   = {Data preprocessing techniques for classification without discrimination},
+  journal = {Knowledge and Information Systems},
+  volume  = {33},
+  number  = {1},
+  pages   = {1--33},
+  year    = {2012},
+  doi     = {10.1007/s10115-011-0463-8}
+}
+
+@article{bellamy2019,
+  author  = {Bellamy, Rachel K. E. and Dey, Kuntal and Hind, Michael and Hoffman, Samuel C. and Houde, Stephanie and Kannan, Kalapriya and Lohia, Pranay and Martino, Jacquelyn and Mehta, Sameep and Mojsilovi\'{c}, Aleksandra and Nagar, Seema and Ramamurthy, Karthikeyan Natesan and Richards, John and Saha, Diptikalyan and Sattigeri, Prasanna and Singh, Moninder and Varshney, Kush R. and Zhang, Yunfeng},
+  title   = {{AI} {Fairness} 360: An extensible toolkit for detecting and mitigating algorithmic bias},
+  journal = {IBM Journal of Research and Development},
+  volume  = {63},
+  number  = {4/5},
+  pages   = {4:1--4:15},
+  year    = {2019},
+  doi     = {10.1147/JRD.2019.2942287}
+}
+
+@book{siddiqi2006,
+  author    = {Siddiqi, Naeem},
+  title     = {Credit Risk Scorecards: Developing and Implementing Intelligent Credit Scoring},
+  publisher = {Wiley},
+  year      = {2006}
+}
+
+@inproceedings{torres2026,
+  author    = {Torres, Diogo and Peixoto, Eduardo and Carneiro, Davide and Palumbo, Guilherme and Alves, Victor},
+  title     = {{MultiFlow}: An ambient intelligence digital twin},
+  booktitle = {Ambient Intelligence -- Software and Applications: 16th International Symposium on Ambient Intelligence ({ISAmI} 2025)},
+  volume    = {1776},
+  pages     = {12--19},
+  publisher = {Springer},
+  year      = {2026},
+  doi       = {10.1007/978-3-032-14138-5_2}
+}
+
+@mastersthesis{sousa2026,
+  author = {Sousa, Rui Pedro Teixeira de},
+  title  = {Blockchain for Compliance, Auditability and Traceability of Technical Documentation in the {AI} {Act}},
+  school = {School of Management and Technology, Polytechnic of Porto},
+  type   = {Master's dissertation},
+  year   = {2026}
+}
+
+@misc{artefacts,
+  author       = {Carneiro, Davide Rua and Sousa, Rui Pedro Teixeira de and Palumbo, Guilherme and Torres, Diogo},
+  title        = {Verifiable compliance evidence for high-risk {AI} under the {EU} {AI} {Act}: code, evidence ledgers and experiment protocols},
+  howpublished = {Zenodo},
+  year         = {2026},
+  note         = {DOI to be added; code at https://github.com/davidecarneiro/ai-act-compliance-ledger, branch article}
+}

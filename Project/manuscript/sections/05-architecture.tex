@@ -1,0 +1,122 @@
+\section{Architecture and implementation}
+\label{sec:architecture}
+
+This section describes the artefact as it was evaluated: version 2 of the evidence model, its engine, its integrity layer and its anchoring on Hyperledger Fabric. Nothing here is a target design; what was not implemented appears only as future work.
+
+\subsection{Overview}
+
+Six components produce and check the evidence (Figure~\ref{fig:architecture}). An event source, either the ML pipeline itself or the message bus it already uses, emits events at each stage. The Compliance Policy Engine (CPE) validates each event, decides on it and writes a signed, chained evidence record to an append-only store. Artefacts (datasets, models, reports) go to a content-addressed store and enter the record only as digests. An anchoring client commits the records, or signed batch anchors, to a Fabric network run by more than one organisation. An exporter turns the ledger into OSCAL assessment results, complete or redacted, and a verifier lets a third party check them.
+
+The figure draws three trust boundaries. The provider runs the event source, the engine, the two stores and the issuer's signing key. The network's organisations each keep a copy of the anchors and must all endorse a write. The auditor receives an export and a copy of the ledger, and needs only the issuer's public key and read access to the network.
+
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/F1_architecture}}
+\caption{Components and trust boundaries (dashed). Only exports, ledger copies and reads of the network cross into the auditor's zone; the signing key never leaves the provider's.}
+\label{fig:architecture}
+\end{figure*}
+
+The engine integrates without changing the pipeline. In the MultiFlow deployment it subscribes to the platform's existing Kafka topic as a consumer group of its own, and the platform's code is untouched. The bridge persists its acquisition state and any pending batch before it records them, and commits its Kafka offsets only after that state is saved, so a restart neither loses nor duplicates evidence.
+
+Figure~\ref{fig:sequence} follows one event from emission to audit. In batched mode the engine chains records locally and anchors every $N$ records with one signed statement; $N=1$ reduces to per-record submission.
+
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{\input{figures/F2_sequence}}
+\caption{From event to audit in batched mode. A record is durable evidence once the anchor of its batch commits; until then it is covered only by the provider's own chain. With $N=1$ the engine submits each record with \texttt{SubmitEvidence} instead of an anchor.}
+\label{fig:sequence}
+\end{figure*}
+
+\subsection{Compliance Policy Engine}
+
+The engine is a pure function of the event, the policy and the schema version: it reads no file and writes nothing, so a recorded decision can be re-executed with exactly the logic that produced it. Rules are evaluated in a fixed order, and the first that fires decides.
+
+\begin{enumerate}[label=\arabic*., leftmargin=*, itemsep=1pt, topsep=3pt]\footnotesize
+\item Input contract violated $\rightarrow$ rejected, \path{input.malformed}.
+\item Serious-incident event $\rightarrow$ escalated, \path{incident.reportable}.
+\item Precision below the minimum$^{*}$ $\rightarrow$ rejected, \path{threshold.precision}.
+\item Parity difference above the maximum$^{*}$ $\rightarrow$ rejected, \path{threshold.fairness}.
+\item Signed approval present but invalid $\rightarrow$ rejected, \path{oversight.approval_invalid}; signed approval that denies deployment $\rightarrow$ rejected, \path{oversight.approval_denied}; signed approval required but absent $\rightarrow$ rejected, \path{oversight.approval_missing}.
+\item High risk without any approval $\rightarrow$ rejected, \path{oversight.approval_missing}.
+\item Drift indicator above the threshold $\rightarrow$ escalated, \path{monitoring.drift_alert}.
+\item Audit query $\rightarrow$ recorded, \path{audit.query_recorded}.
+\item Otherwise $\rightarrow$ approved, \path{policy.all_checks_passed}.
+\end{enumerate}
+{\footnotesize $^{*}$ Only at the pipeline stages listed in \path{metric_threshold_stages}, where the metric is mandatory.}
+
+
+Validation is fail-closed and runs before any rule. Identity fields must be non-empty text, \path{risk_level} must be present and belong to a closed set, and bounded metrics must be finite and lie in {[}0, 1{]}. All text, field names included, must consist of valid Unicode scalar values (RFC 8259, \S 8.2~\cite{rfc8259}), and metric names must stay distinct once converted to text. An event that fails is still recorded, as a rejection that supports only Art. 12.
+
+The rule vocabulary is closed: ten identifiers, each written into the record as \path{rule_id}. A version 2 policy may restrict the precision and fairness thresholds to named stages (\path{metric_threshold_stages}), so that a monitoring batch without labels is not judged on accuracy; at those stages a missing metric is a rejection, not a pass. Policies are archived under the SHA-256 digest of their content, which the record carries as \path{policy_hash}.
+
+A signed approval is a statement naming the artefact digest, the run, the decision (approve or deny) and the time, signed with the approver's Ed25519 key over its RFC 8785 form. The policy lists the keys of authorised approvers. A statement from an unlisted key, with a bad signature, or naming another artefact or run is rejected as \path{oversight.approval_invalid}, and the record keeps the statement whole so that a third party can verify it.
+
+The policy is evaluated off the ledger. The chaincode checks the integrity and authorship of what the engine wrote; it does not re-run the policy, and it cannot tell a correct decision from a wrong one.
+
+\subsection{Integrity layer}
+
+Each record is hashed, signed and chained over a canonical form of its body. Version 1 used the dissertation's serialisation: sorted keys, compact separators and ASCII escaping. Version 2 uses the JSON Canonicalization Scheme (JCS, RFC 8785)~\cite{rfc8785}, adopted for the article because it has standard implementations in both languages of the artefact (the Python issuer and the Go chaincode). Each record declares its version in \path{schema_version}, and the verifier rebuilds the canonical form of that version.
+
+The chain is built in three steps. The \path{record_hash} is the SHA-256 digest of the canonical body; the \path{issuer_signature} is an Ed25519 signature (RFC 8032)~\cite{rfc8032} over the same bytes; and the \path{chain_hash} is SHA-256(\path{parent_hash} $\Vert$ \path{record_hash}), where \path{parent_hash} is the previous record's \path{chain_hash}. Altering any field breaks the \path{record_hash}; recomputing it without the key breaks the signature; reordering or deleting a record breaks the links. The fields \path{schema_version}, \path{sig_alg} and \path{hash_alg} let a later version change algorithms without invalidating earlier records.
+
+The store is append-only: one JSON line per record, with the head of the chain (last \path{chain_hash} and sequence number) in a separate file replaced atomically. Verification streams the file and needs no more memory as the ledger grows.
+
+The verifier resolves the issuer's key by the \path{issuer_pubkey_fingerprint} the record names, among the keys it trusts. An unknown key and an invalid signature are different outcomes, reported separately. In the prototype keys are files on disk; in production they belong in a hardware security module.
+
+\subsection{Minimisation and pseudonymisation}
+
+The record carries commitments, not content. Artefacts are written to a content-addressed store under \path{store/sha256/<digest>}, and the record keeps that path in \path{off_chain_ref} and the digest in \path{artifact_hash}. Anyone holding the artefact can recompute the digest; anyone holding only the record learns nothing about the artefact beyond its declared type and identifier.
+
+Direct identifiers are pseudonymised before any hash is computed. The engine replaces named fields (\path{subject_id}, \path{applicant_id}, \path{customer_id} and others) with an HMAC-SHA256 of their value under an organisation-scoped key, and records the organisation and key version beside the pseudonym. The key is versioned and can be rotated.
+
+The limits are plain. Pseudonymisation acts on field names, not on content, so an identifier placed in a free-text field passes through. Records remain linkable through \path{artifact_id} and timing patterns. And whoever holds the key can re-link each pseudonym to its subject: in the terms of Section~2.4, this is pseudonymisation, not anonymisation.
+
+\subsection{OSCAL export and selective disclosure}
+
+The exporter maps a ledger onto an OSCAL 1.1.2 assessment-results document. Each record becomes one observation, whose UUID (version 5) is derived from the \path{evidence_id}, so that it stays the same across exports. Each decision becomes a finding that targets a technical objective (\path{obj-*}) and carries the supported articles and \path{legal-assessment}: \path{not-performed} as properties (Section~4.4). One assessment-log entry states whether the chain and the signatures verified, and whether each result was computed by the exporter or supplied to it.
+
+A redacted mode serves the confidentiality of Art. 78. It removes the free text that can name a client, a project or a dataset: titles, descriptions, the \path{reason}, the subject identifier derived from \path{artifact_id}, and the \path{policy_id}. It keeps everything a third party needs to tie a finding to the evidence: \path{record_hash}, \path{chain_hash}, \path{sig_alg}, the decision and the objective's status, the \path{rule_id}, the \path{aia-*} provisions, the issuer's key fingerprint, the UUIDs, and the \path{policy_hash} in place of the policy's name. Figure~\ref{fig:redaction} shows the same finding in both modes.
+
+\begin{figure*}[t]
+\input{figures/F6_redaction}
+\caption{One finding of the credit-scoring case, record 8 (validation of model v2, rejected at the fairness gate), in the complete and the redacted export; abridged. Exported from the run's ledger with the exporter described here.}
+\label{fig:redaction}
+\end{figure*}
+
+One lesson concerns identifiers that can be derived. An earlier version computed the redacted subject's UUID from the \path{artifact_id} over a public namespace. Anyone holding a candidate identifier could recompute the UUID and confirm the match, so the redaction removed the identifier from the text but left it confirmable from the document. The redacted subject is now derived from the \path{payload_hash}, a digest already present in the record that cannot be recomputed without the whole event.
+
+With the redacted document alone, a third party can compare its anchors against a copy of the ledger or against the anchors on the network; recomputing them requires the records. Redaction limits what the export discloses, not what an authority may demand: a market surveillance authority may still request documentation and data under Art. 74(12)--(13), and a notified body under Annex VII, points 4.3 and 4.4.
+
+\subsection{Ledger anchoring on Hyperledger Fabric}
+
+The chaincode checks integrity and authorship, and records who submitted what. It exposes eight functions: \path{RegisterIssuer}, \path{SubmitEvidence}, \path{AnchorBatch}, \path{VerifyChain}, \path{VerifyInclusion}, \path{QueryByRequirement}, \path{GetEvidence} and \path{GetAnchors}.
+
+Issuer keys are governed on chain. Only the organisation acting as compliance authority may register an issuer's Ed25519 key, stored under its fingerprint. On every submission the chaincode fetches the key by the fingerprint the record names, never from the caller, verifies the signature over the record's canonical body, recomputes \path{record_hash} and \path{chain_hash}, and checks that \path{parent_hash} equals the current head. It then stamps the submitting organisation's MSP identifier and the submitter's identity beside the record. Reading and writing a single head pointer makes Fabric's multi-version concurrency control serialise concurrent submissions, so the chaincode imposes one order.
+
+The endorsement policy, \path{AND('Org1MSP.peer','Org2MSP.peer')}, requires a peer of each organisation to endorse every write, so neither can write alone. Integrity then has two layers: the application's chain of records and the orderer's chain of blocks. The two signatures are also distinct: the issuer's Ed25519 signature proves who produced a record, and the X.509 identity of Fabric proves who submitted it.
+
+In batched mode the engine chains records locally and, every $N$ records, anchors one signed statement instead of $N$ records. The statement names the stream, the first and last sequence numbers, the Merkle root over the batch's \path{record_hash} values (RFC 9162 tree, with distinct prefixes for leaves and nodes) and the \path{chain_hash} of the batch's last record. The issuer signs its RFC 8785 form. \path{AnchorBatch} checks the signature against the registry and that the batch follows the previous one of its stream. \path{VerifyInclusion} takes a record and the inclusion proof the issuer hands out, and checks without writing that the record verifies, that the same issuer signed the anchor, and that the proof leads from the \path{record_hash} at the claimed position to the anchored root. The proof grows with $\log_2 N$; the records themselves stay with the provider. $N=1$ reduces to per-record submission, kept for comparison (Section~6.6).
+
+The endorsement has a limit worth stating. The \path{policy_hash} in each record makes a change of policy observable to every organisation, but nothing on the ledger authorises the change: a provider can switch policies, and the ledger only shows that it did.
+
+\subsection{Threat model and trust assumptions}
+
+We consider five adversaries:
+
+\begin{itemize}
+\tightlist
+\item
+  an outsider with read access to exports or ledger copies;
+\item
+  an insider who can edit the stored ledger but does not hold the issuer's key;
+\item
+  an insider who holds the issuer's key;
+\item
+  a single organisation of the Fabric network acting alone;
+\item
+  a compromised producer of events, upstream of the engine.
+\end{itemize}
+
+Three assumptions bound what the artefact can guarantee. The engine's code is the code that was reviewed; the issuer's key is held only by the engine; and the event source's clock is correct. Under them, the records establish what the engine decided and when it recorded it, not whether the event it received was true.
+
+The architecture therefore moves trust; it does not remove it. Trust moves from the record, which a third party can now check, to the component that decides what is recorded. Which of the five adversaries each configuration detects is a measured result, reported once, in Section~6.4 (Table~\ref{tab:tamper}).

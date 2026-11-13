@@ -1,0 +1,16 @@
+% Figure: derivation of Art. 14 in four steps, and what it does not establish.
+\begin{tikzpicture}[
+  font=\footnotesize, node distance=4.5mm,
+  stepbox/.style={draw=black!55, rounded corners=2pt, align=left, inner sep=4pt,
+               text width=0.92\columnwidth-8pt},
+  limit/.style={draw=orange!80!black, thick, fill=orange!8, rounded corners=2pt,
+                align=left, inner sep=4pt, text width=0.92\columnwidth-8pt},
+  arr/.style={-{Stealth[length=2mm]}, black!60}]
+\node[stepbox] (o) {\textbf{1. Obligation}\\ Effective oversight by natural persons of a high-risk system (Art.~14(1)--(4) AI Act).};
+\node[stepbox, below=of o] (r) {\textbf{2. Pipeline requirement}\\ Deploying a model needs an approval recorded by an overseer whom the policy authorises.};
+\node[stepbox, below=of r] (e) {\textbf{3. Evidence}\\ The approver's signed statement, bound to \texttt{artifact\_hash} and \texttt{run\_id}, and the chained record of the deployment decision.};
+\node[stepbox, below=of e] (m) {\textbf{4. Mechanism}\\ The approver's Ed25519 signature; rules \texttt{oversight.approval\_*}; issuer signature and hash chain over both records.};
+\node[limit, below=6mm of m] (n) {\textbf{Does not establish}\\ The overseer's competence; that the oversight was effective; the measures of Art.~14(4).};
+\draw[arr] (o) -- (r); \draw[arr] (r) -- (e); \draw[arr] (e) -- (m);
+\draw[-{Stealth[length=2mm]}, orange!80!black, dashed] (m) -- node[right, font=\scriptsize, text=black!70] {leaves unproven} (n);
+\end{tikzpicture}

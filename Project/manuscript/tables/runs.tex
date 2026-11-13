@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\caption{Decisions and verification per run (schema version 2).}
+\label{tab:runs}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}Lrrrrrrr@{}}
+\toprule
+Run & Events & Approved & Rejected & Escalated & Recorded & Chain & Re-execution \\
+\midrule
+Canonical scenarios & 6 & 1 & 3 & 1 & 1 & 6/6 & 6/6 \\
+Incident sequence (Art. 73) & 3 & 0 & 0 & 2 & 1 & 3/3 & 3/3 \\
+Credit scoring, German Credit & 16 & 11 & 4 & 1 & 0 & 16/16 & 16/16 \\
+MultiFlow, Muvu (replay) & 29 & 12 & 0 & 17 & 0 & 29/29 & 29/29 \\
+MultiFlow, Steel\_Industry (replay) & 1,750 & 94 & 0 & 1,656 & 0 & 1,750/1,750 & 1,750/1,750 \\
+\bottomrule
+\end{tabularx}
+\end{table*}

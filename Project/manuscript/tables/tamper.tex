@@ -1,0 +1,30 @@
+\begin{table*}[t]
+\caption{Attacks detected by a third party's check, per configuration (observed). In B+ the signed head is published every five records; in C every record is anchored on the Fabric network.}
+\label{tab:tamper}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}Lccccc@{}}
+\toprule
+Attack & A & B0 & B & B+ & C \\
+\midrule
+T1 Alter a field of an intermediate record & no & yes & yes & yes & yes \\
+T2 Alter only the signature & -- & -- & yes & yes & yes \\
+T3 Alter and recompute every hash, without the key & no & no & yes & yes & yes \\
+T4 Swap two records & no & yes & yes & yes & yes \\
+T5 Delete an intermediate record & no & yes & yes & yes & yes \\
+T6a Truncate a suffix that crosses an anchor & no & no & no & yes & yes \\
+T6b Truncate a suffix after the last anchor & no & no & no & no & yes$^{a}$ \\
+T7a Rewrite with the issuer's key, crossing an anchor & no & no & no & yes & yes \\
+T7b Rewrite with the issuer's key, after the last anchor & no & no & no & no & yes$^{a}$ \\
+T8 Omit an event at the source & no & no & no & no & --$^{b}$ \\
+T9a Inject a forged event upstream & no & no & no & no & --$^{b}$ \\
+T9b Inject a forged approval upstream & no$^{c}$ & no$^{c}$ & no$^{c}$ & no$^{c}$ & --$^{b}$ \\
+\bottomrule
+\end{tabularx}
+
+\smallskip
+\raggedright\footnotesize
+$^{a}$ The same records are altered as in B+; in C they are anchored, so no unanchored suffix exists.
+$^{b}$ These attacks act before anything reaches a ledger and were not repeated for C.
+$^{c}$ The record is well formed and passes the check, but the engine rejects the forged approval at the gate (\path{oversight.approval_invalid}) in every configuration.
+-- under A and B0 for T2: no signature to alter.
+\end{table*}

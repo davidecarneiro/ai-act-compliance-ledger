@@ -1,0 +1,32 @@
+% Figure: from pipeline event to durable evidence and audit, batched mode.
+\begin{tikzpicture}[
+  font=\footnotesize,
+  head/.style={draw=black!55, rounded corners=2pt, minimum width=3.0cm, minimum height=0.75cm, font=\footnotesize\bfseries},
+  life/.style={black!40, dashed},
+  msg/.style={-{Stealth[length=2mm]}, black!70},
+  ret/.style={-{Stealth[length=2mm]}, black!70, dashed},
+  lab/.style={font=\scriptsize, align=center}]
+\def\P{1.6} \def\E{6.2} \def\F{10.8} \def\A{15.4}
+\node[head] at (\P,0) {ML pipeline};
+\node[head] at (\E,0) {Policy Engine};
+\node[head] at (\F,0) {Fabric network};
+\node[head] at (\A,0) {Auditor};
+\foreach \x in {\P,\E,\F,\A} \draw[life] (\x,-0.4) -- (\x,-10.6);
+% batch frame
+\fill[black!4, rounded corners=3pt] (3.6,-2.55) rectangle (11.9,-6.95);
+\draw[black!45, rounded corners=3pt] (3.6,-2.55) rectangle (11.9,-6.95);
+\node[anchor=north west, font=\scriptsize\bfseries] at (3.7,-2.6) {every $N$ records};
+% messages
+\draw[msg] (\P,-1.1) -- node[above, lab] {event: metrics, digests} (\E,-1.1);
+\draw[msg] (\E,-1.6) -- ++(0.5,0) -- ++(0,-0.5) -- (\E,-2.1);
+\node[anchor=west, lab, align=left] at (\E+0.65,-1.85) {validate, decide, sign;\\ append the chained record};
+\draw[msg] (\E,-3.2) -- ++(0.5,0) -- ++(0,-0.5) -- (\E,-3.7);
+\node[anchor=west, lab, align=left] at (\E+0.65,-3.45) {Merkle root of the batch;\\ sign the anchor statement};
+\draw[msg] (\E,-4.5) -- node[above, lab] {\texttt{AnchorBatch}(signed statement)} (\F,-4.5);
+\draw[msg] (\F,-5.0) -- ++(-0.5,0) -- ++(0,-0.5) -- (\F,-5.5);
+\node[anchor=east, lab, align=right] at (\F-0.65,-5.25) {endorse (Org1 AND Org2);\\ order (Raft) and commit};
+\draw[ret, blue!70!black, thick] (\F,-6.4) -- node[above, lab, text=black] {\textbf{committed: durable evidence}} (\E,-6.4);
+\draw[msg] (\E,-7.8) -- node[above, lab, pos=0.3] {OSCAL export, ledger copy, inclusion proofs} (\A,-7.8);
+\draw[msg] (\A,-8.9) -- node[above, lab] {\texttt{VerifyInclusion}(record, proof)} (\F,-8.9);
+\draw[ret] (\F,-9.9) -- node[above, lab] {included, or the reason} (\A,-9.9);
+\end{tikzpicture}

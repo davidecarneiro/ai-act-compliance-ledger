@@ -1,0 +1,102 @@
+\section{Evaluation}
+\label{sec:evaluation}
+
+The evaluation answers the three research questions with measurements whose protocols were committed before they ran. Every number below comes from a JSON file in the public repository and is given with the environment it was measured in.
+
+\subsection{Setup}
+
+Two environments were used, and timings come only from the second.
+
+\input{tables/environments}
+
+The data are the six canonical scenarios and a three-event serious-incident sequence; the Statlog German Credit dataset (1,000 applicants)~\cite{hofmann1994} for the credit-scoring case; and two streams of the MultiFlow industrial platform~\cite{torres2026}: Muvu (29 events) and Steel\_Industry (35,040 readings, 1,750 events). Protocols, results and figure scripts are archived with a DOI~\cite{artefacts} (see the data availability statement).
+
+\subsection{Functional correctness}
+
+The engine reproduces the dissertation's decisions under the version 2 evidence model. The six canonical scenarios yield one approval, three rejections (precision, fairness, missing approval), one escalation for drift and one recorded audit query, each under the same rule as in version 1. The incident sequence yields two escalations under \path{incident.reportable} and one recorded query, all three supporting Art. 73. Re-executing every decision from its record and the archived policy returns the same decision and \path{rule_id} for all 1,788 regenerated records and all 16 records of the credit case.
+
+The input boundary is pinned by a matrix of 24 malformed or edge-case events: the dissertation's 16, plus 8 for the version 2 fields and the numeric domain of RFC 8785. Each case gets the same outcome in the Python issuer and the Go chaincode. The dissertation's sensitivity analysis over 45 threshold combinations still applies to the decision logic, which version 2 left unchanged: approvals range from 0/6 to 4/6, and the decision profile is stable to $\pm$6.25 \% of the precision threshold. The grids for fairness and drift are too coarse to claim fine stability for those thresholds.
+
+\subsection{Real-data cases}
+
+Table~\ref{tab:runs} summarises the five runs. Every chain verifies and every decision re-executes.
+
+\input{tables/runs}
+
+\textbf{Credit scoring.} The pipeline emits a record at every stage, each run under its own \path{run_id}: ingestion and split of the dataset, training, validation and, for the second model, two deployment requests and six monitoring batches. The protected attribute (age, under 25 against 25 and over, as in AI Fairness 360~\cite{bellamy2019}) and every threshold were fixed before training. The minimum precision, 0.68, was calibrated on a pilot partition that was then discarded. On the validation set, the unmitigated model reaches precision 0.793 and the model trained with reweighing~\cite{kamiran2012} 0.800, but both show a demographic parity difference of 0.112, above the maximum of 0.10. Both validations are therefore rejected under \path{threshold.fairness}, and so are both deployment requests, before the approval rule is reached. This holds whether or not the request carries a valid signed approval.
+
+Monitoring follows the second model on six batches of 50 test cases, with a subgroup over-sampled at a share rising from 0.30 to 0.95. The Population Stability Index~\cite{siddiqi2006} of the scores rises from 0.042 to 0.930 and crosses the threshold of 0.25 only in the last batch, which escalates under \path{monitoring.drift_alert}. The acceptance checks all pass. The 10 metrics in the ledger are recomputed, identically, from the artefacts in the store, and all 16 artefact digests are recomputed from their \path{off_chain_ref}.
+
+A post hoc analysis over 500 partitions shows how much of this outcome is one draw. The reweighed model passes validation in 44 \% of partitions (95 \% interval 40--48 \%) and the unmitigated one in 26 \% (23--30 \%). The decision taken on the validation set agrees with the one the test set would give in only 49 \% and 58 \% of partitions. The evidence records exactly what was decided and on which numbers; it does not make the estimate behind the decision stable (Section~7.1).
+
+\textbf{MultiFlow.} The two industrial streams were regenerated under version 2 by replaying the platform's CSV files through the bridge's own logic, without Kafka. Batch by batch, the replay reproduces the dissertation's live runs: the same decision and the same reason, drift score included, for 29 of 29 and 1,750 of 1,750 batches. Only the observational half of the policy is exercised. Precision and parity come from the observer's configuration (0.85 and 0.03), and the approval flag is an assumption, so the escalations measure drift and nothing else.
+
+\subsection{Tamper evidence}
+
+Table~\ref{tab:tamper} gives the observed outcome of each attack on the credit-scoring ledger (16 records; the attacked record is the eighth). In B+ the signed head is published every five records; in C every record is anchored on the Fabric network. All 48 cells of A--B+ and all nine attacks in C came out as the protocol expected.
+
+\input{tables/tamper}
+
+
+Three readings follow. T3 measures what the signature adds to the hash chain: without the key, a consistent rewrite of the hashes passes B0 and fails B. T6 and T7 measure what an external anchor adds to a signed log: truncation and a rewrite by a key holder become detectable, but only up to the last anchor; anchoring every record on the network closes that window. T8 and T9a are outside the reach of every configuration, because the evidence can only attest what the engine was given. The one upstream forgery that is caught, T9b, is caught by the engine's check of the approver's signature, not by the storage.
+
+\subsection{Cost of verifiable evidence}
+
+Signing costs little. Table~\ref{tab:cost} gives the latency per event of each arm of the ablation, measured on the physical machine in ten rounds of 200 events after 50 discarded, with the order of the arms rotated by a Williams design.
+
+\input{tables/cost}
+
+An event takes about 0.3 ms in every arm, the engine's decision included, which all arms share. A verifiable centralised log adds 0.068 ms per event to a plain database row (W1), and the Ed25519 signature accounts for 0.017 ms of that. Anchoring falls on one event in a hundred: the anchor operation itself takes 0.080 ms, and its amortised cost (the mean of B+ $-$ B, $-$0.001 ms) cannot be told apart from zero. On macOS, \path{fsync} does not force the drive's write cache, for the append-only file or for SQLite; both arms are treated alike.
+
+The cost does not grow with the ledger (Figure~\ref{fig:growth}). Over 10,000 records, the median per block of 1,000 moves from 0.31 to 0.32 ms for B and from 0.27 to 0.26 ms for A, and every arm's ledger verifies at the end. The dissertation's prototype rewrote the whole ledger file on each event, so its latency grew with the ledger; append-only persistence removed that growth.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/F4_latency_vs_ledger_size.pdf}
+\caption{Median latency per event against the number of records in the ledger, per arm, in blocks of 1,000 events (W1).}
+\label{fig:growth}
+\end{figure}
+
+Set against the event cadence of the two real cases, the cost is negligible. At the rate of the live MultiFlow run (21.7 events/s, Section~6.6), a verifiable log adds about 1.5 ms of work per second of stream; the credit-scoring pipeline emits 16 records over two training runs.
+
+\subsection{Cost of ledger anchoring}
+
+The cost of the ledger lies in ordering. With one transaction in flight, the orderer cuts each block only when its BatchTimeout expires, so every anchoring transaction waits for it, whatever $N$. The latency to durable evidence is 2,028 ms with the 2 s timeout and 278 ms with 250 ms, about 28 ms above the timeout, and it barely moves up to $N=500$ (2,039 and 289 ms; Figure~\ref{fig:anchoring}b). At $N=1$ the network makes 0.49 records durable per second, which reproduces the dissertation's figure of about 0.5.
+
+Throughput therefore grows in proportion to $N$ (Figure~\ref{fig:anchoring}a): from 0.49 to 245 records per second with 2 s, and from 3.6 to 1,730 with 250 ms. An anchor for 500 records is one transaction carrying one Merkle root, so the number of records no longer reaches the network. Backfilling the 1,750 events of the Steel\_Industry stream would take about an hour at $N=1$ with the default timeout, and about one second at $N=500$ with 250 ms.
+
+The price of batching is the wait for a batch to fill. At the event rate of the live MultiFlow run, 21.7 events per second, per-record anchoring cannot keep up with either timeout, and neither can $N=10$ with 2 s: the queue would grow without bound. Where anchoring keeps up, the expected time from emission to durable evidence is the measured anchor latency plus the mean wait to fill the batch, $(N-1)/(2\lambda)$ (Figure~\ref{fig:anchoring}c). It is 0.48 s at $N=10$ with 250 ms, 3.2 s at $N=50$ with 2 s, and 11.8 to 13.6 s at $N=500$. A provider thus chooses $N$ and the timeout from its event rate and from how long a record may stay covered only by its own chain.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/F5_anchoring_vs_batch_size.pdf}
+\caption{Anchoring on the Fabric network against records per anchor, $N$. (a) Durable-evidence throughput, with the event rate of the live MultiFlow run as a reference line. (b) Measured latency per record (median and IQR). (c) Expected time from emission to durable evidence at that rate: the measured latency plus the analytic wait to fill the batch; points where serial anchoring is slower than the stream are omitted.}
+\label{fig:anchoring}
+\end{figure*}
+
+Verification is cheap and independent of $N$. \path{VerifyInclusion} takes 1.6 ms (median; 95th percentile 2.3 to 3.1 ms) on both state databases, and an inclusion proof grows with $\log_2 N$, from 337 bytes at $N=10$ to 673 at $N=500$. \path{VerifyChain} over the per-record chain takes 206 ms for 601 records on LevelDB (0.34 ms per record) and 102 ms for 201 records on CouchDB (0.51 ms per record). The CouchDB network held one repetition of the chain, not three, so only the per-record figures compare. The first call of each query paid a warm-up of several seconds, which raises the 95th percentile of \path{VerifyChain} in the 2 s run to 438 ms.
+
+The endorsement policy held. An anchor endorsed by Org1 alone was refused at validation with \path{ENDORSEMENT_POLICY_FAILURE} on all three networks, and nothing was written.
+
+\subsection{Auditability}
+
+Table~\ref{tab:audit} condenses the answers to the fourteen audit questions of Section~3 in four configurations. In C, the network is represented by a signed log anchored after every record, as the Fabric run provides, and Q12 is answered from the Fabric run itself. The full matrix is in the supplementary material.
+
+\input{tables/audit}
+
+Q14, a check that the redacted export discloses nothing it should withhold, applies only to D.
+
+C answers every question, and every answer can be checked without trusting the provider. The chaincode stamps the submitting organisation on each anchor, which answers Q12 (Org1MSP for all 16 records). The contrasts are informative. Q2, who approved the deployment, is answerable only where approvals are signed; A holds a Boolean flag. Q6, whether re-execution reproduces a decision, needs the decision inputs and the policy archive, which only B and C keep. Q11, whether the sequence is complete between two dates, is answerable only in C, because a signed log cannot show that nothing was cut after its last record.
+
+The redacted export answers less, by design. From D alone, Q13 (which articles are supported, with which technical outcome) is answerable but not verifiable, since the export carries anchors, not record bodies. For Q14, none of the 56 items searched for appears in the redacted export: artefact names and digests, the subject identifiers derived from them, reasons, metric values, scenario names and the policy's threshold fields.
+
+\subsection{Interoperability and conformance}
+\label{sec:eval-interop}
+
+The evidence crosses three implementations with the same bytes. Every OSCAL export validates against the NIST schema: the complete and redacted exports of the credit case and of the four regenerated runs, and the dissertation's 18 published exports. The Python issuer and the Go chaincode agree on 6 of 6 canonicalisation vectors of version 1 and 4 of 4 of RFC 8785, on the 24 boundary cases, and on the Merkle roots, inclusion proofs and signed anchors of the batched mode. The browser-based Ledger Explorer recomputes the hash of every record of the version 1 and version 2 ledgers.
+
+That agreement was not there at first. Table~\ref{tab:defects} lists the eight defects that appeared between the Python issuer and the Go chaincode, during the dissertation and its later review.
+
+\input{tables/defects}
+
+The lesson is general. A canonical form must be specified on bytes, not on one language's data model, and a shared boundary matrix works as a conformance test between implementations.

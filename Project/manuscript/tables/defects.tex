@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\caption{Defects between the Python issuer and the Go chaincode, and their corrections.}
+\label{tab:defects}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.2\textwidth}LL@{}}
+\toprule
+Defect & Symptom & Cause & Correction \\
+\midrule
+HTML and non-ASCII escaping & \path{record_hash} differs between issuer and chaincode & Go's encoder escapes HTML characters and keeps non-ASCII literal; Python's default does the opposite & One canonical form specified on bytes; RFC 8785 in version 2 \\
+Fingerprint taken for the key & Every Ed25519 verification fails & The key's SHA-256 fingerprint used as verification material & Key resolved from a registry by its fingerprint \\
+Range-read order & Chain reconstruction breaks & Fabric range reads order keys lexicographically, not by insertion & Zero-padded sequence keys \\
+\path{0.0} rewritten as \path{0} & Digest diverges by one byte & A float64 round trip in Go drops the issuer's literal & Original number literals kept (\path{json.RawMessage}) \\
+Null optional field & A record that verifies at the source fails at the destination & Go decodes null into an empty string & Optional field as a pointer \\
+New fields dropped & No record of the new format verifies & \path{encoding/json} silently discards fields the struct does not declare & In version 2, the hash is computed over the record's own members \\
+Lone Unicode surrogate & A body signed and verified in Python diverges in Go & Such strings are outside interoperable JSON (RFC 8259, \S8.2) & Input domain restricted to Unicode scalar values \\
+Colliding non-text keys & Two different malformed inputs get the same payload digest & An integer key renders like the string of its digits & Normalisation falls back to an ordered list of pairs on collision \\
+\bottomrule
+\end{tabularx}
+\end{table*}

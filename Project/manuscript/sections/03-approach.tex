@@ -1,0 +1,29 @@
+\section{Research approach}
+\label{sec:approach}
+
+We follow Design Science Research (DSR)~\cite{peffers2007}, because the object of study is an artefact that must be built, demonstrated and tested against stated criteria. The six DSR activities map onto the article as follows.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Problem identification:} AI Act obligations presuppose records that a third party can trust, while ML pipelines produce records that only their producer can vouch for (Sections~1 and 2).
+\item
+  \textbf{Objectives:} records that third parties can verify, linked to the obligations they support, with their limits stated and their cost measured (RQ1--RQ3).
+\item
+  \textbf{Design and development:} the derivation method and evidence model (Section~4) and the architecture that implements them (Section~5).
+\item
+  \textbf{Demonstration:} canonical scenarios, a credit-scoring pipeline on real data and an industrial data stream (Sections~6.2 and 6.3).
+\item
+  \textbf{Evaluation:} the criteria below (Section~6).
+\item
+  \textbf{Communication:} this article, with the code, ledgers, exports and protocols in a public archive.
+\end{enumerate}
+
+The evaluation is artificial and ex post, in the terms of the FEDS framework~\cite{venable2016}, and follows its strategy for purely technical artefacts. Every claim the article makes concerns a property of the artefact: whether alterations are detected, what verification costs, which audit questions the records answer. These properties can be checked without users. A naturalistic evaluation with auditors, notified bodies and authorities is future work (Section~9).
+
+\input{tables/criteria}
+
+Each experiment was pre-registered. Its protocol, with parameters, thresholds and expected outcomes, was committed to the public repository before the first measurement, and amendments were committed before the results they could affect. Analyses decided after seeing results are reported as post hoc. Code, ledgers, exports, protocols and figure scripts are archived with a DOI~\cite{artefacts} (see the data availability statement).
+
+The article covers seven provisions whose duties can be met, at least in part, by records the pipeline produces: Arts. 10, 12, 14, 15, 72, 73 and 78 AI Act. Art. 11 and Annex IV enter through the documentation those records feed. Arts. 9 (risk management) and 17 (quality management) are left out, because their duties are organisational rather than events a pipeline emits.

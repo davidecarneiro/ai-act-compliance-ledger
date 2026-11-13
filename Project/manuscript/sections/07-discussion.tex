@@ -1,0 +1,49 @@
+\section{Discussion}
+\label{sec:discussion}
+
+The results support the thesis in its three parts: the obligations can be turned into evidence a third party can verify, the cryptography that makes it verifiable costs little, and what costs is distributed ordering. This section reads the results for what the evidence proves, for when a ledger is worth its cost, for the law and for standards.
+
+\subsection{What the evidence proves, and what it does not}
+\label{sec:disc-proves}
+
+The evidence proves the integrity and provenance of what the engine recorded, and the link of each decision to its rule, its policy and the provisions it supports. Table~\ref{tab:tamper} marks the boundary. Any alteration of a record after issuance is detected by a third party holding the issuer's public key (T1--T5), and truncation or rewriting by a key holder is detected up to the last anchor (T6, T7). Because every decision re-executes from its record and the archived policy (Section~6.2), a reader can check not only that a record is intact but that the recorded decision follows from the recorded inputs.
+
+What the evidence does not prove is as precise. It does not prove that the metrics were true at the source, that no event was withheld (T8), or that an event came from the producer it names (T9a). The one exception is the signed approval, whose author and authorisation the engine verifies (T9b). Nor does the evidence make the decision behind it reliable. In the credit case the fairness gate rejected both models on one partition, while across 500 partitions the reweighed model would have passed in 44\,\% of them, and the validation decision matched the test decision in only about half (Section~6.3). The record states exactly what was decided and on which numbers; the policy, which compares point estimates with thresholds, does not express their uncertainty.
+
+Trust therefore moves rather than disappears. It moves from the record, which a third party can now check, to the engine that decides what is recorded and to the source that feeds it. Reproducible builds of the engine and attested execution in trusted execution environments are the routes to reduce that trust, and are left to future work.
+
+\subsection{When is a ledger warranted?}
+\label{sec:disc-ledger}
+
+Table~\ref{tab:tamper} and Figure~\ref{fig:anchoring} together answer the question with costs. A signed log (B) gives evidence of mutation for 0.068\,ms per event. Publishing its signed head (B+) closes truncation and rewriting by a key holder up to the last anchor, for an anchor operation of 0.080\,ms every hundred events. What matters for B+ is where the head goes: it must be published where the provider cannot retract it, such as a transparency log, an RFC 3161 time-stamping authority~\cite{rfc3161} or an endpoint run by the supervisor.
+
+A permissioned ledger (C) adds three properties that neither provides. No organisation can write alone, as the refused single-organisation anchor showed; every anchor names the organisation that submitted it, which answers Q12; and each organisation keeps its own copy of the history. Its price is ordering: about one BatchTimeout per transaction, which batching turns from a throughput limit into a delay of seconds at the cadences we observed.
+
+A rule of thumb follows. A single organisation audited by an external authority may find B+ sufficient, provided the anchors go to a party the authority trusts. Settings with several parties, such as provider and deployer, a notified body, a supply chain or a sector consortium, are where C earns its cost, with batches sized to the event rate. One property of C was not measured: the administrative independence of its organisations, since both ran on the same machine.
+
+\subsection{Legal significance}
+\label{sec:disc-legal}
+
+Three bodies of law give the evidence a role beyond supervision. We state each as of November 2026.
+
+\paragraph{Electronic ledgers under eIDAS} Under Art.~45k(1) of Regulation (EU) No 910/2014, as amended~\cite{eidas_2024}, an electronic ledger cannot be denied legal effect or admissibility as evidence solely because it is electronic or because it does not meet the requirements for qualified ledgers. The artefact falls under that paragraph: it is a sequence of electronic records that ensures their integrity and the accuracy of their chronological ordering. The presumption of Art.~45k(2), of unique and accurate sequential ordering and of integrity, attaches only to qualified electronic ledgers, which this is not. Qualification would require a trust service provider that meets ETSI EN 319 401 and, for a service built on distributed ledger technology, ISO 23257:2022 and ISO/TS 23635:2022~\cite{qel_2025,alamillo2024}. Admissibility leaves the weight of the evidence to the court, and no court or authority has assessed it.
+
+\paragraph{Product liability} Directive (EU) 2024/2853~\cite{pld_2024} applies to products, software included, placed on the market or put into service after 9 December 2026, a year before the Annex III requirements of the AI Act. Its Art.~9(1) lets a court order the defendant to disclose relevant evidence at its disposal, and Art.~10(2)(a) presumes the product defective if the defendant fails to do so. Art.~9(4) and (5) direct the court to protect trade secrets and confidential information while it orders disclosure. Selective disclosure (Section~5.5) is an instrument for that duty, prepared before any litigation: the redacted export lets the other party and the court check that findings map to provisions and that anchors match, without reading the policy logic.
+
+The directive is asymmetric, and the conclusion must respect that. Failure to comply with mandatory safety requirements supports a presumption of defectiveness (Art.~10(2)(b)) and is one of the circumstances of the assessment (Art.~7(2)(f)). Compliance does not prove the absence of a defect, because defectiveness is assessed on all the circumstances. Verifiable evidence that the pipeline ran its checks therefore weighs in the assessment without closing it. Where a claimant faces excessive difficulty despite disclosure, Art.~10(4) allows the court to presume defectiveness or causation, and Art.~10(5) lets the defendant rebut the presumption. A verifiable record lowers the asymmetry of information on which both parties rely, without taking either side.
+
+\paragraph{Technical documentation} The artefact supports parts of Annex~IV, points 2(d), 2(g), 3 and 9, with records and digests that the pipeline produces as it runs. The rest of the technical documentation still needs human preparation; the full mapping is in the supplementary material.
+
+\subsection{Implications for standards}
+\label{sec:disc-standards}
+
+\paragraph{OSCAL} NIST publishes no OSCAL catalogue for the AI Act. Our export suggests how one should be modelled: technical objectives, which a machine can assess, kept apart from legal provisions, which it cannot (Section~4.4). A public catalogue of controls for the AI Act, with the technical objectives as its parts, is the natural next step.
+
+\paragraph{Canonical JSON} The eight defects of Table~\ref{tab:defects} show that a canonical form specified on one language's data model breaks between implementations. Adopting RFC 8785 removed the encoding defects; the remaining ones were boundary cases, such as nulls, lone surrogates, key types and number literals, that only a shared conformance matrix exposed. Standards that rely on signed JSON should ship such a matrix with the canonical form.
+
+\paragraph{Logging standards} prEN ISO/IEC 24970 on AI system logging closed its formal vote in October 2026 and had not been published as of November 2026~\cite{iso24970}. The fields of the evidence model should be aligned with it once it is published.
+
+\subsection{Adoption path}
+\label{sec:disc-adoption}
+
+Adoption can be incremental. A provider can start with the evidence model and the engine, which add 0.068\,ms per event to its pipeline. It can then publish its signed head to an external party when an authority or a contract asks for completeness, and move to a permissioned ledger when several parties must share the history. Three prerequisites hold at every step: a pipeline mature enough to emit events at each stage, since the engine consumes events and does not create them; custody of the signing key in a hardware security module; and separation of duties between those who run the engine and those who hold its key.

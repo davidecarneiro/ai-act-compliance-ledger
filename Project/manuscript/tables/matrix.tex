@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\caption{Obligation-to-evidence matrix. Rule identifiers are those the Compliance Policy Engine writes in each record.}
+\label{tab:matrix}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}>{\raggedright\arraybackslash}p{0.2\textwidth}LL@{}}
+\toprule
+Provision & Pipeline stage & Control (\path{rule_id}) & Evidence produced & Does not establish \\
+\midrule
+Art. 10(2)(f)--(g) & Validation & \path{threshold.fairness} & Bias metric, threshold, decision, \path{policy_hash} & Adequacy of the metric for the population; the other duties of data governance \\
+Art. 10(3) & Ingestion and training & Dataset digest recorded & \path{artifact_hash} of the dataset, \path{run_id} & Relevance, representativeness, absence of errors, completeness of the data \\
+Art. 11, Annex IV & Release & Digests and off-chain references & Partial support for Annex IV, points 2(d), 2(g), 3 and 9 & Completeness of the technical documentation \\
+Art. 12 & Every stage & A chained record of each event, malformed input included (\path{input.malformed}) & Signed, chained record & Events that were never emitted \\
+Art. 14 & Deployment gate & \path{oversight.approval_missing}, \path{oversight.approval_invalid}, \path{oversight.approval_denied} & Signed approval and gate decision & Effectiveness and competence of the oversight; the measures of Art. 14(4) \\
+Art. 15 & Validation & \path{threshold.precision} & Metric, threshold, decision & Robustness and cybersecurity; adequacy of the accuracy metric \\
+Art. 72 & Monitoring & \path{monitoring.drift_alert} & Alert with indicator and threshold & Adequacy of the monitoring plan; the action taken afterwards \\
+Art. 73 & Incident & \path{incident.reportable} & Incident trail: detection, report, audit query & That the deadline was met; receipt by the authority \\
+Art. 78 & Export for audit & Redacted OSCAL export & Integrity anchors without sensitive fields & Absence of inference by aggregation \\
+\bottomrule
+\end{tabularx}
+\end{table*}

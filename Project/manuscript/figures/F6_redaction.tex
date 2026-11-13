@@ -1,0 +1,65 @@
+% Figure: one finding of the credit-scoring case, complete and redacted (abridged).
+\begin{minipage}[t]{0.49\textwidth}
+\centering\textbf{\footnotesize (a) Complete export}
+\begin{lstlisting}[style=json]
+"observation": {
+  "title": "Pipeline event: german-credit",
+  "description": "Compliance Policy Engine decision
+    'rejected' for artifact credit-lr-v2 at stage
+    validation. Reason: demographic parity diff
+    0.111607 above threshold 0.1.",
+  "subjects": [{"subject-uuid": "127c5e9d-..."}],
+  "props": [
+    {"name": "decision", "value": "rejected"},
+    {"name": "issuer_pubkey_fingerprint",
+     "value": "9b21fdca..."}],
+  "relevant-evidence": [{"description": "...
+    record_hash=601c6d47...; chain_hash=95cdc167...;
+    signature_alg=Ed25519."}]},
+"finding": {
+  "title": "Technical objective obj-fairness-threshold:
+    rejected for german-credit",
+  "props": [
+    {"name": "supports-requirement", "value": "aia-10-2-f"},
+    {"name": "supports-requirement", "value": "aia-11"},
+    {"name": "supports-requirement", "value": "aia-12"},
+    {"name": "supports-requirement", "value": "aia-15"},
+    {"name": "rule-id", "value": "threshold.fairness"},
+    {"name": "legal-assessment", "value": "not-performed"},
+    {"name": "policy-id", "value": "pol-16d3a1645858"}],
+  "target": {"target-id": "obj-fairness-threshold",
+    "status": {"state": "not-satisfied"}}}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\centering\textbf{\footnotesize (b) Redacted export}
+\begin{lstlisting}[style=json]
+"observation": {
+  "title": "Pipeline event ev-e445128c-...",
+  "description": "[REDACTED - AI Act Art. 78
+    confidentiality]",
+
+
+  "subjects": [{"subject-uuid": "ac9b13f7-..."}],
+  "props": [
+    {"name": "decision", "value": "rejected"},
+    {"name": "issuer_pubkey_fingerprint",
+     "value": "9b21fdca..."}],
+  "relevant-evidence": [{"description": "...
+    record_hash=601c6d47...; chain_hash=95cdc167...;
+    signature_alg=Ed25519."}]},
+"finding": {
+  "title": "Technical objective obj-fairness-threshold:
+    rejected",
+  "props": [
+    {"name": "supports-requirement", "value": "aia-10-2-f"},
+    {"name": "supports-requirement", "value": "aia-11"},
+    {"name": "supports-requirement", "value": "aia-12"},
+    {"name": "supports-requirement", "value": "aia-15"},
+    {"name": "rule-id", "value": "threshold.fairness"},
+    {"name": "legal-assessment", "value": "not-performed"},
+    {"name": "policy-hash", "value": "16d3a164..."}],
+  "target": {"target-id": "obj-fairness-threshold",
+    "status": {"state": "not-satisfied"}}}
+\end{lstlisting}
+\end{minipage}
