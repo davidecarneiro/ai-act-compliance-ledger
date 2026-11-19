@@ -1,0 +1,24 @@
+1 & scenario named & approved & \path{policy.all_checks_passed} & yes \\
+2 & scenario null & approved & \path{policy.all_checks_passed} & yes \\
+3 & scenario absent & approved & \path{policy.all_checks_passed} & yes \\
+4 & scenario empty & approved & \path{policy.all_checks_passed} & yes \\
+5 & scenario in Unicode & approved & \path{policy.all_checks_passed} & yes \\
+6 & scenario is a list & rejected & \path{input.malformed} & yes \\
+7 & scenario with a lone surrogate & rejected & \path{input.malformed} & yes \\
+8 & metric name with a lone surrogate & rejected & \path{input.malformed} & no \\
+9 & artefact identifier is a number & rejected & \path{input.malformed} & yes \\
+10 & precision below the threshold & rejected & \path{threshold.precision} & yes \\
+11 & parity above the threshold & rejected & \path{threshold.fairness} & yes \\
+12 & high risk without approval & rejected & \path{oversight.approval_missing} & yes \\
+13 & drift above the threshold & escalated & \path{monitoring.drift_alert} & yes \\
+14 & metric is NaN & rejected & \path{input.malformed} & no \\
+15 & metric keys of mixed type & rejected & \path{input.malformed} & no \\
+16 & metric is text & rejected & \path{input.malformed} & no \\
+17 & run identifier (v2) & approved & \path{policy.all_checks_passed} & yes \\
+18 & run identifier is a list (v2) & rejected & \path{input.malformed} & yes \\
+19 & artefact in the store (v2) & approved & \path{policy.all_checks_passed} & yes \\
+20 & artefact digest in upper case (v2) & rejected & \path{input.malformed} & yes \\
+21 & store reference without a digest (v2) & rejected & \path{input.malformed} & yes \\
+22 & store reference to another digest (v2) & rejected & \path{input.malformed} & yes \\
+23 & integer beyond $2^{53}-1$ (v2) & rejected & \path{input.malformed} & no \\
+24 & payload key with a lone surrogate (v2) & rejected & \path{input.malformed} & yes \\

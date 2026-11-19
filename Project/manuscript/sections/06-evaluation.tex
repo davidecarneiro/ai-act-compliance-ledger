@@ -15,7 +15,7 @@ The data are the six canonical scenarios and a three-event serious-incident sequ
 
 The engine reproduces the dissertation's decisions under the version 2 evidence model. The six canonical scenarios yield one approval, three rejections (precision, fairness, missing approval), one escalation for drift and one recorded audit query, each under the same rule as in version 1. The incident sequence yields two escalations under \path{incident.reportable} and one recorded query, all three supporting Art. 73. Re-executing every decision from its record and the archived policy returns the same decision and \path{rule_id} for all 1,788 regenerated records and all 16 records of the credit case.
 
-The input boundary is pinned by a matrix of 24 malformed or edge-case events: the dissertation's 16, plus 8 for the version 2 fields and the numeric domain of RFC 8785. Each case gets the same outcome in the Python issuer and the Go chaincode. The dissertation's sensitivity analysis over 45 threshold combinations still applies to the decision logic, which version 2 left unchanged: approvals range from 0/6 to 4/6, and the decision profile is stable to $\pm$6.25 \% of the precision threshold. The grids for fairness and drift are too coarse to claim fine stability for those thresholds.
+The input boundary is pinned by a matrix of 24 malformed or edge-case events (Supplementary Material S4): the dissertation's 16, plus 8 for the version 2 fields and the numeric domain of RFC 8785. Each case gets the same outcome in the Python issuer and the Go chaincode. The dissertation's sensitivity analysis over 45 threshold combinations still applies to the decision logic, which version 2 left unchanged: approvals range from 0/6 to 4/6, and the decision profile is stable to $\pm$6.25 \% of the precision threshold. The grids for fairness and drift are too coarse to claim fine stability for those thresholds.
 
 \subsection{Real-data cases}
 
@@ -80,7 +80,7 @@ The endorsement policy held. An anchor endorsed by Org1 alone was refused at val
 
 \subsection{Auditability}
 
-Table~\ref{tab:audit} condenses the answers to the fourteen audit questions of Section~3 in four configurations. In C, the network is represented by a signed log anchored after every record, as the Fabric run provides, and Q12 is answered from the Fabric run itself. The full matrix is in the supplementary material.
+Table~\ref{tab:audit} condenses the answers to the fourteen audit questions of Section~3 in four configurations. In C, the network is represented by a signed log anchored after every record, as the Fabric run provides, and Q12 is answered from the Fabric run itself. The full matrix, with what each configuration lacks, is in Supplementary Material S2.
 
 \input{tables/audit}
 

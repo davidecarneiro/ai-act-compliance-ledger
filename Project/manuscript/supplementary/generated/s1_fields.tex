@@ -1,0 +1,33 @@
+Identity & \path{evidence_id} & string & Opaque UUID of the record. \\
+ & \path{scenario_id} & string & Label chosen by the integrator; free text, removed in redacted exports. \\
+ & \path{event_type} & string & Type of the pipeline event. \\
+ & \path{artifact_id} & string & Name of the artefact the event concerns; free text, removed in redacted exports. \\
+ & \path{artifact_type} & string & Declared type of the artefact (dataset, model, report, ...). \\
+ & \path{pipeline_stage} & string & Stage of the pipeline that emitted the event. \\
+ & \path{timestamp} & date-time & Time the engine recorded the event (ISO 8601 with offset). \\
+ & \path{run_id} & string or null & Execution or release the event belongs to; null when the event has none. \\
+\addlinespace
+Content commitments & \path{payload_hash} & SHA-256, hex & SHA-256 of the event as the engine received it, after pseudonymisation. \\
+ & \path{artifact_hash} & SHA-256, hex or null & SHA-256 of the artefact file; null when the event carries no artefact. \\
+ & \path{off_chain_ref} & string or null & Path of the artefact in the content-addressed store. \\
+\addlinespace
+Decision & \path{decision} & one of a closed set & Outcome of the policy. \\
+ & \path{reason} & string & Human-readable reason; removed in redacted exports. \\
+ & \path{rule_id} & one of a closed set & The rule that decided, from a closed vocabulary of ten. \\
+ & \path{metrics} & object or null & Metrics the event reported; null when it reported none. \\
+ & \path{decision_inputs} & object & What the decision read beyond the metrics, kept so that it can be re-executed. \\
+ & \path{policy_id} & string & pol- followed by the first twelve characters of policy\_hash. \\
+ & \path{policy_hash} & SHA-256, hex & SHA-256 of the canonical content of the archived policy. \\
+\addlinespace
+Normative binding & \path{supports_requirements} & array & Provisions whose assessment the record supports; never a verdict. \\
+\addlinespace
+Provenance & \path{issuer_id} & string & Identifier of the issuing engine. \\
+ & \path{issuer_pubkey_fingerprint} & SHA-256, hex & SHA-256 fingerprint of the issuer's Ed25519 public key. \\
+ & \path{sig_alg} & constant "Ed25519" & Signature algorithm. \\
+ & \path{hash_alg} & constant "SHA-256" & Hash algorithm. \\
+ & \path{schema_version} & constant 2 & Version of the evidence model; selects the canonical form. \\
+\addlinespace
+Chain & \path{parent_hash} & SHA-256, hex & chain\_hash of the previous record; 64 zeros for the first. \\
+ & \path{record_hash} & SHA-256, hex & SHA-256 of the canonical body. \\
+ & \path{issuer_signature} & string & Ed25519 signature over the canonical body, base64. \\
+ & \path{chain_hash} & SHA-256, hex & SHA-256(parent\_hash || record\_hash). \\

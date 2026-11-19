@@ -1,0 +1,118 @@
+{
+ "observation": {
+  "uuid": "4260ac2d-b2c1-5a84-91a4-5fb65f61f2ff",
+  "title": "Pipeline event ev-e445128c-ea2e-43e1-afc4-3a1f543119ec",
+  "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+  "methods": [
+   "AUTOMATED"
+  ],
+  "types": [
+   "finding"
+  ],
+  "subjects": [
+   {
+    "subject-uuid": "ac9b13f7-1c91-58d0-8cc0-f2223b4e36eb",
+    "type": "component"
+   }
+  ],
+  "relevant-evidence": [
+   {
+    "href": "urn:evidence:ev-e445128c-ea2e-43e1-afc4-3a1f543119ec",
+    "description": "Evidence record, signed by its issuer and hash-chained. record_hash=601c6d4793baf77749f2cd319e6b6cdb6aa0d52fe04d20367d6f51b6334d26d7; chain_hash=95cdc1678f01e0fda87e706426d8da4c63ffb6dd00190566ccccdff8eb08376a; signature_alg=Ed25519."
+   }
+  ],
+  "collected": "2026-10-12T14:57:44.929867+00:00",
+  "props": [
+   {
+    "name": "decision",
+    "value": "rejected"
+   },
+   {
+    "name": "reason",
+    "value": "[REDACTED — AI Act Art. 78 confidentiality]"
+   },
+   {
+    "name": "issuer",
+    "value": "compliance-policy-engine-v2"
+   },
+   {
+    "name": "issuer_pubkey_fingerprint",
+    "value": "9b21fdca276d75d6f75b0900efeb50aa2f2f5306fbcffd92cccd14daaf730e5c"
+   },
+   {
+    "name": "redaction_applied",
+    "value": "true"
+   }
+  ]
+ },
+ "finding": {
+  "uuid": "929fe6f8-96c0-5987-a91b-73f414c3dca3",
+  "title": "Technical objective obj-fairness-threshold: rejected",
+  "description": "[REDACTED — AI Act Art. 78 confidentiality]",
+  "props": [
+   {
+    "name": "supports-requirement",
+    "value": "aia-10-2-f",
+    "class": "ai-act-article"
+   },
+   {
+    "name": "supports-requirement",
+    "value": "aia-11",
+    "class": "ai-act-article"
+   },
+   {
+    "name": "supports-requirement",
+    "value": "aia-12",
+    "class": "ai-act-article"
+   },
+   {
+    "name": "supports-requirement",
+    "value": "aia-15",
+    "class": "ai-act-article"
+   },
+   {
+    "name": "objective-proposition",
+    "value": "The declared demographic parity difference stayed within the configured maximum.",
+    "class": "technical-objective"
+   },
+   {
+    "name": "objectives-version",
+    "value": "1.1",
+    "class": "technical-objective"
+   },
+   {
+    "name": "rule-id",
+    "value": "threshold.fairness",
+    "class": "technical-objective"
+   },
+   {
+    "name": "rule-id-source",
+    "value": "written-by-engine",
+    "class": "technical-objective"
+   },
+   {
+    "name": "legal-assessment",
+    "value": "not-performed",
+    "class": "technical-objective"
+   },
+   {
+    "name": "policy-commitment",
+    "value": "91e1b2508605354b91a546c7ac30420b5f764b7d6381062d758224e4ce0f23c6",
+    "class": "technical-objective"
+   }
+  ],
+  "target": {
+   "type": "objective-id",
+   "target-id": "obj-fairness-threshold",
+   "status": {
+    "state": "not-satisfied"
+   }
+  },
+  "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+  "related-observations": [
+   {
+    "observation-uuid": "4260ac2d-b2c1-5a84-91a4-5fb65f61f2ff"
+   }
+  ]
+ }
+}

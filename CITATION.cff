@@ -6,23 +6,29 @@ title: >-
   Verifiable compliance evidence for high-risk AI under the EU AI Act:
   code, evidence ledgers and experiment protocols
 type: software
+version: article-v1.0
+license: MIT
 authors:
   - given-names: Davide Rua
     family-names: Carneiro
+    orcid: https://orcid.org/0000-0001-5998-7960
     affiliation: >-
-      CIICESI, School of Technology and Management, Technical University of
-      Porto, Felgueiras, Portugal; INESC TEC, Porto, Portugal
+      INESC TEC, Porto, Portugal; School of Technology and Management,
+      Technical University of Porto, Felgueiras, Portugal
   - given-names: Rui Pedro Teixeira
     name-particle: de
     family-names: Sousa
-    affiliation: School of Technology and Management, Technical University of Porto, Portugal
+    orcid: https://orcid.org/0009-0001-1614-4477
+    affiliation: Technical University of Porto, Portugal
   - given-names: Guilherme
     family-names: Palumbo
+    orcid: https://orcid.org/0000-0001-6633-3033
     affiliation: >-
       CIICESI, School of Technology and Management, Technical University of
       Porto, Felgueiras, Portugal
   - given-names: Diogo
     family-names: Torres
+    orcid: https://orcid.org/0009-0000-1829-0649
     affiliation: INESC TEC, Porto, Portugal
 repository-code: https://github.com/davidecarneiro/ai-act-compliance-ledger
 abstract: >-

@@ -1,16 +1,51 @@
 {
   "title": "Verifiable compliance evidence for high-risk AI under the EU AI Act: code, evidence ledgers and experiment protocols",
   "upload_type": "software",
+  "version": "article-v1.0",
+  "license": "MIT",
+  "access_right": "open",
   "description": "<p>A compliance-as-code architecture that turns EU AI Act obligations for high-risk AI systems into third-party-verifiable evidence records: a Compliance Policy Engine with fail-closed validation, Ed25519-signed and hash-chained records (RFC 8785 canonical form), OSCAL 1.1.2 assessment results with selective disclosure, and per-record or batched anchoring on Hyperledger Fabric.</p><p>The archive holds the code, the evidence ledgers and exports of every run, the pre-registered experiment protocols, the result files of the cost ablation, the Fabric anchoring measurements, the tamper experiment and the audit-question matrix, and the scripts that draw the article's figures. The dissertation's version of the code is the tag thesis-v1.0.</p>",
   "creators": [
-    {"name": "Carneiro, Davide Rua", "affiliation": "CIICESI, School of Technology and Management, Technical University of Porto; INESC TEC"},
-    {"name": "de Sousa, Rui Pedro Teixeira", "affiliation": "School of Technology and Management, Technical University of Porto"},
-    {"name": "Palumbo, Guilherme", "affiliation": "CIICESI, School of Technology and Management, Technical University of Porto"},
-    {"name": "Torres, Diogo", "affiliation": "INESC TEC"}
+    {
+      "name": "Carneiro, Davide Rua",
+      "affiliation": "INESC TEC; School of Technology and Management, Technical University of Porto",
+      "orcid": "0000-0001-5998-7960"
+    },
+    {
+      "name": "de Sousa, Rui Pedro Teixeira",
+      "affiliation": "Technical University of Porto",
+      "orcid": "0009-0001-1614-4477"
+    },
+    {
+      "name": "Palumbo, Guilherme",
+      "affiliation": "CIICESI, School of Technology and Management, Technical University of Porto",
+      "orcid": "0000-0001-6633-3033"
+    },
+    {
+      "name": "Torres, Diogo",
+      "affiliation": "INESC TEC",
+      "orcid": "0009-0000-1829-0649"
+    }
   ],
-  "keywords": ["EU AI Act", "compliance-as-code", "tamper-evident logging", "OSCAL", "Hyperledger Fabric", "MLOps", "selective disclosure"],
+  "keywords": [
+    "EU AI Act",
+    "compliance-as-code",
+    "tamper-evident logging",
+    "OSCAL",
+    "Hyperledger Fabric",
+    "MLOps",
+    "selective disclosure"
+  ],
   "related_identifiers": [
-    {"identifier": "https://github.com/RuiTeixeiraSousa/ai-act-compliance-ledger", "relation": "isDerivedFrom", "resource_type": "software"},
-    {"identifier": "https://github.com/davidecarneiro/multiflow", "relation": "references", "resource_type": "software"}
+    {
+      "identifier": "https://github.com/RuiTeixeiraSousa/ai-act-compliance-ledger",
+      "relation": "isDerivedFrom",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/davidecarneiro/multiflow",
+      "relation": "references",
+      "resource_type": "software"
+    }
   ]
 }

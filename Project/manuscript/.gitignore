@@ -8,3 +8,10 @@
 *.spl
 *.synctex.gz
 main.pdf
+supplementary/*.pdf
+supplementary/*.toc
+supplementary/*.aux
+supplementary/*.log
+supplementary/*.out
+supplementary/*.fls
+supplementary/*.fdb_latexmk

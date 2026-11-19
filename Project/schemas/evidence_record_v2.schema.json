@@ -1,0 +1,307 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/davidecarneiro/ai-act-compliance-ledger/Project/schemas/evidence_record_v2.schema.json",
+ "title": "Evidence record, schema version 2",
+ "description": "One evidence record as the Compliance Policy Engine issues it (schema_version 2). The canonical body is every member except record_hash, issuer_signature and chain_hash, serialised with RFC 8785. Fields a ledger stamps beside the record (submitter_msp, submitter_id) are not part of the record.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "evidence_id",
+  "scenario_id",
+  "event_type",
+  "artifact_id",
+  "artifact_type",
+  "pipeline_stage",
+  "timestamp",
+  "decision",
+  "reason",
+  "rule_id",
+  "metrics",
+  "policy_id",
+  "policy_hash",
+  "issuer_id",
+  "issuer_pubkey_fingerprint",
+  "sig_alg",
+  "hash_alg",
+  "parent_hash",
+  "schema_version",
+  "run_id",
+  "payload_hash",
+  "artifact_hash",
+  "off_chain_ref",
+  "decision_inputs",
+  "supports_requirements",
+  "record_hash",
+  "issuer_signature",
+  "chain_hash"
+ ],
+ "properties": {
+  "evidence_id": {
+   "type": "string",
+   "pattern": "^ev-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+   "description": "Identity. Opaque UUID of the record."
+  },
+  "scenario_id": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Identity. Label chosen by the integrator; free text, removed in redacted exports."
+  },
+  "event_type": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Identity. Type of the pipeline event."
+  },
+  "artifact_id": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Identity. Name of the artefact the event concerns; free text, removed in redacted exports."
+  },
+  "artifact_type": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Identity. Declared type of the artefact (dataset, model, report, ...)."
+  },
+  "pipeline_stage": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Identity. Stage of the pipeline that emitted the event."
+  },
+  "timestamp": {
+   "type": "string",
+   "format": "date-time",
+   "description": "Identity. Time the engine recorded the event (ISO 8601 with offset)."
+  },
+  "run_id": {
+   "anyOf": [
+    {
+     "type": "string",
+     "minLength": 1
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "Identity. Execution or release the event belongs to; null when the event has none."
+  },
+  "payload_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$",
+   "description": "Content commitment. SHA-256 of the event as the engine received it, after pseudonymisation."
+  },
+  "artifact_hash": {
+   "anyOf": [
+    {
+     "type": "string",
+     "pattern": "^[0-9a-f]{64}$"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "Content commitment. SHA-256 of the artefact file; null when the event carries no artefact."
+  },
+  "off_chain_ref": {
+   "anyOf": [
+    {
+     "type": "string",
+     "pattern": "^store/sha256/[0-9a-f]{64}$"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "Content commitment. Path of the artefact in the content-addressed store."
+  },
+  "decision": {
+   "enum": [
+    "approved",
+    "rejected",
+    "escalated",
+    "recorded"
+   ],
+   "description": "Decision. Outcome of the policy."
+  },
+  "reason": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Decision. Human-readable reason; removed in redacted exports."
+  },
+  "rule_id": {
+   "enum": [
+    "input.malformed",
+    "incident.reportable",
+    "threshold.precision",
+    "threshold.fairness",
+    "oversight.approval_invalid",
+    "oversight.approval_denied",
+    "oversight.approval_missing",
+    "monitoring.drift_alert",
+    "audit.query_recorded",
+    "policy.all_checks_passed"
+   ],
+   "description": "Decision. The rule that decided, from a closed vocabulary of ten."
+  },
+  "metrics": {
+   "anyOf": [
+    {
+     "type": "object",
+     "additionalProperties": {
+      "type": "number"
+     }
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "description": "Decision. Metrics the event reported; null when it reported none."
+  },
+  "decision_inputs": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "risk_level",
+    "human_approval",
+    "approval"
+   ],
+   "description": "Decision. What the decision read beyond the metrics, kept so that it can be re-executed.",
+   "properties": {
+    "risk_level": {
+     "enum": [
+      "low",
+      "medium",
+      "high"
+     ]
+    },
+    "human_approval": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "approval": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "object",
+       "additionalProperties": false,
+       "required": [
+        "approver_id",
+        "statement",
+        "signature"
+       ],
+       "description": "A signed approval, kept whole so that a third party can verify it.",
+       "properties": {
+        "approver_id": {
+         "type": "string",
+         "minLength": 1
+        },
+        "statement": {
+         "type": "object",
+         "required": [
+          "type",
+          "artifact_sha256",
+          "run_id",
+          "decision",
+          "approved_at"
+         ],
+         "properties": {
+          "type": {
+           "const": "deployment-approval"
+          },
+          "artifact_sha256": {
+           "type": "string",
+           "pattern": "^[0-9a-f]{64}$"
+          },
+          "run_id": {
+           "type": "string",
+           "minLength": 1
+          },
+          "decision": {
+           "enum": [
+            "approve",
+            "deny"
+           ]
+          },
+          "approved_at": {
+           "type": "string",
+           "format": "date-time"
+          }
+         }
+        },
+        "signature": {
+         "type": "string",
+         "pattern": "^[A-Za-z0-9+/]{86}==$",
+         "description": "Ed25519 signature over the RFC 8785 form of the statement, base64."
+        }
+       }
+      }
+     ]
+    }
+   }
+  },
+  "policy_id": {
+   "type": "string",
+   "pattern": "^pol-[0-9a-f]{12}$",
+   "description": "Decision. pol- followed by the first twelve characters of policy_hash."
+  },
+  "policy_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$",
+   "description": "Decision. SHA-256 of the canonical content of the archived policy."
+  },
+  "supports_requirements": {
+   "type": "array",
+   "minItems": 1,
+   "uniqueItems": true,
+   "items": {
+    "type": "string",
+    "pattern": "^Art\\.[0-9]+(\\([0-9]+\\))?(\\([a-z]\\))?$"
+   },
+   "description": "Normative binding. Provisions whose assessment the record supports; never a verdict."
+  },
+  "issuer_id": {
+   "type": "string",
+   "minLength": 1,
+   "description": "Provenance. Identifier of the issuing engine."
+  },
+  "issuer_pubkey_fingerprint": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$",
+   "description": "Provenance. SHA-256 fingerprint of the issuer's Ed25519 public key."
+  },
+  "sig_alg": {
+   "const": "Ed25519",
+   "description": "Provenance. Signature algorithm."
+  },
+  "hash_alg": {
+   "const": "SHA-256",
+   "description": "Provenance. Hash algorithm."
+  },
+  "schema_version": {
+   "const": 2,
+   "description": "Provenance. Version of the evidence model; selects the canonical form."
+  },
+  "parent_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$",
+   "description": "Chain. chain_hash of the previous record; 64 zeros for the first."
+  },
+  "record_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$",
+   "description": "Chain. SHA-256 of the canonical body."
+  },
+  "issuer_signature": {
+   "type": "string",
+   "pattern": "^[A-Za-z0-9+/]{86}==$",
+   "description": "Chain. Ed25519 signature over the canonical body, base64."
+  },
+  "chain_hash": {
+   "type": "string",
+   "pattern": "^[0-9a-f]{64}$",
+   "description": "Chain. SHA-256(parent_hash || record_hash)."
+  }
+ }
+}

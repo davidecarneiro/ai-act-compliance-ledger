@@ -1,0 +1,203 @@
+%% Supplementary material of the article (Computer Standards & Interfaces).
+%% Tables in generated/ come from Project/prototype/article/supplementary.py;
+%% Section S3 is written by hand. Compile with pdfLaTeX.
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs,longtable,array}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{3em}
+\setlength{\LTcapwidth}{\textwidth}
+\def\UrlBreaks{\do\.\do\_\do\-\do\/}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\makeatletter\let\inputrows\@@input\makeatother
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\lstset{basicstyle=\ttfamily\scriptsize, columns=fullflexible, breaklines=true,
+  frame=single, rulecolor=\color{black!30}, showstringspaces=false, keepspaces=true,
+  literate={—}{{\textemdash}}1}
+
+\title{Supplementary material\\[4pt]\large Verifiable, minimally disclosed compliance evidence for high-risk AI: signed evidence chains, OSCAL and Hyperledger Fabric under the EU AI Act}
+\author{Davide Carneiro, Rui Teixeira de Sousa, Guilherme Palumbo, Diogo Torres}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent This document accompanies the article. Sections S1, S2, S4, S5 and S6 are generated from files in the public repository (\url{https://github.com/davidecarneiro/ai-act-compliance-ledger}, branch \path{article}) by \path{Project/prototype/article/supplementary.py}; the source of each is named in its caption. Section S3 is an analysis by the authors, stated as of November 2026.
+
+\tableofcontents
+
+%% ---------------------------------------------------------------------
+\section{Evidence record, schema version 2}
+\label{sec:s1}
+
+Table~\ref{tab:s1} lists the fields of an evidence record of version 2, grouped as in Table 4 of the article. The JSON Schema (draft 2020-12) is in the repository at \path{Project/schemas/evidence_record_v2.schema.json}. All 1,960 version 2 records in the article's result files validate against it, and a test (\path{tests/test_evidence_schema_v2.py}) checks that it rejects records outside the model: a missing commitment, a rule outside the vocabulary, version 1, a field stamped by a ledger, a free-text policy identifier and a provision written as text.
+
+The canonical body is every field except \path{record_hash}, \path{issuer_signature} and \path{chain_hash}, serialised with RFC 8785. Fields that a Fabric network stamps beside the record (\path{submitter_msp}, \path{submitter_id}) are not part of it. Every field is required; ``or null'' marks the fields that may hold null.
+
+\begin{small}
+\begin{longtable}{@{}P{2.3cm}P{3.6cm}P{2.6cm}P{6.6cm}@{}}
+\caption[Fields of a version 2 evidence record]{Fields of a version 2 evidence record. Source: \path{Project/schemas/evidence_record_v2.schema.json}.}\label{tab:s1}\\
+\toprule
+Group & Field & Type & Content \\
+\midrule
+\endfirsthead
+\toprule
+Group & Field & Type & Content \\
+\midrule
+\endhead
+\inputrows generated/s1_fields.tex 
+\bottomrule
+\end{longtable}
+\end{small}
+
+\noindent A signed approval, when present, sits in \path{decision_inputs.approval}: the approver's identifier, the statement (type \path{deployment-approval}, the artefact's SHA-256, the run, the decision \path{approve} or \path{deny}, the time) and the approver's Ed25519 signature over the RFC 8785 form of the statement.
+
+%% ---------------------------------------------------------------------
+\section{Audit questions: the full matrix}
+\label{sec:s2}
+
+Table~\ref{tab:s2} gives the answer to each of the fourteen audit questions in each configuration, which Table 10 of the article condenses. A holds arm A's SQLite table; B the signed ledger with the issuer's public key, the policy archive and the artefact store; C the same with an anchor after every record and the complete OSCAL export, with Q12 answered from the Fabric run; D the redacted OSCAL export only. Each cell reads \emph{answerable / verifiable by a third party}: Y yes, P partial, N no, -- not applicable. Table~\ref{tab:s2missing} names what is missing wherever a question is answered in part or not at all.
+
+\begin{small}
+\begin{longtable}{@{}lP{8.2cm}cccc@{}}
+\caption[Answerable / verifiable, per question and configuration]{Answerable / verifiable, per question and configuration. Source: \path{experiments/article/wp5/answerability_20261119T215838Z_fabric_q12.json} (protocol \path{Project/protocols/wp5_answerability.md}).}\label{tab:s2}\\
+\toprule
+& Question & A & B & C & D \\
+\midrule
+\endfirsthead
+\toprule
+& Question & A & B & C & D \\
+\midrule
+\endhead
+\inputrows generated/s2_matrix.tex 
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{@{}llP{13cm}@{}}
+\caption[What each configuration lacks]{What each configuration lacks, where a question is answered in part or not at all. Same source.}\label{tab:s2missing}\\
+\toprule
+Q & Conf. & Missing \\
+\midrule
+\endfirsthead
+\toprule
+Q & Conf. & Missing \\
+\midrule
+\endhead
+\inputrows generated/s2_missing.tex 
+\bottomrule
+\end{longtable}
+\end{small}
+
+\noindent Q14 checks 60 items in the redacted export: artefact names and digests, the subject identifiers derived from them, reasons, metric values, scenario names, the names and values of the policy's thresholds, and a search of 356,400 candidate policies against the policy commitment. None is disclosed, and the search recovers nothing. The same search recovered the whole policy from the plain digest that the first version of the export carried (\path{experiments/article/wp5/recovery_evidence_20261012T161816Z_20261119T215749Z.json}).
+
+%% ---------------------------------------------------------------------
+\section{Coverage of Annex IV}
+\label{sec:s3}
+
+Art.~11(1) AI Act requires technical documentation from which the compliance of a high-risk system can be assessed, containing at least the elements of Annex IV. Table~\ref{tab:s3} sets each entry of the annex against what the artefact produces. The unit is the AI system being documented, not the evidence layer. Regulation (EU) 2026/1744 extended the simplified form of the documentation to small mid-cap enterprises (Art.~11(1)) and left the entries of Annex IV unchanged.
+
+The coverage column takes three values. \emph{Supports in part}: the records are part of what the entry asks for. \emph{Contributes}: the records are material the provider can draw on, but the entry asks for something else (a description, an assessment, a justification). \emph{None}: the artefact produces nothing for the entry. No entry is covered in full, and an entry with no support is not thereby optional: whether it applies depends on the system. The table assigns no percentage, because a record does not satisfy every element of an entry it supports.
+
+\begin{small}
+\begin{longtable}{@{}lP{3.2cm}P{1.7cm}P{4.9cm}P{4.2cm}@{}}
+\caption[Annex IV entries against the evidence]{Annex IV entries against the evidence the artefact produces (as of November 2026). Adapted and updated from Appendix E of the dissertation on which the article builds.}\label{tab:s3}\\
+\toprule
+Point & Required content (abridged) & Coverage & What the artefact produces & What remains with the provider \\
+\midrule
+\endfirsthead
+\toprule
+Point & Required content (abridged) & Coverage & What the artefact produces & What remains with the provider \\
+\midrule
+\endhead
+1(a) & Intended purpose, provider, version and its relation to earlier versions & Contributes & Artefact digests identify each model version exactly; \path{run_id} groups the events of each version & Purpose, provider and the lineage between versions \\
+1(b) & Interaction with hardware, software and other AI systems & None & The MultiFlow integration concerns the evidence layer, not the system it observes & The system's interfaces and dependencies \\
+1(c) & Software and firmware versions; update requirements & None & -- & The version inventory; the policy version is not the system's version \\
+1(d) & Forms of placing on the market or putting into service & None & -- & Packages, APIs, embedded components \\
+1(e) & Hardware on which the system runs & None & -- & Equipment and its requirements \\
+1(f) & Images, marking and layout of product components & None & -- & Where applicable \\
+1(g) & Basic description of the interface for the deployer & None & -- & The operational interface \\
+1(h) & Instructions for use and interface description & None & -- & The instructions; an OSCAL report is not one \\
+\midrule
+2(a) & Development methods and steps, third-party tools and pre-trained systems & Contributes & \path{event_type}, \path{pipeline_stage} and \path{run_id} record which stages each run went through, in order & The development process and the use of third-party components \\
+2(b) & Design specifications, logic, key choices, assumptions, trade-offs & Contributes & The archived policy, identified by \path{policy_hash}, fixes the acceptance thresholds & The model's logic and design rationale; thresholds do not describe it \\
+2(c) & Architecture and computational resources & None & -- & The system's architecture and resources \\
+2(d) & Data requirements: datasheets, provenance, scope, selection, labelling, cleaning & Supports in part & Digests of the dataset and its partitions in \path{artifact_hash}, retrievable through \path{off_chain_ref} and recomputed from the store (16 of 16 in the credit case); \path{run_id} ties each dataset to the model trained on it & Datasheets, provenance, selection, labelling and cleaning \\
+2(e) & Assessment of the human oversight measures (Art.~14) & Contributes & Signed approvals naming approver, artefact digest, run and decision, verified by the engine; deployment without a valid approval is rejected and recorded & The assessment of the measures, their effectiveness and the competence of the overseers \\
+2(f) & Pre-determined changes and the solutions for continued compliance & None & -- & The plan of changes; a history of policies is a different object \\
+2(g) & Validation and testing procedures and data; metrics, including potentially discriminatory impacts; test logs and reports dated and signed by the responsible persons & Supports in part & Validation records with precision and demographic parity difference, the decision, the rule and the time, signed by the engine; thresholds through the archived policy; metrics recomputed from the stored artefacts (10 of 10) & Procedures, data descriptions and reports signed by the responsible persons: the engine's signature authenticates the issuer, and signed approvals attribute only the deployment decision \\
+2(h) & Cybersecurity measures & Contributes & Tamper detection for the evidence records (Table 6 of the article) & Security of the whole system; the evidence is one attack surface \\
+\midrule
+3 & Monitoring, functioning and control: capabilities and limits, accuracy for groups, foreseeable unintended outcomes, oversight measures, input specifications & Supports in part & Metrics per stage, a group metric among them; monitoring batches with the Population Stability Index and drift escalations; the input contract enforced and its violations recorded & The description of capabilities, limits and risks, the analysis by group and the input specifications \\
+4 & Appropriateness of the performance metrics & Contributes & The policy names the metrics and thresholds used & Their justification for the system's purpose and population \\
+5 & The risk management system (Art.~9) & Contributes & Gate decisions, alerts and the incident trail are inputs to it & The risk management system itself \\
+6 & Relevant changes made through the life cycle & Contributes & The chain orders the events; \path{policy_hash} shows a change of policy; digests and \path{run_id} show a change of model or data & A register of changes with their reasons \\
+7 & Harmonised standards applied, or the solutions adopted & None & -- & The list of standards and the justification of alternatives; an OSCAL export does not show that a standard was applied \\
+8 & Copy of the EU declaration of conformity (Art.~47) & None & -- & The declaration, under the provider's responsibility \\
+9 & System to evaluate performance after placing on the market, including the post-market monitoring plan (Art.~72(3)) & Supports in part & Monitoring events: six batches in the credit case, 29 and 1,750 in the MultiFlow streams; drift escalations; the incident trail for Art.~73 & The plan, its sources and responsibilities, and the response to findings \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+%% ---------------------------------------------------------------------
+\section{Boundary matrix}
+\label{sec:s4}
+
+The input boundary of the engine is pinned by 24 events: the dissertation's 16 and eight for the fields and number domain of version 2. Each event is processed by the Python issuer, and the resulting ledger is verified record by record by the Go chaincode (\path{TestBoundaryLedgerV2VerifiesInGo}). The policy of the matrix is stricter than the case policy: minimum precision 0.80, maximum parity difference 0.05, drift threshold 0.15, approval required for high risk. ``Metrics kept'' says whether the record keeps the event's metrics: they are dropped when they cannot be serialised interoperably, and kept for a threshold rejection, where the auditor needs them.
+
+\begin{small}
+\begin{longtable}{@{}rP{6.4cm}lP{4.4cm}l@{}}
+\caption[The 24 boundary cases]{The 24 boundary cases and their outcome, identical in Python and Go. Source: \path{prototype/fabric_migration/chaincode/testdata_fronteiras_v2.json}, written by \path{compliance_ledger_sim/tests/test_fronteiras.py}.}\label{tab:s4}\\
+\toprule
+\# & Case & Decision & Rule & Metrics kept \\
+\midrule
+\endfirsthead
+\toprule
+\# & Case & Decision & Rule & Metrics kept \\
+\midrule
+\endhead
+\inputrows generated/s4_boundary.tex 
+\bottomrule
+\end{longtable}
+\end{small}
+
+%% ---------------------------------------------------------------------
+\section{OSCAL finding, complete and redacted}
+\label{sec:s5}
+
+The finding of Figure 4 of the article, unabridged: record 8 of the credit-scoring case, the validation of model v2, rejected at the fairness gate. Both are exported from the run's ledger (\path{experiments/article/wp4/run_20261012T145744Z/ledger.jsonl}) by the exporter the article describes. In the redacted export the policy appears only as \path{policy-commitment}, HMAC-SHA256($k$, \path{policy_hash}); the key is kept by the provider (\path{experiments/article/figures/F6_policy_commitment.key}). Both documents validate against the NIST OSCAL 1.1.2 schema.
+
+\subsection*{Complete export}
+\lstinputlisting{generated/s5_complete.json}
+
+\subsection*{Redacted export}
+\lstinputlisting{generated/s5_redacted.json}
+
+%% ---------------------------------------------------------------------
+\section{Protocols}
+\label{sec:s6}
+
+Every experiment was governed by a protocol committed to the public repository before the measurement it governs. Amendments were committed before the results they could affect. Table~\ref{tab:s6} gives each protocol with the commit that recorded it and the commits that amended it. The protocols themselves are in \path{Project/protocols/}, and the work log \path{Project/ARTICLE_WORK.md} records each run, each deviation and the files a deviation superseded.
+
+\begin{small}
+\begin{longtable}{@{}P{4.2cm}P{4.8cm}P{2.6cm}P{3.4cm}@{}}
+\caption[Protocols]{Protocols, with the commit that recorded each and its amendments. Source: the history of \path{Project/protocols/}.}\label{tab:s6}\\
+\toprule
+Protocol & Governs & Recorded & Amended \\
+\midrule
+\endfirsthead
+\toprule
+Protocol & Governs & Recorded & Amended \\
+\midrule
+\endhead
+\inputrows generated/s6_protocols.tex 
+\bottomrule
+\end{longtable}
+\end{small}
+
+\end{document}

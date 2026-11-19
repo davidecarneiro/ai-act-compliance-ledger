@@ -11,23 +11,23 @@ builds it. `highlights.txt` is the separate highlights file the journal asks for
 | `sections/` | Sections 1–9 and the declarations |
 | `tables/` | One file per table |
 | `figures/` | F1–F3 as TikZ (editable), F4 and F5 as PDF (from `prototype/article/figures.py`), F6 as listings |
-| `refs.bib` | References; entries marked `CHECK` must be compared with the publisher's version |
+| `refs.bib` | References; preprints checked for a published version on 2026-11-19 |
+| `supplementary/` | Supplementary material S1–S6 (`supplementary.tex`; tables in `generated/` from `prototype/article/supplementary.py`) |
 
 Every number in Section 6 comes from a result file in `Project/experiments/article/`
 and is listed, with its source, in section 16 of the article plan.
 
-## Still to complete (search for TODO and CHECK)
+## Still to complete
 
 1. Rui Sousa's affiliation (`main.tex`): he is listed under affiliation 3, which
-   is now CIICESI after the affiliations were renumbered.
-2. Passport-style photographs of the four authors (`\bio{figures/<file>}`).
-3. Zenodo DOI for the artefacts (`refs.bib`, key `artefacts`).
-4. Table 2: three cells marked CHECK (measured cost in CT/Sigstore, Regueiro et al., Shi et al.).
-5. `refs.bib`: entries marked CHECK; preprints checked for a published version.
-6. Supplementary material the text refers to: the full audit-question matrix
-   (Section 6.7) and the Annex IV coverage (Section 7.3); planned S1–S6 in the article plan.
+   is CIICESI since the affiliations were renumbered.
+2. Zenodo DOI for the artefacts: create the release `article-v1.0` with the
+   Zenodo integration on; then replace "DOI to be added" in
+   `sections/10-declarations.tex` and in `refs.bib` (key `artefacts`).
+3. Passport-style photographs of the four authors, if the submission system
+   asks for them now (`\bio{figures/<file>}`).
 
 Done on 2026-11-19: funding, CRediT, ORCIDs, biographies, generative-AI
-declaration (authors); R. Sousa's review (dates and presumptions of Directive
-2024/2853, qualification under eIDAS, redaction of the policy, Fabric
-validation, style), applied with the keyed policy commitment and the WP5 rerun.
+declaration (authors); R. Sousa's review, applied with the keyed policy
+commitment and the WP5 rerun; Table 2 and the references checked against their
+sources; supplementary material S1–S6.
