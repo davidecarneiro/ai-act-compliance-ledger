@@ -69,3 +69,41 @@ failure of the other configurations. No other outcome is fixed in advance.
 classification, records read and time per question and configuration, and the
 condensed counts of Table T10. Produced by
 `prototype/credit_case/answerability.py`.
+
+## Amendment of 2026-11-19 (before Q14 is run again)
+
+A review of the article by R. Sousa noted two things about the redacted
+export. It keeps `policy_hash`, an unkeyed SHA-256 digest of the policy's
+canonical content. And the `policy_id` it removes is `pol-` followed by the
+first twelve characters of that digest, so removing it withholds nothing. A
+check on 2026-11-19 recovered every threshold of the case policy from the
+digest by exhaustive search: 356,400 candidates in about 5 s, for someone who
+knows the policy format (public in the repository) and the approver entry.
+The changes below are recorded before any run that uses them.
+
+1. **Exporter.** Redacted mode replaces `policy_hash` with a keyed commitment,
+   `policy-commitment` = HMAC-SHA256(k, `policy_hash`), with k a random
+   256-bit key per export that the provider keeps. Within one export the
+   same policy gives the same value, so a change of policy stays visible.
+   Opening the commitment means disclosing k, with the policy or its digest,
+   to whoever is entitled to it.
+2. **Q14** adds two checks on D. (a) The threshold values of the deciding
+   policy, as this protocol states; the first implementation searched for the
+   names of the policy fields instead. (b) Recovery by search: every value of
+   a `policy-hash` or `policy-commitment` property is compared with the SHA-256
+   digest of each candidate policy on a fixed grid (`min_precision` 0.01 to
+   0.99 in steps of 0.01; `max_demographic_parity_diff` 0.01 to 0.30 in steps
+   of 0.01; `drift_alert_threshold` 0.05 to 0.50 in steps of 0.05;
+   `metric_threshold_stages` any one or two of validation, deployment and
+   monitoring; `require_human_approval_for_high_risk` true or false), with the
+   remaining fields taken from the case policy, which the searcher is assumed
+   to know. Q14 also records whether the commitment opens with k and the
+   archived policy, which is the path of a party that is given k.
+3. **Q6 in D** reports the policy commitments in place of the digests.
+4. The whole WP5 run is repeated with the amended code, and Q12 in C is
+   merged again from the Fabric run of WP7. The run of 2026-10-12 stays
+   archived. Its redacted export keeps the plain digest, and check (b) is also
+   applied to it, for comparison.
+
+Expected: check (b) recovers the policy from the export of 2026-10-12 and not
+from the new one. Any other outcome is reported as it is.
