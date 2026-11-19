@@ -21,6 +21,7 @@ from __future__ import annotations
 import base64
 import copy
 import json
+import re
 import shutil
 import sqlite3
 import sys
@@ -37,11 +38,13 @@ from approvals import check_approval
 from artifact_store import ArtifactStore, verify_ledger_artifacts
 from keys import load_or_create_key
 from ledger_store import read_ledger
-from oscal_exporter import OSCAL_NS, to_oscal_sar
+import policy_guess
+from oscal_exporter import OSCAL_NS, new_commitment_key, opens_policy_commitment, to_oscal_sar
 from reexecution import reexecute_ledger
 from simulator import ISSUER_ID_V2, requirements_of
 
 OUT_DIR = cc.EXPERIMENTS_DIR / "wp5"
+COMMITMENT_KEY_FILE = "policy_commitment.key"
 CONFIGURATIONS = ("A", "B", "C", "D")
 COMPLETENESS_QUESTIONS = {"Q1", "Q2", "Q7", "Q8", "Q9", "Q11"}
 RUN_R = "gc-run-2"
@@ -85,12 +88,17 @@ def build_evidence(folder: Path) -> Dict:
 
     records_c = read_ledger(folder / "arms" / "Bplus.jsonl")
     integrity_c = verify_anchored(records_c, key, folder / "arms" / "external" / "anchors.jsonl")
+    (folder / "keys").mkdir()
+    # The provider keeps the key of the redacted export's policy commitment;
+    # D does not hold it. It is kept here to test the path of a party given it.
+    commitment_key = new_commitment_key()
+    (folder / "keys" / COMMITMENT_KEY_FILE).write_text(commitment_key.hex() + "\n", encoding="utf-8")
     for redacted, name in ((False, "complete"), (True, "redacted")):
         doc = to_oscal_sar(records_c, chain_valid=integrity_c["valid"], redacted=redacted,
-                           signatures_verified=integrity_c["valid"])
+                           signatures_verified=integrity_c["valid"],
+                           commitment_key=commitment_key if redacted else None)
         (folder / f"oscal_assessment_results_{name}.json").write_text(
             json.dumps(doc, indent=2) + "\n", encoding="utf-8")
-    (folder / "keys").mkdir()
     shutil.copy2(cc.SIM / "keys" / f"{ISSUER_ID_V2}.ed25519.pub.pem", folder / "keys")
     return {"events": len(events), "key": key}
 
@@ -110,6 +118,7 @@ class View:
     oscal: Optional[dict] = None
     anchored: bool = False
     check: Optional[Callable[[], Dict]] = None    # the configuration's own integrity check
+    commitment_key: Optional[bytes] = None        # held by the provider, not by D
 
 
 def _a_items(db_file: Path) -> List[dict]:
@@ -153,7 +162,8 @@ def _oscal_items(doc: dict) -> List[dict]:
             "objective": finding["target"]["target-id"],
             "status": finding["target"]["status"]["state"],
             "supports": props.get("supports-requirement", []),
-            "policy_hash": (props.get("policy-hash") or [None])[0],
+            "policy_hash": (props.get("policy-hash") or [None])[0],          # exports before 2026-11-19
+            "policy_commitment": (props.get("policy-commitment") or [None])[0],
             "policy_id": (props.get("policy-id") or [None])[0],
             "issuer": oprops.get("issuer"),
             "evidence_id": obs["relevant-evidence"][0]["href"].split(":")[-1],
@@ -185,9 +195,15 @@ def load_views(folder: Path, key) -> Dict[str, View]:
                   check=lambda: verify_anchored(read_ledger(arms / "Bplus.jsonl"), key,
                                                 arms / "external" / "anchors.jsonl")),
         "D": View("D", {"time", "decision", "rule_id", "objective", "status", "supports",
-                        "policy_hash", "issuer", "evidence_id"}, _oscal_items(redacted),
-                  integrity={"valid": None, "method": "none"}, oscal=redacted),
+                        "policy_commitment", "issuer", "evidence_id"}, _oscal_items(redacted),
+                  integrity={"valid": None, "method": "none"}, oscal=redacted,
+                  commitment_key=_commitment_key(folder)),
     }
+
+
+def _commitment_key(folder: Path) -> Optional[bytes]:
+    path = folder / "keys" / COMMITMENT_KEY_FILE
+    return bytes.fromhex(path.read_text(encoding="utf-8").strip()) if path.exists() else None
 
 
 # ----------------------------------------------------------------------
@@ -254,7 +270,7 @@ def q3(view: View) -> Answer:
         if "stage" in view.fields else view.items
     if view.name == "D":
         return Answer(PARTIAL, [{"rule_id": i["rule_id"], "status": i["status"],
-                                 "policy_hash": i["policy_hash"]} for i in gated
+                                 "policy": i.get("policy_commitment") or i.get("policy_hash")} for i in gated
                                 if (i["rule_id"] or "").startswith("threshold.")],
                       ["metric values", "thresholds", "which records are validation decisions"],
                       len(view.items))
@@ -311,7 +327,8 @@ def q5(view: View) -> Answer:
 
 def q6(view: View) -> Answer:
     if view.name == "D":
-        return Answer(PARTIAL, sorted({i["policy_hash"] for i in view.items if i["policy_hash"]}),
+        versions = {i.get("policy_commitment") or i.get("policy_hash") for i in view.items}
+        return Answer(PARTIAL, sorted(v for v in versions if v),
                       ["re-execution (no decision inputs, no policy content)"], len(view.items))
     if view.archive is None:
         return Answer(NO, missing=["policy identity", "decision inputs", "policy archive"],
@@ -410,14 +427,60 @@ def q14(view: View, reference: View) -> Answer:
             uuid.uuid5(OSCAL_NS, f"subj:{i['artifact_name']}"))
         needles[f"reason '{i['reason'][:40]}'"] = i["reason"]
         for metric, value in i["metrics"].items():
-            needles[f"metric {metric}={value}"] = repr(value)
+            needles[f"metric {metric}={value}"] = _number(value)
         needles[f"scenario {i['_record'].get('scenario_id')}"] = i["_record"].get("scenario_id") or "\u0000"
     for key in ("min_precision", "max_demographic_parity_diff", "drift_alert_threshold",
                 "authorised_approvers", "metric_threshold_stages"):
         needles[f"policy field {key}"] = key
-    found = sorted({label for label, needle in needles.items() if needle and needle in text})
-    return Answer(YES, {"disclosed": found, "checked": len(needles)},
+    found = {label for label, needle in needles.items()
+             if needle and (needle.search(text) if isinstance(needle, re.Pattern) else needle in text)}
+    checked = len(needles)
+
+    # Amendment of 2026-11-19. (a) The threshold values, as the protocol says,
+    # matched as whole numbers so that "0.1" does not match inside "20.123".
+    policies = _archived_policies(reference)
+    for policy in policies.values():
+        for key in ("min_precision", "max_demographic_parity_diff", "drift_alert_threshold"):
+            checked += 1
+            if _number(policy[key]).search(text):
+                found.add(f"threshold {key}={policy[key]}")
+    # (b) Recovery by search, on every policy value the export carries.
+    values = {i.get("policy_hash") for i in view.items} | {i.get("policy_commitment") for i in view.items}
+    values.discard(None)
+    template = next(iter(policies.values()))
+    recovery = policy_guess.search(values, template)
+    checked += 1
+    if recovery["recovered"]:
+        found.add("policy thresholds, recovered from the policy digest by search")
+    commitments = {i["policy_commitment"] for i in view.items if i.get("policy_commitment")}
+    opens = None
+    if commitments and view.commitment_key is not None:
+        opens = all(any(opens_policy_commitment(c, view.commitment_key, digest) for digest in policies)
+                    for c in commitments)
+    return Answer(YES, {"disclosed": sorted(found), "checked": checked,
+                        "recovery_by_search": {k: recovery[k] for k in
+                                               ("recovered", "candidates_tried", "seconds")},
+                        "recovered_thresholds": ({k: recovery["policy"][k] for k in
+                                                  ("min_precision", "max_demographic_parity_diff",
+                                                   "drift_alert_threshold", "metric_threshold_stages")}
+                                                 if recovery["recovered"] else None),
+                        "policy_values_in_export": len(values),
+                        "commitment_opens_with_provider_key": opens},
                   records_read=len(view.items))
+
+
+def _number(value) -> re.Pattern:
+    """A number matched whole, so that 0.8 does not match inside 21:57:50.887."""
+    return re.compile(r"(?<![\d.])" + re.escape(repr(value)) + r"(?![\d])")
+
+
+def _archived_policies(reference: View) -> Dict[str, dict]:
+    """The deciding policies, by digest, from the reference configuration's archive."""
+    out = {}
+    for i in reference.items:
+        policy = json.loads((reference.archive / f"{i['policy_id']}.json").read_text(encoding="utf-8"))
+        out[i["policy_hash"]] = policy
+    return out
 
 
 QUESTIONS: Dict[str, Callable] = {
@@ -564,8 +627,36 @@ def merge_fabric_q12(wp5_file: Path, c_folder: Path, out_dir: Path = OUT_DIR) ->
     return path
 
 
+def recovery_check(folder: Path, out_dir: Path = OUT_DIR) -> Path:
+    """Check (b) of the amendment of 2026-11-19 on an archived evidence folder.
+
+    Searches the policy values of the folder's redacted export against the
+    protocol's grid, with the folder's archived policy as the template. Used on
+    the run of 2026-10-12, whose redacted export carries the plain digest."""
+    folder = Path(folder)
+    doc = json.loads((folder / "oscal_assessment_results_redacted.json").read_text(encoding="utf-8"))
+    items = _oscal_items(doc)
+    values = {i.get("policy_hash") for i in items} | {i.get("policy_commitment") for i in items}
+    values.discard(None)
+    archived = sorted((folder / "policies_archive").glob("*.json"))
+    template = json.loads(archived[0].read_text(encoding="utf-8"))
+    result = policy_guess.search(values, template)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    out = {"protocol": "Project/protocols/wp5_answerability.md (amendment of 2026-11-19, check b)",
+           "generated_at": datetime.now(timezone.utc).isoformat(), "environment": cc.environment(),
+           "evidence_folder": folder.name, "policy_values_in_export": sorted(values),
+           "archived_policy": archived[0].name, **result}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"recovery_{folder.name}_{stamp}.json"
+    path.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
+    return path
+
+
 if __name__ == "__main__":
-    if len(sys.argv) == 4 and sys.argv[1] == "--fabric-q12":
+    if len(sys.argv) == 3 and sys.argv[1] == "--recovery-check":
+        # python3 answerability.py --recovery-check <evidence folder>
+        print(f"saved to {recovery_check(Path(sys.argv[2]))}")
+    elif len(sys.argv) == 4 and sys.argv[1] == "--fabric-q12":
         # python3 answerability.py --fabric-q12 <answerability_*.json> <wp7 credit_case folder>
         merged = merge_fabric_q12(Path(sys.argv[2]), Path(sys.argv[3]))
         print(json.dumps(json.loads(merged.read_text(encoding="utf-8"))["table_t10"]))

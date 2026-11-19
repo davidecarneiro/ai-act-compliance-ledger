@@ -1,0 +1,1177 @@
+{
+ "protocol": "Project/protocols/wp5_answerability.md",
+ "generated_at": "2026-11-19T21:58:38.899859+00:00",
+ "environment": {
+  "platform": "Linux-6.18.44-fc-v653-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "python": "3.13.18",
+  "scikit-learn": "1.9.1",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5",
+  "joblib": "1.6.0"
+ },
+ "evidence": {
+  "folder": "evidence_20261119T215838Z",
+  "events": 18,
+  "synthetic_events": [
+   "serious_incident_detected",
+   "incident_reported_to_authority"
+  ],
+  "integrity": {
+   "A": null,
+   "B": true,
+   "C": true,
+   "D": null
+  }
+ },
+ "questions": {
+  "Q1": "Which model version (artefact digest) was approved for deployment, and when?",
+  "Q2": "Was deployment approved by an authorised human overseer, and by whom?",
+  "Q3": "Which validation metrics and thresholds supported the decision?",
+  "Q4": "Was bias examined before deployment, with which metric and outcome?",
+  "Q5": "Which dataset version (digest) trained model version X?",
+  "Q6": "Which policy version decided, and does re-execution reproduce the decision?",
+  "Q7": "Which events belong to run or release R?",
+  "Q8": "Were drift alerts raised after deployment, and when?",
+  "Q9": "Did the drift alert precede serious incident Y?",
+  "Q10": "Has any record been altered since issuance?",
+  "Q11": "Is the record sequence complete between t1 and t2?",
+  "Q12": "Which organisation submitted each record?",
+  "Q13": "From the redacted export alone, which articles are supported and with which technical outcome?",
+  "Q14": "Does the redacted export disclose the artefact identity or the policy logic?"
+ },
+ "table_t10": {
+  "A": {
+   "questions": 13,
+   "yes": 3,
+   "partial": 2,
+   "no": 8,
+   "verifiable_yes": 0,
+   "verifiable_partial": 0
+  },
+  "B": {
+   "questions": 13,
+   "yes": 10,
+   "partial": 2,
+   "no": 1,
+   "verifiable_yes": 6,
+   "verifiable_partial": 6
+  },
+  "C": {
+   "questions": 13,
+   "yes": 12,
+   "partial": 1,
+   "no": 0,
+   "verifiable_yes": 13,
+   "verifiable_partial": 0
+  },
+  "D": {
+   "questions": 14,
+   "yes": 3,
+   "partial": 5,
+   "no": 6,
+   "verifiable_yes": 0,
+   "verifiable_partial": 0
+  }
+ },
+ "matrix": {
+  "Q1": {
+   "A": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "artifact_digest"
+    ],
+    "records_read": 18,
+    "ms": 0.016,
+    "answer": {
+     "requests": [
+      {
+       "artifact_name": "credit-lr-v2",
+       "artifact_digest": null,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.097826+00:00"
+      },
+      {
+       "artifact_name": "credit-lr-v2",
+       "artifact_digest": null,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.101114+00:00"
+      }
+     ],
+     "approved": []
+    }
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "partial",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.007,
+    "answer": {
+     "requests": [
+      {
+       "artifact_name": "credit-lr-v2",
+       "artifact_digest": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.098871+00:00"
+      },
+      {
+       "artifact_name": "credit-lr-v2",
+       "artifact_digest": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.102386+00:00"
+      }
+     ],
+     "approved": []
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.008,
+    "answer": {
+     "requests": [
+      {
+       "artifact_name": "credit-lr-v2",
+       "artifact_digest": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.099957+00:00"
+      },
+      {
+       "artifact_name": "credit-lr-v2",
+       "artifact_digest": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.103358+00:00"
+      }
+     ],
+     "approved": []
+    }
+   },
+   "D": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "which records are deployment requests",
+     "artefact digest"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   }
+  },
+  "Q2": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "approvals and their approvers"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "partial",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.189,
+    "answer": {
+     "deployment_requests": [
+      {
+       "evidence_id": "ev-d60c31d0-b417-45b8-8b80-18d282ced7fd",
+       "approval": null,
+       "decision": "rejected"
+      },
+      {
+       "evidence_id": "ev-c5d0c8aa-2544-4042-846b-db8be826712c",
+       "approver": "approver-demo",
+       "authorised_and_verifies": true,
+       "check": "approved by approver-demo",
+       "decision": "rejected",
+       "rule_id": "threshold.fairness"
+      }
+     ],
+     "deployment_approved": false
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.147,
+    "answer": {
+     "deployment_requests": [
+      {
+       "evidence_id": "ev-319a6771-01cf-4703-9905-81ba65a97bbb",
+       "approval": null,
+       "decision": "rejected"
+      },
+      {
+       "evidence_id": "ev-477e81f1-18d9-46f1-9421-766362893115",
+       "approver": "approver-demo",
+       "authorised_and_verifies": true,
+       "check": "approved by approver-demo",
+       "decision": "rejected",
+       "rule_id": "threshold.fairness"
+      }
+     ],
+     "deployment_approved": false
+    }
+   },
+   "D": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "approvals and their approvers"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   }
+  },
+  "Q3": {
+   "A": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "thresholds of the deciding policy (only the failing one, in the reason text)"
+    ],
+    "records_read": 18,
+    "ms": 0.007,
+    "answer": [
+     {
+      "event_type": "model_validation",
+      "metrics": {
+       "precision": 0.793333,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": "demographic parity diff 0.111607 above threshold 0.1"
+     },
+     {
+      "event_type": "model_validation",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": "demographic parity diff 0.111607 above threshold 0.1"
+     },
+     {
+      "event_type": "deployment_request",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": "demographic parity diff 0.111607 above threshold 0.1"
+     },
+     {
+      "event_type": "deployment_request",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": "demographic parity diff 0.111607 above threshold 0.1"
+     }
+    ]
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.085,
+    "answer": [
+     {
+      "event_type": "model_validation",
+      "metrics": {
+       "precision": 0.793333,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     },
+     {
+      "event_type": "model_validation",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     },
+     {
+      "event_type": "deployment_request",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     },
+     {
+      "event_type": "deployment_request",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     }
+    ]
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.069,
+    "answer": [
+     {
+      "event_type": "model_validation",
+      "metrics": {
+       "precision": 0.793333,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     },
+     {
+      "event_type": "model_validation",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     },
+     {
+      "event_type": "deployment_request",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     },
+     {
+      "event_type": "deployment_request",
+      "metrics": {
+       "precision": 0.8,
+       "demographic_parity_diff": 0.111607
+      },
+      "decision": "rejected",
+      "rule_id": "threshold.fairness",
+      "thresholds": {
+       "min_precision": 0.68,
+       "max_demographic_parity_diff": 0.1
+      }
+     }
+    ]
+   },
+   "D": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "metric values",
+     "thresholds",
+     "which records are validation decisions"
+    ],
+    "records_read": 18,
+    "ms": 0.005,
+    "answer": [
+     {
+      "rule_id": "threshold.fairness",
+      "status": "not-satisfied",
+      "policy": "415bf8eb2daf9dcbc738710bed06948adec946bffebb20613ba9732cc52370df"
+     },
+     {
+      "rule_id": "threshold.fairness",
+      "status": "not-satisfied",
+      "policy": "415bf8eb2daf9dcbc738710bed06948adec946bffebb20613ba9732cc52370df"
+     },
+     {
+      "rule_id": "threshold.fairness",
+      "status": "not-satisfied",
+      "policy": "415bf8eb2daf9dcbc738710bed06948adec946bffebb20613ba9732cc52370df"
+     },
+     {
+      "rule_id": "threshold.fairness",
+      "status": "not-satisfied",
+      "policy": "415bf8eb2daf9dcbc738710bed06948adec946bffebb20613ba9732cc52370df"
+     }
+    ]
+   }
+  },
+  "Q4": {
+   "A": {
+    "answerable": "yes",
+    "verifiable": "no",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.009,
+    "answer": {
+     "first_deployment_request": "2026-11-19T21:58:39.097826+00:00",
+     "examinations": [
+      {
+       "event_type": "model_validation",
+       "artifact": "credit-lr-v1",
+       "parity": 0.111607,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.080783+00:00"
+      },
+      {
+       "event_type": "model_validation",
+       "artifact": "credit-lr-v2",
+       "parity": 0.111607,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.094618+00:00"
+      }
+     ]
+    }
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.006,
+    "answer": {
+     "first_deployment_request": "2026-11-19T21:58:39.098871+00:00",
+     "examinations": [
+      {
+       "event_type": "model_validation",
+       "artifact": "9d0e78ef807551b5372cfbcca6ae9dea7c08c6123436e5f2ef65176494b6538f",
+       "parity": 0.111607,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.081971+00:00"
+      },
+      {
+       "event_type": "model_validation",
+       "artifact": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+       "parity": 0.111607,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.095887+00:00"
+      }
+     ]
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.004,
+    "answer": {
+     "first_deployment_request": "2026-11-19T21:58:39.099957+00:00",
+     "examinations": [
+      {
+       "event_type": "model_validation",
+       "artifact": "9d0e78ef807551b5372cfbcca6ae9dea7c08c6123436e5f2ef65176494b6538f",
+       "parity": 0.111607,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.083040+00:00"
+      },
+      {
+       "event_type": "model_validation",
+       "artifact": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+       "parity": 0.111607,
+       "decision": "rejected",
+       "time": "2026-11-19T21:58:39.096727+00:00"
+      }
+     ]
+    }
+   },
+   "D": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "metric value",
+     "order relative to the deployment request"
+    ],
+    "records_read": 18,
+    "ms": 0.003,
+    "answer": [
+     {
+      "time": "2026-11-19T21:58:39.083040+00:00",
+      "outcome": "not-satisfied"
+     },
+     {
+      "time": "2026-11-19T21:58:39.096727+00:00",
+      "outcome": "not-satisfied"
+     },
+     {
+      "time": "2026-11-19T21:58:39.099957+00:00",
+      "outcome": "not-satisfied"
+     },
+     {
+      "time": "2026-11-19T21:58:39.103358+00:00",
+      "outcome": "not-satisfied"
+     }
+    ]
+   }
+  },
+  "Q5": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "run_id",
+     "artifact_digest"
+    ],
+    "records_read": 18,
+    "ms": 0.003,
+    "answer": null
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.179,
+    "answer": {
+     "model": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+     "dataset": "b21f3d81db8071257d5ff1deaeba1fd4303b62712e6fcc9715c7a86202cb5871",
+     "partition": "8019e0136061c6e7d4e3dcd8315a797725fe5d8775cbeaf136f52fe0140f62ca",
+     "artefacts_in_store": {
+      "ev-30adbfcc-38ad-4c70-8d36-76f0b42cb61d": "ok",
+      "ev-26103076-a209-4a0d-b722-86a3f052e909": "ok",
+      "ev-d8d24c9d-8dec-4779-a3c3-3ab2a8c0dba5": "ok"
+     }
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.161,
+    "answer": {
+     "model": "06b3036e25798a5f425873e4700686334486ad9ffbde242e30fe4471f6553940",
+     "dataset": "b21f3d81db8071257d5ff1deaeba1fd4303b62712e6fcc9715c7a86202cb5871",
+     "partition": "8019e0136061c6e7d4e3dcd8315a797725fe5d8775cbeaf136f52fe0140f62ca",
+     "artefacts_in_store": {
+      "ev-eb8737f0-8524-442f-ba20-5d42ac9823ae": "ok",
+      "ev-80d8f49f-6844-49fd-8b29-79ab3b19c68a": "ok",
+      "ev-8b6306fa-a26c-493c-b54f-3e3bee8d880f": "ok"
+     }
+    }
+   },
+   "D": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "run_id",
+     "artifact_digest",
+     "event_type"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   }
+  },
+  "Q6": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "policy identity",
+     "decision inputs",
+     "policy archive"
+    ],
+    "records_read": 18,
+    "ms": 0.003,
+    "answer": null
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 1.165,
+    "answer": {
+     "policies": [
+      "pol-16d3a1645858"
+     ],
+     "reexecution": {
+      "match": 18
+     }
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 1.075,
+    "answer": {
+     "policies": [
+      "pol-16d3a1645858"
+     ],
+     "reexecution": {
+      "match": 18
+     }
+    }
+   },
+   "D": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "re-execution (no decision inputs, no policy content)"
+    ],
+    "records_read": 18,
+    "ms": 0.007,
+    "answer": [
+     "415bf8eb2daf9dcbc738710bed06948adec946bffebb20613ba9732cc52370df"
+    ]
+   }
+  },
+  "Q7": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "run identifier"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "partial",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.004,
+    "answer": {
+     "run": "gc-run-2",
+     "events": 14,
+     "evidence_ids": [
+      "ev-30adbfcc-38ad-4c70-8d36-76f0b42cb61d",
+      "ev-26103076-a209-4a0d-b722-86a3f052e909",
+      "ev-d8d24c9d-8dec-4779-a3c3-3ab2a8c0dba5",
+      "ev-39653e4b-879c-45fc-9457-b5ed81647af1",
+      "ev-d60c31d0-b417-45b8-8b80-18d282ced7fd",
+      "ev-c5d0c8aa-2544-4042-846b-db8be826712c",
+      "ev-320d79f2-7dd0-4e85-bec5-10e584f715c4",
+      "ev-69e582fb-29cf-4f4c-b64a-75f8ad2ab62e",
+      "ev-e6e5c2f6-396f-4ed2-b200-bbea1d9d65d7",
+      "ev-5124f4fb-d928-4293-b132-881b96882889",
+      "ev-29f6807d-691e-427a-b331-c1db79e22454",
+      "ev-f9d45d17-ec8c-4792-99c0-e06277437eb9",
+      "ev-4c4fcd98-8d74-476f-9055-277eab2802eb",
+      "ev-06f2cd8d-98d5-4351-b289-ad20e37d0f2d"
+     ]
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": {
+     "run": "gc-run-2",
+     "events": 14,
+     "evidence_ids": [
+      "ev-eb8737f0-8524-442f-ba20-5d42ac9823ae",
+      "ev-80d8f49f-6844-49fd-8b29-79ab3b19c68a",
+      "ev-8b6306fa-a26c-493c-b54f-3e3bee8d880f",
+      "ev-800bdde1-9212-45a6-b19a-eff45a402c5a",
+      "ev-319a6771-01cf-4703-9905-81ba65a97bbb",
+      "ev-477e81f1-18d9-46f1-9421-766362893115",
+      "ev-9fe9570c-ef93-48ce-8420-b5820e0abe43",
+      "ev-a3c2f16a-c9f3-4574-9041-35045bb51d90",
+      "ev-db5c92ae-3428-4f28-bf8d-83ceeb4869a0",
+      "ev-41675676-874b-4a33-b5ba-e4bd139632a6",
+      "ev-27ed7463-3eae-48d5-a18b-efef2bbd36b1",
+      "ev-fcafe2e0-0b1f-45cf-a723-c2ed9af01edb",
+      "ev-a0bf6bd4-1f05-4e44-a90c-05eda76fcc3f",
+      "ev-3e4a4a3b-aa5a-4def-b34c-41737a39f0bf"
+     ]
+    }
+   },
+   "D": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "run identifier"
+    ],
+    "records_read": 18,
+    "ms": 0.001,
+    "answer": null
+   }
+  },
+  "Q8": {
+   "A": {
+    "answerable": "yes",
+    "verifiable": "no",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.008,
+    "answer": {
+     "alerts": [
+      {
+       "time": "2026-11-19T21:58:39.119454+00:00",
+       "decision": "escalated"
+      }
+     ],
+     "first_deployment_request": "2026-11-19T21:58:39.097826+00:00",
+     "deployment_approved": false
+    }
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "partial",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.005,
+    "answer": {
+     "alerts": [
+      {
+       "time": "2026-11-19T21:58:39.120418+00:00",
+       "decision": "escalated"
+      }
+     ],
+     "first_deployment_request": "2026-11-19T21:58:39.098871+00:00",
+     "deployment_approved": false
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.004,
+    "answer": {
+     "alerts": [
+      {
+       "time": "2026-11-19T21:58:39.121216+00:00",
+       "decision": "escalated"
+      }
+     ],
+     "first_deployment_request": "2026-11-19T21:58:39.099957+00:00",
+     "deployment_approved": false
+    }
+   },
+   "D": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "order relative to deployment"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": {
+     "alerts": [
+      {
+       "time": "2026-11-19T21:58:39.121216+00:00",
+       "decision": "escalated"
+      }
+     ]
+    }
+   }
+  },
+  "Q9": {
+   "A": {
+    "answerable": "yes",
+    "verifiable": "no",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.004,
+    "answer": {
+     "drift_alert": "2026-11-19T21:58:39.119454+00:00",
+     "incident": "2026-11-19T21:58:39.122001+00:00",
+     "drift_precedes_incident": true
+    }
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "partial",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": {
+     "drift_alert": "2026-11-19T21:58:39.120418+00:00",
+     "incident": "2026-11-19T21:58:39.123147+00:00",
+     "drift_precedes_incident": true
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": {
+     "drift_alert": "2026-11-19T21:58:39.121216+00:00",
+     "incident": "2026-11-19T21:58:39.124069+00:00",
+     "drift_precedes_incident": true
+    }
+   },
+   "D": {
+    "answerable": "yes",
+    "verifiable": "no",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": {
+     "drift_alert": "2026-11-19T21:58:39.121216+00:00",
+     "incident": "2026-11-19T21:58:39.124069+00:00",
+     "drift_precedes_incident": true
+    }
+   }
+  },
+  "Q10": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "any integrity check"
+    ],
+    "records_read": 0,
+    "ms": 0.001,
+    "answer": null
+   },
+   "B": {
+    "answerable": "partial",
+    "verifiable": "partial",
+    "missing": [
+     "an alteration re-signed by the key holder"
+    ],
+    "records_read": 18,
+    "ms": 3.596,
+    "answer": {
+     "altered_without_the_key": false
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 5.703,
+    "answer": {
+     "altered": false,
+     "issues": []
+    }
+   },
+   "D": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "any integrity check"
+    ],
+    "records_read": 0,
+    "ms": 0.002,
+    "answer": null
+   }
+  },
+  "Q11": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "anything outside the issuer's reach to exclude truncation"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   },
+   "B": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "anything outside the issuer's reach to exclude truncation"
+    ],
+    "records_read": 18,
+    "ms": 0.001,
+    "answer": null
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 5.633,
+    "answer": {
+     "t1_record": 5,
+     "t2_record": 18,
+     "complete_up_to_last_anchor": true,
+     "anchors": 18
+    }
+   },
+   "D": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "anything outside the issuer's reach to exclude truncation"
+    ],
+    "records_read": 18,
+    "ms": 0.002,
+    "answer": null
+   }
+  },
+  "Q12": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "submitter"
+    ],
+    "records_read": 18,
+    "ms": 0.001,
+    "answer": null
+   },
+   "B": {
+    "answerable": "partial",
+    "verifiable": "yes",
+    "missing": [
+     "organisation (in Fabric, stamped by the chaincode as submitter_msp)"
+    ],
+    "records_read": 18,
+    "ms": 0.008,
+    "answer": {
+     "issuers": [
+      "compliance-policy-engine-v2"
+     ]
+    }
+   },
+   "C": {
+    "answerable": "partial",
+    "verifiable": "yes",
+    "missing": [
+     "organisation (in Fabric, stamped by the chaincode as submitter_msp)"
+    ],
+    "records_read": 18,
+    "ms": 0.005,
+    "answer": {
+     "issuers": [
+      "compliance-policy-engine-v2"
+     ]
+    }
+   },
+   "D": {
+    "answerable": "partial",
+    "verifiable": "no",
+    "missing": [
+     "organisation (in Fabric, stamped by the chaincode as submitter_msp)"
+    ],
+    "records_read": 18,
+    "ms": 0.003,
+    "answer": {
+     "issuers": [
+      "compliance-policy-engine-v2"
+     ]
+    }
+   }
+  },
+  "Q13": {
+   "A": {
+    "answerable": "no",
+    "verifiable": "n/a",
+    "missing": [
+     "provisions supported"
+    ],
+    "records_read": 18,
+    "ms": 0.001,
+    "answer": null
+   },
+   "B": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.017,
+    "answer": {
+     "Art.10(3)": {
+      "approved": 4
+     },
+     "Art.11": {
+      "approved": 11,
+      "rejected": 4,
+      "escalated": 3
+     },
+     "Art.12": {
+      "approved": 11,
+      "rejected": 4,
+      "escalated": 3
+     },
+     "Art.10(2)(f)": {
+      "rejected": 4
+     },
+     "Art.15": {
+      "rejected": 4
+     },
+     "Art.14": {
+      "rejected": 1
+     },
+     "Art.72": {
+      "approved": 5,
+      "escalated": 1
+     },
+     "Art.73": {
+      "escalated": 2
+     }
+    }
+   },
+   "C": {
+    "answerable": "yes",
+    "verifiable": "yes",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.011,
+    "answer": {
+     "Art.10(3)": {
+      "approved": 4
+     },
+     "Art.11": {
+      "approved": 11,
+      "rejected": 4,
+      "escalated": 3
+     },
+     "Art.12": {
+      "approved": 11,
+      "rejected": 4,
+      "escalated": 3
+     },
+     "Art.10(2)(f)": {
+      "rejected": 4
+     },
+     "Art.15": {
+      "rejected": 4
+     },
+     "Art.14": {
+      "rejected": 1
+     },
+     "Art.72": {
+      "approved": 5,
+      "escalated": 1
+     },
+     "Art.73": {
+      "escalated": 2
+     }
+    }
+   },
+   "D": {
+    "answerable": "yes",
+    "verifiable": "no",
+    "missing": [],
+    "records_read": 18,
+    "ms": 0.012,
+    "answer": {
+     "aia-10-3": {
+      "satisfied": 4
+     },
+     "aia-11": {
+      "satisfied": 14,
+      "not-satisfied": 4
+     },
+     "aia-12": {
+      "satisfied": 14,
+      "not-satisfied": 4
+     },
+     "aia-10-2-f": {
+      "not-satisfied": 4
+     },
+     "aia-15": {
+      "not-satisfied": 4
+     },
+     "aia-14": {
+      "not-satisfied": 1
+     },
+     "aia-72": {
+      "satisfied": 6
+     },
+     "aia-73": {
+      "satisfied": 2
+     }
+    }
+   }
+  },
+  "Q14": {
+   "A": {
+    "answerable": "n/a",
+    "verifiable": "n/a",
+    "missing": [],
+    "records_read": 0,
+    "ms": 0.002,
+    "answer": null
+   },
+   "B": {
+    "answerable": "n/a",
+    "verifiable": "n/a",
+    "missing": [],
+    "records_read": 0,
+    "ms": 0.001,
+    "answer": null
+   },
+   "C": {
+    "answerable": "n/a",
+    "verifiable": "n/a",
+    "missing": [],
+    "records_read": 0,
+    "ms": 0.001,
+    "answer": null
+   },
+   "D": {
+    "answerable": "yes",
+    "verifiable": "n/a",
+    "missing": [],
+    "records_read": 18,
+    "ms": 5148.938,
+    "answer": {
+     "disclosed": [],
+     "checked": 60,
+     "recovery_by_search": {
+      "recovered": false,
+      "candidates_tried": 356400,
+      "seconds": 5.14
+     },
+     "recovered_thresholds": null,
+     "policy_values_in_export": 1,
+     "commitment_opens_with_provider_key": true
+    }
+   }
+  }
+ }
+}

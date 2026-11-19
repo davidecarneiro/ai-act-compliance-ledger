@@ -263,9 +263,14 @@ def figure_f6(out: Path) -> Optional[Dict]:
     chain_ok = oscal_exporter.verify_chain_structure(ledger)
     signatures_ok = oscal_exporter.verify_signatures(ledger, keys_dir=run / "keys")
     excerpts = {}
+    # The provider's key for the redacted export's policy commitment, kept with
+    # the figure so that its commitment can be opened against the run's policy.
+    key = oscal_exporter.new_commitment_key()
+    (out / "F6_policy_commitment.key").write_text(key.hex() + "\n", encoding="utf-8")
     for variant in ("complete", "redacted"):
         doc = oscal_exporter.to_oscal_sar(ledger, chain_valid=chain_ok, redacted=variant == "redacted",
-                                          signatures_verified=signatures_ok)
+                                          signatures_verified=signatures_ok,
+                                          commitment_key=key if variant == "redacted" else None)
         result = doc["assessment-results"]["results"][0]
         # The finding on the validation of model v2 (record 8): the fairness gate.
         finding = result["findings"][7]

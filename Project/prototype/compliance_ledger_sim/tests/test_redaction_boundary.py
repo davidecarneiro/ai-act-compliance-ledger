@@ -32,8 +32,10 @@ ALLOWED_TO_LEAVE = {
     "sig_alg": "closed set",
     "hash_alg": "closed set",
     "rule_id": "written by the engine, closed vocabulary; see the vocabulary test",
-    "policy_hash": "policy digest; identifies the version without the free label",
 }
+# policy_hash left the list on 2026-11-19: an unkeyed digest of a policy lets
+# anyone who knows the format recover its thresholds by search. Redacted mode
+# carries a keyed commitment instead (tests at the end of this file).
 
 
 def _record(**overrides):
@@ -135,3 +137,62 @@ def test_no_derived_identifier_survives_redacted_mode():
         "the UUID derived from artifact_id survives redacted mode: anyone holding "
         "a candidate confirms it by recomputation"
     )
+
+
+KEY = bytes(range(32))
+
+
+def test_policy_digest_does_not_survive_redacted_mode():
+    """Neither the digest nor the identifier derived from it may leave."""
+    digest = "e" * 64
+    rec = _record(policy_hash=digest, policy_id="pol-" + digest[:12])
+    sar = ox.to_oscal_sar([rec], chain_valid=True, redacted=True,
+                          signatures_verified=True, commitment_key=KEY)
+    text = json.dumps(sar)
+    assert digest[:12] not in text, "the policy digest, or its prefix, survives redacted mode"
+
+
+def test_policy_commitment_opens_with_the_key_only():
+    digest = "e" * 64
+    sar = ox.to_oscal_sar([_record(policy_hash=digest)], chain_valid=True, redacted=True,
+                          signatures_verified=True, commitment_key=KEY)
+    finding = sar["assessment-results"]["results"][0]["findings"][0]
+    value = next(p["value"] for p in finding["props"] if p["name"] == "policy-commitment")
+    assert ox.opens_policy_commitment(value, KEY, digest)
+    assert not ox.opens_policy_commitment(value, bytes(32), digest)
+    assert not ox.opens_policy_commitment(value, KEY, "f" * 64)
+
+
+def test_policy_commitment_groups_records_within_one_export():
+    """A change of policy stays visible inside the export; exports are unlinkable."""
+    records = [_record(evidence_id="ev-1", policy_hash="e" * 64),
+               _record(evidence_id="ev-2", policy_hash="e" * 64),
+               _record(evidence_id="ev-3", policy_hash="f" * 64)]
+
+    def values(key):
+        sar = ox.to_oscal_sar(records, chain_valid=True, redacted=True,
+                              signatures_verified=True, commitment_key=key)
+        return [next(p["value"] for p in f["props"] if p["name"] == "policy-commitment")
+                for f in sar["assessment-results"]["results"][0]["findings"]]
+
+    first = values(KEY)
+    assert first[0] == first[1] != first[2]
+    assert values(bytes(32))[0] != first[0]
+
+
+def test_search_recovers_a_plain_digest_but_not_a_commitment():
+    """The attack the amendment of 2026-11-19 describes, on a small policy."""
+    import policy_guess
+    from simulator import policy_identity
+
+    policy = {"authorised_approvers": {"approver": "00" * 32}, "drift_alert_threshold": 0.05,
+              "max_demographic_parity_diff": 0.01, "metric_threshold_stages": ["validation"],
+              "min_precision": 0.02, "require_human_approval_for_high_risk": False,
+              "signed_approval_required_for": ["deployment_request"]}
+    digest = policy_identity(policy)[1]
+    assert policy_guess.search([digest], policy)["recovered"]
+    commitment = ox.policy_commitment(digest, KEY)
+    template = dict(policy, min_precision=0.5)
+    # Searching the commitment over the same small neighbourhood finds nothing.
+    near = [dict(template, min_precision=p) for p in (0.01, 0.02, 0.03)]
+    assert all(policy_identity(c)[1] != commitment for c in near)

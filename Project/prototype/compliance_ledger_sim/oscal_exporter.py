@@ -28,7 +28,10 @@ follow ISO 8601 with timezone offset as required by the NIST schema.
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
+import secrets
 import sys
 import uuid
 from base64 import b64decode
@@ -104,6 +107,31 @@ def _control_id(article: str) -> str:
 
 
 REDACTED_PLACEHOLDER = "[REDACTED — AI Act Art. 78 confidentiality]"
+
+# Redacted exports carry a keyed commitment to the policy, not its digest.
+# policy_hash is an unkeyed SHA-256 of the policy's canonical content, and a
+# policy has few unknowns: whoever knows its format can try candidate
+# thresholds until one digest matches (WP5 protocol, amendment of 2026-11-19).
+POLICY_COMMITMENT_ALG = "HMAC-SHA256(key, policy_hash)"
+
+
+def new_commitment_key() -> bytes:
+    """A random 256-bit key for one redacted export, kept by the provider."""
+    return secrets.token_bytes(32)
+
+
+def policy_commitment(policy_hash: str, key: bytes) -> str:
+    """Keyed commitment to a policy version, for redacted exports.
+
+    The same policy gives the same value within one export, so a change of
+    policy stays visible. Without the key no candidate policy can be tested
+    against the value; with the key and the policy (or its digest), a party
+    entitled to them checks the commitment by recomputing it."""
+    return hmac.new(key, policy_hash.encode("ascii"), hashlib.sha256).hexdigest()
+
+
+def opens_policy_commitment(commitment: str, key: bytes, policy_hash: str) -> bool:
+    return hmac.compare_digest(commitment, policy_commitment(policy_hash, key))
 
 # Version 1 exports keep the dissertation's wording byte for byte; version 2
 # uses the article's term for the component and does not call a record
@@ -321,7 +349,9 @@ def _objective_for(record: dict) -> tuple[str, str, bool]:
     return TECHNICAL_OBJECTIVES.get(rule_id, UNKNOWN_OBJECTIVE)
 
 
-def _build_finding(record: dict, redacted: bool = False) -> dict:
+def _build_finding(
+    record: dict, redacted: bool = False, commitment_key: bytes | None = None
+) -> dict:
     # AI Act articles are attached to the finding as OSCAL ``props`` rather
     # than ``related-controls``: the ``finding`` assembly does not allow
     # ``related-controls`` (a result-level construct), so emitting it there
@@ -370,16 +400,19 @@ def _build_finding(record: dict, redacted: bool = False) -> dict:
             },
         ]
     )
-    # The policy_id is a free-form label: it can name a client or a project.
-    # The policy_hash identifies the SAME policy content without revealing text.
-    # Redacted mode emits the hash, which serves the audit purpose (knowing
-    # which policy version produced the decision) without opening a channel.
+    # Neither policy_id nor policy_hash leaves in redacted mode. This engine
+    # derives policy_id from the digest (its first twelve characters), and an
+    # integrator may use a label that names a client. The digest itself lets
+    # anyone who knows the policy format recover the thresholds by search.
+    # Redacted mode emits a keyed commitment instead: it still shows which
+    # findings share a policy version, and only a holder of the key can link
+    # it to the digest on the ledger.
     if redacted:
         if record.get("policy_hash"):
             props.append(
                 {
-                    "name": "policy-hash",
-                    "value": record["policy_hash"],
+                    "name": "policy-commitment",
+                    "value": policy_commitment(record["policy_hash"], commitment_key),
                     "class": "technical-objective",
                 }
             )
@@ -616,12 +649,16 @@ def to_oscal_sar(
     chain_valid: bool | None = None,
     redacted: bool = False,
     signatures_verified: bool | None = None,
+    commitment_key: bytes | None = None,
 ) -> dict:
     """Build an OSCAL Assessment Results document from a ledger snapshot.
 
     Redacted mode suppresses selected free-text fields in the export while
     retaining evidence links, hash anchors and article mappings. It does not
     change the underlying ledger or perform a legal compliance assessment.
+    The policy is represented by a keyed commitment (``commitment_key``); a
+    caller that passes no key gets a fresh one it cannot open later, so a
+    caller that may need to open the commitment passes its own and keeps it.
 
     Chain and signature results are recorded separately, with their source."""
 
@@ -652,8 +689,10 @@ def to_oscal_sar(
 
     engine = _document_engine_label(ledger)
     observations = [_build_observation(r, redacted=redacted) for r in ledger]
+    if redacted and commitment_key is None:
+        commitment_key = new_commitment_key()
     findings = [
-        _build_finding(r, redacted=redacted)
+        _build_finding(r, redacted=redacted, commitment_key=commitment_key)
         for r in ledger
         if r.get("decision") in ("approved", "rejected", "escalated", "verified", "recorded")
     ]
@@ -691,6 +730,10 @@ def to_oscal_sar(
                     "uuid": _uuid_for("results-0", "res"),
                     "title": f"{engine} execution",
                     "description": _results_description(ledger),
+                    "props": (
+                        [{"name": "policy-commitment-alg", "value": POLICY_COMMITMENT_ALG}]
+                        if redacted else None
+                    ),
                     "start": ledger[0]["timestamp"] if ledger else now,
                     "end": ledger[-1]["timestamp"] if ledger else now,
                     "reviewed-controls": {
@@ -777,11 +820,17 @@ def export_oscal(
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
     ledger = read_ledger(ledger_file)  # .json array or .jsonl lines
-    document = to_oscal_sar(ledger, redacted=redacted)
+    key = new_commitment_key() if redacted else None
+    document = to_oscal_sar(ledger, redacted=redacted, commitment_key=key)
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     suffix = "_redacted" if redacted else ""
     out_path = output_dir / f"oscal_assessment_results{suffix}_{timestamp}.json"
     out_path.write_text(json.dumps(document, indent=2), encoding="utf-8")
+    if key is not None:
+        # The provider's copy of the key; it is not sent with the export.
+        key_path = out_path.with_name(out_path.stem + ".policy-commitment-key")
+        key_path.write_text(key.hex() + "\n", encoding="utf-8")
+        key_path.chmod(0o600)
     return out_path
 
 

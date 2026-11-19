@@ -96,8 +96,8 @@
         "class": "technical-objective"
       },
       {
-        "name": "policy-hash",
-        "value": "16d3a1645858e5a4842bf0ff09d18dd42d23474009ba20272ffd9326689d0044",
+        "name": "policy-commitment",
+        "value": "91e1b2508605354b91a546c7ac30420b5f764b7d6381062d758224e4ce0f23c6",
         "class": "technical-objective"
       }
     ],

@@ -688,3 +688,41 @@ mean wait for the batch to fill, (N − 1)/(2·rate), as the protocol's
 estimands provide, and no point where serial anchoring is slower than the
 stream (N = 1 at both timeouts, N = 10 at 2 s). The rate is the live run's,
 not the plant's: the CSV has no timestamps.
+
+## Keyed policy commitment in redacted exports (2026-11-19)
+
+R. Sousa's review of the manuscript noted that the redacted export kept
+`policy_hash`, an unkeyed SHA-256 of the policy's canonical content, and that
+the `policy_id` it removed is `pol-` plus the digest's first twelve
+characters. Both points held. The protocol amendment (`dbb84b9`) was recorded
+before any run.
+
+**Exporter.** Redacted mode now carries `policy-commitment` =
+HMAC-SHA256(k, `policy_hash`), with k a random 256-bit key per export kept by
+the provider, and a result-level prop `policy-commitment-alg`. Neither the
+digest nor the identifier leaves. `export_oscal` writes the key beside the
+export (`*.policy-commitment-key`); the credit case and WP5 keep it under
+`keys/`. Tests: `test_redaction_boundary.py` (four new); suite 284 passed.
+
+**Recovery by search** (`compliance_ledger_sim/policy_guess.py`; grid of the
+amendment, 356,400 candidates; the searcher knows every field outside the
+grid):
+
+- redacted export of 2026-10-12 (plain digest): policy recovered, thresholds
+  0.68 / 0.10 / 0.25 and stages exact, after 242,335 candidates in 3.45 s
+  (`wp5/recovery_evidence_20261012T161816Z_20261119T215749Z.json`);
+- redacted export of the new run (commitment): not recovered, 356,400
+  candidates in 5.1 s; the commitment opens with the provider's key and the
+  archived policy.
+
+**WP5 rerun.** `wp5/answerability_20261119T215838Z.json`, merged with the
+Fabric Q12 of WP7 into `..._fabric_q12.json`. Table T10 is identical to the
+run of 2026-10-12. Q14 now checks 60 items (the 56 of the first run, the three
+threshold values, the search) and finds none disclosed. Q3 and Q6 in D report
+the commitment. The first rerun, `answerability_20261119T215750Z` and its
+evidence folder, is superseded: its substring search matched "0.8" inside a
+timestamp (note in the protocol, recorded before the second run).
+
+**F6** regenerated from the same WP4 ledger with the new exporter; the key is
+`figures/F6_policy_commitment.key`. The archived redacted exports of earlier
+runs (WP4, regenerate, WP5 of 2026-10-12) keep the plain digest.

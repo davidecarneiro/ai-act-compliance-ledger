@@ -57,13 +57,15 @@
    "figure": "F6",
    "files": [
     "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F6_finding_complete.json",
-    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F6_finding_redacted.json"
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F6_finding_redacted.json",
+    "/home/claude/ai-act-compliance-ledger/Project/experiments/article/figures/F6_policy_commitment.key"
    ],
    "source": "/home/claude/ai-act-compliance-ledger/Project/experiments/article/wp4/run_20261012T145744Z/ledger.jsonl",
    "source_sha256": "79021e180f3ffc0225f4462b09d633d3bcab720290801696018c773f319699ac",
    "chain_valid": true,
    "signatures_verified": true,
-   "note": "record 8 of the credit case (validation of v2, fairness gate), exported with the current exporter"
+   "note": "record 8 of the credit case (validation of v2, fairness gate), exported with the current exporter; regenerated on 2026-11-19 with the keyed policy commitment in redacted mode (WP5 amendment)",
+   "regenerated_at": "2026-11-19T21:59:12.355007+00:00"
   }
  ]
 }

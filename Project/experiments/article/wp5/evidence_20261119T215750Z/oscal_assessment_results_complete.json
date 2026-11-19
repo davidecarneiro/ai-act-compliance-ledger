@@ -1,0 +1,2098 @@
+{
+  "assessment-results": {
+    "uuid": "7157bc33-5f8c-5f00-9418-34efba1605fa",
+    "metadata": {
+      "title": "AI Act Compliance Assessment Results \u2014 Compliance Policy Engine prototype",
+      "last-modified": "2026-11-19T21:57:50.886342+00:00",
+      "version": "1.0.0",
+      "oscal-version": "1.1.2",
+      "parties": [
+        {
+          "uuid": "ec0ed9a4-db04-5b20-8dd2-ef0eb21fa816",
+          "type": "organization",
+          "name": "Compliance Policy Engine issuer",
+          "props": [
+            {
+              "name": "ed25519-fingerprint",
+              "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+            }
+          ]
+        }
+      ]
+    },
+    "import-ap": {
+      "href": "urn:ai-act:assessment-plan:ai-act-2024-1689"
+    },
+    "results": [
+      {
+        "uuid": "f6c314be-b3e5-50a0-9328-110d3f39bcb2",
+        "title": "Compliance Policy Engine execution",
+        "description": "18 evidence records produced by the Compliance Policy Engine prototype across 2 distinct scenario identifiers.",
+        "start": "2026-11-19T21:57:50.819318+00:00",
+        "end": "2026-11-19T21:57:50.878529+00:00",
+        "reviewed-controls": {
+          "control-selections": [
+            {
+              "include-all": {}
+            }
+          ]
+        },
+        "observations": [
+          {
+            "uuid": "9d4b0911-b83d-5b80-b913-d7008fce5dde",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact german-credit-data at stage data_preparation. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "8c70d311-11c7-50a1-900f-20e627038720",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-31149321-9c32-4a73-a2f9-66154e6a6627",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=ee99443bdb45c02c60a7f68956ea8981740d0550c264b0e6641b8f2ec524b933; chain_hash=7197520a755e3f3cc158cd98e1414b3b3cf7fa7bc8a6ec37f5f4efc75b927d36; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.819318+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "d0f23cea-3a3a-59d6-833d-10d443f44aee",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact german-credit-partition-42 at stage data_preparation. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "f3c647aa-27a3-516c-a43b-9bbebb14cc60",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-4a75fb9f-edfe-4a84-b211-910127b087e8",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=6c52984110e94b30ae265161f22f1c15ba478e12ac3b282c098d97d1cf5f7d0a; chain_hash=d19e45a3950b4a4900272eaa7979286ed78b301f6c7da14803da6592a3e4e7ac; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.823089+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "d8cedef7-d6e9-555c-878e-96238e6bd884",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact credit-lr-v1 at stage training. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "2b7651b9-01ab-5421-81cb-b796cd8b85fd",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-e9c50053-79af-44c0-9136-2cf63d3481b4",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=7c3d4f11dd1ac63dfcef73f2cb60090dd5fa68867048371044fbb46c351210f9; chain_hash=1daa95e3e3a75d9421dad53b2a0b3eb6b4f02fdba89b4a68c2bca5e099c52b50; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.826096+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "671c5fc5-0c32-5864-a23c-233029567911",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'rejected' for artifact credit-lr-v1 at stage validation. Reason: demographic parity diff 0.111607 above threshold 0.1.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "2b7651b9-01ab-5421-81cb-b796cd8b85fd",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-1ecf33df-146d-45b9-bca8-f66913b9eb0f",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=dcc0a59b0fa5a7f43ceacf081c852d1e655fc79cfd0024f999d1398476886594; chain_hash=1838bbeb052b2677401d5e6231e0ab9040103f0f381b443ccb2b3fb6a877d662; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.829683+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "demographic parity diff 0.111607 above threshold 0.1"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "e96dda2a-919d-5640-ae6c-0fb4e8df2b6c",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact german-credit-data at stage data_preparation. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "8c70d311-11c7-50a1-900f-20e627038720",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-c26806a9-0928-4bf2-97b8-e00687b3c5db",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=fe361ea5bc6577e7f7c8da060ad6b08ad06afb68258b98b6e4290ea8e8f7f04c; chain_hash=308dbc57e85b8913c8a9c6dfb4df85e35e40edc3886151b1d0a6e15cbee98fce; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.833693+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "c7ee265a-c9b9-5171-8511-c107ca24e26b",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact german-credit-partition-42 at stage data_preparation. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "f3c647aa-27a3-516c-a43b-9bbebb14cc60",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-a25dee2b-5ad0-42b2-b273-1cbe9b23ae19",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=c8cbf39fe13dce75195498563d694bfd0f505e1687fe8529fa32989c7721016a; chain_hash=c98d22fad10a02f2ff68619f7ef8203f574e68797bb0e904809f32360100a58a; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.837340+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "2e2bb354-a4ac-52ce-b969-4075f111afdc",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact credit-lr-v2 at stage training. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "127c5e9d-f229-51f5-99dc-c65c78090904",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-5a2d24c4-5426-4304-b276-fa2a249c0ef3",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=50c23b5fc447cc6a06d463bb7a0f049b3e4fefbeb0a19dfb723b5976dd53f992; chain_hash=7b98eab5ffdaa0847c30cac8b4677f621010c8b76f6f3c0bf6c3f982036f1d29; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.840581+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "8b5b6b44-1771-5b7d-af89-d8735dddb749",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'rejected' for artifact credit-lr-v2 at stage validation. Reason: demographic parity diff 0.111607 above threshold 0.1.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "127c5e9d-f229-51f5-99dc-c65c78090904",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-4a7a36bb-742a-477d-a461-6f3e8beccb5e",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=61dce2d050a6f7a2fe4501c4c28e74007cc8b9fea2fde05b6f8ab9817ddc0f43; chain_hash=bf5f5d4814bd6687c1d8e4475c623349121510613040b2b9c15decddee5e03d5; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.843545+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "demographic parity diff 0.111607 above threshold 0.1"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "cffaa970-1b38-516e-9467-e1769ac5aab6",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'rejected' for artifact credit-lr-v2 at stage deployment. Reason: demographic parity diff 0.111607 above threshold 0.1.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "127c5e9d-f229-51f5-99dc-c65c78090904",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-3d9793d0-88f9-4118-a237-42dd5253a25e",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=18801bd6b038eb05d68ad11058a586f5d6aa3b1393a70999118834765dd1a091; chain_hash=4428a57f6aa0d1ad1b2875250c980d718f2d937b0043aa88970162f4aa5c8074; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.847572+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "demographic parity diff 0.111607 above threshold 0.1"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "10e5a99e-89f0-57a1-8e28-fcbb03960309",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'rejected' for artifact credit-lr-v2 at stage deployment. Reason: demographic parity diff 0.111607 above threshold 0.1.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "127c5e9d-f229-51f5-99dc-c65c78090904",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-c0485f85-1534-4eda-a050-ae6097031f6b",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=3bcae95bc9c89015514613b6ac1200d1878a52af34633e247e6c78e5fc38661b; chain_hash=070d16dec3a9339341f61b399fc4c26cfcee1394472c79a0bb1198dbaac1df44; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.850850+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "rejected"
+              },
+              {
+                "name": "reason",
+                "value": "demographic parity diff 0.111607 above threshold 0.1"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "414f4a97-9d31-5914-8a04-011aa4570347",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact monitoring-batch-1 at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "9196ac48-20a1-5ee5-80d3-c4ab798e205b",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-bc0ce788-b07e-4990-8485-72f89136f0d4",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=c42233c2fbb27ca1818eb475ee89faa7cc4f0fe86e5550518a217cfb2861d919; chain_hash=41e0f80a3fdacde51fb67eeb56c3fc86e9e1e07d084144c7d6b6fed9ec609b97; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.854397+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "4d9c19d5-ed1d-5d87-b4b9-961d9f8ada88",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact monitoring-batch-2 at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "662a14a8-7201-5d76-a051-fc75507e06af",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-077c4798-1456-42da-8a07-f5b47c3bf4a6",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=58d84d77e261f847a5414a60c6ddabf96038e0cd13527ea435e38dbecb681d10; chain_hash=c8a32f208d366cc2dc720ed9d708bddd665760e5282559881306bb5ffecc0007; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.857940+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "9e3b4820-8129-5787-89ce-11b35fc126cc",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact monitoring-batch-3 at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "356cc259-bc6a-5095-a3a0-e1ccbd9b91cc",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-9992ca94-1420-424b-80cb-e61acd9f44d0",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=fd2f554594301cb149ec2333edb9c2af0a842bbe16434a4fb3893e05e1042242; chain_hash=28342968c9e45b2a6c57f5e625057ad945cc4ccbb5d34905ee142f9eb5e994ee; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.862071+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "4fbe3a5e-39f2-5ab5-abe2-5ea9258ab965",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact monitoring-batch-4 at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "600ab667-cec6-5499-9dd7-8a2195777590",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-4dd03657-db14-49f6-988c-73ed00ec62cd",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=a297e279f2a3f0f0f78a4306087f0ef57efcd65614d47e16b8771a4c4643bd3d; chain_hash=15d83ff0667d1e9af1b7a77b16a64dc43711d769ae9603ef39b347920bc587d5; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.865658+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "9683b19f-5a5a-5652-89f0-4a9c8e67b439",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'approved' for artifact monitoring-batch-5 at stage post_deploy_monitoring. Reason: all policy checks passed.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "165dad08-07da-5ec8-bef2-085f23890682",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-41fefe32-534e-42a2-819d-13e7041b8d04",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=34a22b9b0446e0b12dfa63f25d966dd812c6bdb94d54beef1d5d9f3c823e01af; chain_hash=5452581fcc5b9ffcebf2c2aa066d762f2b8bbf3c2f7a2c30aba681d8a2d97d6b; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.869057+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "approved"
+              },
+              {
+                "name": "reason",
+                "value": "all policy checks passed"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "821c42ef-a3fa-5fd7-954b-642eb8cc18d5",
+            "title": "Pipeline event: german-credit",
+            "description": "Compliance Policy Engine decision 'escalated' for artifact monitoring-batch-6 at stage post_deploy_monitoring. Reason: drift score 0.929529 above threshold 0.25.",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "637f5b1a-05c8-56b1-9f71-9d425fd20ec5",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-2c81f181-faad-4e26-838c-1d0c744c5711",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=b10cfa4985d9630da8abfc9722ea25544f18a28544372d9869510e84007ca2c7; chain_hash=d621c50a5495e954927844105065cbafb004a3c08a13722269e6d618db141035; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.872000+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "drift score 0.929529 above threshold 0.25"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "afb931a5-2828-561e-9f50-8c5ae3e88eb6",
+            "title": "Pipeline event: synthetic-incident",
+            "description": "Compliance Policy Engine decision 'escalated' for artifact credit-lr-v2 at stage post_deploy_monitoring. Reason: serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73).",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "127c5e9d-f229-51f5-99dc-c65c78090904",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-ffc13703-b052-4f1d-9e93-f808836048c0",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=fcb8b8e24cfcb1e74b64753a81d9f64726b216f71da216e8b211aca961b8772b; chain_hash=a0dbd424af9a258717a1d07860f85184f67582eecb20295c8fb7b1c3b11b89fc; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.874951+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73)"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          },
+          {
+            "uuid": "c8f688c7-6f11-5a61-be96-797a19212a66",
+            "title": "Pipeline event: synthetic-incident",
+            "description": "Compliance Policy Engine decision 'escalated' for artifact credit-lr-v2 at stage post_deploy_monitoring. Reason: serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73).",
+            "methods": [
+              "AUTOMATED"
+            ],
+            "types": [
+              "finding"
+            ],
+            "subjects": [
+              {
+                "subject-uuid": "127c5e9d-f229-51f5-99dc-c65c78090904",
+                "type": "component"
+              }
+            ],
+            "relevant-evidence": [
+              {
+                "href": "urn:evidence:ev-b06873a2-cde0-48e3-bc4d-0d22e978c50e",
+                "description": "Evidence record, signed by its issuer and hash-chained. record_hash=74284a1e932b7c70b408189c23a05848bab8c8d31d8f5d5045db056c3fe3ca52; chain_hash=52eb630c82e53431cdc8ad51703934bb5b0052015bec78dd3a4951639c415573; signature_alg=Ed25519."
+              }
+            ],
+            "collected": "2026-11-19T21:57:50.878529+00:00",
+            "props": [
+              {
+                "name": "decision",
+                "value": "escalated"
+              },
+              {
+                "name": "reason",
+                "value": "serious incident: mandatory reporting to the market surveillance authority within the statutory deadline (Art. 73)"
+              },
+              {
+                "name": "issuer",
+                "value": "compliance-policy-engine-v2"
+              },
+              {
+                "name": "issuer_pubkey_fingerprint",
+                "value": "e36e7dc1815cc7c1dcfc5caa02c77aaac6cdd81525229b03f05901907ecc4d4c"
+              },
+              {
+                "name": "redaction_applied",
+                "value": "false"
+              }
+            ]
+          }
+        ],
+        "findings": [
+          {
+            "uuid": "9a3b9b77-d206-56c6-8702-e82d0e6918fb",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.819318+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.11, Art.12.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "9d4b0911-b83d-5b80-b913-d7008fce5dde"
+              }
+            ]
+          },
+          {
+            "uuid": "596713b9-032a-51dd-8534-784e21bc46db",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.823089+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.11, Art.12.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "d0f23cea-3a3a-59d6-833d-10d443f44aee"
+              }
+            ]
+          },
+          {
+            "uuid": "61dd347e-c6b6-5345-9145-0d99f9f9dd67",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.826096+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "d8cedef7-d6e9-555c-878e-96238e6bd884"
+              }
+            ]
+          },
+          {
+            "uuid": "a1ae3f83-b996-5089-9b7e-ae5dae1e2eae",
+            "title": "Technical objective obj-fairness-threshold: rejected for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'rejected' on 2026-11-19T21:57:50.829683+00:00. Technical objective: The declared demographic parity difference stayed within the configured maximum. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(2)(f), Art.11, Art.12, Art.15.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "671c5fc5-0c32-5864-a23c-233029567911"
+              }
+            ]
+          },
+          {
+            "uuid": "bc35c77a-dcdd-55a4-811a-47716ea8fa58",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.833693+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.11, Art.12.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "e96dda2a-919d-5640-ae6c-0fb4e8df2b6c"
+              }
+            ]
+          },
+          {
+            "uuid": "d7f519e8-65fc-55ee-926c-a324593c2403",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.837340+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(3), Art.11, Art.12.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-3",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c7ee265a-c9b9-5171-8511-c107ca24e26b"
+              }
+            ]
+          },
+          {
+            "uuid": "e018de82-049f-5620-9738-359b87a6cc26",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.840581+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "2e2bb354-a4ac-52ce-b969-4075f111afdc"
+              }
+            ]
+          },
+          {
+            "uuid": "643c9e10-932e-5efd-b9ec-44ac56ec70a8",
+            "title": "Technical objective obj-fairness-threshold: rejected for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'rejected' on 2026-11-19T21:57:50.843545+00:00. Technical objective: The declared demographic parity difference stayed within the configured maximum. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(2)(f), Art.11, Art.12, Art.15.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "8b5b6b44-1771-5b7d-af89-d8735dddb749"
+              }
+            ]
+          },
+          {
+            "uuid": "14290ff9-cf19-5207-bd9c-24de789b8fc0",
+            "title": "Technical objective obj-fairness-threshold: rejected for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'rejected' on 2026-11-19T21:57:50.847572+00:00. Technical objective: The declared demographic parity difference stayed within the configured maximum. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(2)(f), Art.11, Art.12, Art.15.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "cffaa970-1b38-516e-9467-e1769ac5aab6"
+              }
+            ]
+          },
+          {
+            "uuid": "2759a8ee-c6ff-5630-84a6-8e2159c61f74",
+            "title": "Technical objective obj-fairness-threshold: rejected for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'rejected' on 2026-11-19T21:57:50.850850+00:00. Technical objective: The declared demographic parity difference stayed within the configured maximum. This states a technical fact about the evaluation, not a judgement on compliance with Art.10(2)(f), Art.11, Art.12, Art.14, Art.15.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-10-2-f",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-14",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-15",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "The declared demographic parity difference stayed within the configured maximum.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "threshold.fairness",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-fairness-threshold",
+              "status": {
+                "state": "not-satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "10e5a99e-89f0-57a1-8e28-fcbb03960309"
+              }
+            ]
+          },
+          {
+            "uuid": "54f2ecf7-fc70-5405-a381-85543749d362",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.854397+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "414f4a97-9d31-5914-8a04-011aa4570347"
+              }
+            ]
+          },
+          {
+            "uuid": "95dacd2f-9b63-5f6e-a98e-eb2dfe290f0d",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.857940+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "4d9c19d5-ed1d-5d87-b4b9-961d9f8ada88"
+              }
+            ]
+          },
+          {
+            "uuid": "af2a4f89-bdad-5c6e-833f-f03f3c59e3b7",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.862071+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "9e3b4820-8129-5787-89ce-11b35fc126cc"
+              }
+            ]
+          },
+          {
+            "uuid": "d68f5dd9-c8eb-5ffc-b157-9d1c6e06cc8d",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.865658+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "4fbe3a5e-39f2-5ab5-abe2-5ea9258ab965"
+              }
+            ]
+          },
+          {
+            "uuid": "279e6f23-a201-510a-a044-b9d96fc89b03",
+            "title": "Technical objective obj-thresholds-met: approved for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'approved' on 2026-11-19T21:57:50.869057+00:00. Technical objective: Every configured threshold evaluated for this event was met. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "Every configured threshold evaluated for this event was met.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "policy.all_checks_passed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-thresholds-met",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "9683b19f-5a5a-5652-89f0-4a9c8e67b439"
+              }
+            ]
+          },
+          {
+            "uuid": "6f27068b-f6de-5415-8a64-65a2dfdacb4c",
+            "title": "Technical objective obj-drift-alert-raised: escalated for german-credit",
+            "description": "The Compliance Policy Engine rendered decision 'escalated' on 2026-11-19T21:57:50.872000+00:00. Technical objective: A drift indicator above threshold raised an alert and was recorded. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.72.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-72",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A drift indicator above threshold raised an alert and was recorded.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "monitoring.drift_alert",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-drift-alert-raised",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "821c42ef-a3fa-5fd7-954b-642eb8cc18d5"
+              }
+            ]
+          },
+          {
+            "uuid": "b63a2b35-2414-52ca-9911-7b4842405728",
+            "title": "Technical objective obj-incident-recorded: escalated for synthetic-incident",
+            "description": "The Compliance Policy Engine rendered decision 'escalated' on 2026-11-19T21:57:50.874951+00:00. Technical objective: A serious incident was recorded and escalated for mandatory handling. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.73.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A serious incident was recorded and escalated for mandatory handling.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "incident.reportable",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-incident-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "afb931a5-2828-561e-9f50-8c5ae3e88eb6"
+              }
+            ]
+          },
+          {
+            "uuid": "865e7f2c-9aaa-52f6-ae81-9f383e69bc95",
+            "title": "Technical objective obj-incident-recorded: escalated for synthetic-incident",
+            "description": "The Compliance Policy Engine rendered decision 'escalated' on 2026-11-19T21:57:50.878529+00:00. Technical objective: A serious incident was recorded and escalated for mandatory handling. This states a technical fact about the evaluation, not a judgement on compliance with Art.11, Art.12, Art.73.",
+            "props": [
+              {
+                "name": "supports-requirement",
+                "value": "aia-11",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-12",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "supports-requirement",
+                "value": "aia-73",
+                "class": "ai-act-article"
+              },
+              {
+                "name": "objective-proposition",
+                "value": "A serious incident was recorded and escalated for mandatory handling.",
+                "class": "technical-objective"
+              },
+              {
+                "name": "objectives-version",
+                "value": "1.1",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id",
+                "value": "incident.reportable",
+                "class": "technical-objective"
+              },
+              {
+                "name": "rule-id-source",
+                "value": "written-by-engine",
+                "class": "technical-objective"
+              },
+              {
+                "name": "legal-assessment",
+                "value": "not-performed",
+                "class": "technical-objective"
+              },
+              {
+                "name": "policy-id",
+                "value": "pol-16d3a1645858",
+                "class": "technical-objective"
+              }
+            ],
+            "target": {
+              "type": "objective-id",
+              "target-id": "obj-incident-recorded",
+              "status": {
+                "state": "satisfied"
+              }
+            },
+            "implementation-statement-uuid": "1e48d7d4-421f-59e3-8381-5fc3efd20da2",
+            "related-observations": [
+              {
+                "observation-uuid": "c8f688c7-6f11-5a61-be96-797a19212a66"
+              }
+            ]
+          }
+        ],
+        "assessment-log": {
+          "entries": [
+            {
+              "uuid": "cbd25fa2-a248-5e6d-be9d-141a7b7e8a72",
+              "title": "Ledger integrity verification",
+              "description": "the chain result was supplied by the caller and not recomputed by this exporter; the caller reports that no modification was detected; the caller reports the Ed25519 signatures as verified; this exporter did not check them; suffix truncation and events that were never written lie outside both checks, because detecting them needs an anchor kept outside the file.",
+              "start": "2026-11-19T21:57:50.886342+00:00",
+              "end": "2026-11-19T21:57:50.886342+00:00",
+              "logged-by": [
+                {
+                  "party-uuid": "ec0ed9a4-db04-5b20-8dd2-ef0eb21fa816"
+                }
+              ],
+              "props": [
+                {
+                  "name": "chain_valid",
+                  "value": "true"
+                },
+                {
+                  "name": "signatures_verified",
+                  "value": "true"
+                },
+                {
+                  "name": "chain_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "signature_verification_source",
+                  "value": "supplied-by-caller"
+                },
+                {
+                  "name": "records_total",
+                  "value": "18"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

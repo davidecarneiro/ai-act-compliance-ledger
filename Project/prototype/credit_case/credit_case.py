@@ -516,7 +516,7 @@ def run(out_dir: Path = OUT_DIR, seed: int = MAIN_SEED) -> Path:
     """The case under the committed policy; writes a self-contained run folder."""
     if not POLICY_FILE.exists():
         raise SystemExit("no policy.json: run the pilot first")
-    from oscal_exporter import to_oscal_sar
+    from oscal_exporter import new_commitment_key, to_oscal_sar
     from validate_oscal_schema import SCHEMA_PATH, UnicodeDraft7
 
     folder = out_dir / f"run_{_now()}"
@@ -544,8 +544,12 @@ def run(out_dir: Path = OUT_DIR, seed: int = MAIN_SEED) -> Path:
 
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     oscal = {}
+    # The provider's key for the redacted export's policy commitment.
+    commitment_key = new_commitment_key()
+    (folder / "keys" / "policy_commitment.key").write_text(commitment_key.hex() + "\n", encoding="utf-8")
     for label, redacted in (("complete", False), ("redacted", True)):
-        document = to_oscal_sar(ledger, redacted=redacted)
+        document = to_oscal_sar(ledger, redacted=redacted,
+                                commitment_key=commitment_key if redacted else None)
         name = f"oscal_assessment_results_{label}.json"
         (folder / name).write_text(json.dumps(document, indent=2) + "\n", encoding="utf-8")
         oscal[label] = len(list(UnicodeDraft7(schema).iter_errors(document)))
