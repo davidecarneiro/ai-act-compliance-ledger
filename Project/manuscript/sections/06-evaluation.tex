@@ -27,18 +27,18 @@ Table~\ref{tab:runs} summarises the five runs. Every chain verifies and every de
 
 Monitoring follows the second model on six batches of 50 test cases, with a subgroup over-sampled at a share rising from 0.30 to 0.95. The Population Stability Index~\cite{siddiqi2006} of the scores rises from 0.042 to 0.930 and crosses the threshold of 0.25 only in the last batch, which escalates under \path{monitoring.drift_alert}. The acceptance checks all pass. The 10 metrics in the ledger are recomputed, identically, from the artefacts in the store, and all 16 artefact digests are recomputed from their \path{off_chain_ref}.
 
-A post hoc analysis over 500 partitions shows how much of this outcome is one draw. The reweighed model passes validation in 44 \% of partitions (95 \% interval 40--48 \%) and the unmitigated one in 26 \% (23--30 \%). The decision taken on the validation set agrees with the one the test set would give in only 49 \% and 58 \% of partitions. The evidence records exactly what was decided and on which numbers; it does not make the estimate behind the decision stable (Section~7.1).
+A post hoc analysis over 500 partitions shows how much of this outcome is one draw. The reweighed model passes validation in 44 \% of partitions (95 \% interval 40--48 \%) and the unmitigated one in 26 \% (23--30 \%). The decision taken on the validation set agrees with the one the test set would give in only 49 \% and 58 \% of partitions. The evidence records exactly what was decided and on which numbers. The stability of the estimate behind the decision is another matter (Section~7.1).
 
 \textbf{MultiFlow.} The two industrial streams were regenerated under version 2 by replaying the platform's CSV files through the bridge's own logic, without Kafka. Batch by batch, the replay reproduces the dissertation's live runs: the same decision and the same reason, drift score included, for 29 of 29 and 1,750 of 1,750 batches. Only the observational half of the policy is exercised. Precision and parity come from the observer's configuration (0.85 and 0.03), and the approval flag is an assumption, so the escalations measure drift and nothing else.
 
 \subsection{Tamper evidence}
 
-Table~\ref{tab:tamper} gives the observed outcome of each attack on the credit-scoring ledger (16 records; the attacked record is the eighth). In B+ the signed head is published every five records; in C every record is anchored on the Fabric network. All 48 cells of A--B+ and all nine attacks in C came out as the protocol expected.
+Table~\ref{tab:tamper} gives the observed outcome of each attack on the credit-scoring ledger (16 records; the attacked record is the eighth). In B+ the signed head is published every five records, and in C every record is anchored on the Fabric network. All 48 cells of A--B+ and all nine attacks in C came out as the protocol expected.
 
 \input{tables/tamper}
 
 
-Three readings follow. T3 measures what the signature adds to the hash chain: without the key, a consistent rewrite of the hashes passes B0 and fails B. T6 and T7 measure what an external anchor adds to a signed log: truncation and a rewrite by a key holder become detectable, but only up to the last anchor; anchoring every record on the network closes that window. T8 and T9a are outside the reach of every configuration, because the evidence can only attest what the engine was given. The one upstream forgery that is caught, T9b, is caught by the engine's check of the approver's signature, not by the storage.
+T3 measures what the signature adds to the hash chain: without the key, a consistent rewrite of the hashes passes B0 and fails B. T6 and T7 measure what an external anchor adds to a signed log. Truncation and a rewrite by a key holder become detectable, but only up to the last anchor, and anchoring every record on the network closes that window. T8 and T9a are outside the reach of every configuration, because the evidence can only attest what the engine was given. T9b, the one upstream forgery that is caught, is stopped by the engine's check of the approver's signature before anything is stored.
 
 \subsection{Cost of verifiable evidence}
 
@@ -46,9 +46,9 @@ Signing costs little. Table~\ref{tab:cost} gives the latency per event of each a
 
 \input{tables/cost}
 
-An event takes about 0.3 ms in every arm, the engine's decision included, which all arms share. A verifiable centralised log adds 0.068 ms per event to a plain database row (W1), and the Ed25519 signature accounts for 0.017 ms of that. Anchoring falls on one event in a hundred: the anchor operation itself takes 0.080 ms, and its amortised cost (the mean of B+ $-$ B, $-$0.001 ms) cannot be told apart from zero. On macOS, \path{fsync} does not force the drive's write cache, for the append-only file or for SQLite; both arms are treated alike.
+An event takes about 0.3 ms in every arm, the engine's decision included, which all arms share. A verifiable centralised log adds 0.068 ms per event to a plain database row (W1), and the Ed25519 signature accounts for 0.017 ms of that. Anchoring falls on one event in a hundred: the anchor operation itself takes 0.080 ms, and its amortised cost (the mean of B+ $-$ B, $-$0.001 ms) cannot be told apart from zero. On macOS, \path{fsync} does not force the drive's write cache, for the append-only file or for SQLite, so both arms are treated alike.
 
-The cost does not grow with the ledger (Figure~\ref{fig:growth}). Over 10,000 records, the median per block of 1,000 moves from 0.31 to 0.32 ms for B and from 0.27 to 0.26 ms for A, and every arm's ledger verifies at the end. The dissertation's prototype rewrote the whole ledger file on each event, so its latency grew with the ledger; append-only persistence removed that growth.
+The cost does not grow with the ledger (Figure~\ref{fig:growth}). Over 10,000 records, the median per block of 1,000 moves from 0.31 to 0.32 ms for B and from 0.27 to 0.26 ms for A, and every arm's ledger verifies at the end. The dissertation's prototype rewrote the whole ledger file on each event, so its latency grew with the ledger. Append-only persistence removed that growth.
 
 \begin{figure}[t]
 \centering
@@ -57,7 +57,7 @@ The cost does not grow with the ledger (Figure~\ref{fig:growth}). Over 10,000 re
 \label{fig:growth}
 \end{figure}
 
-Set against the event cadence of the two real cases, the cost is negligible. At the rate of the live MultiFlow run (21.7 events/s, Section~6.6), a verifiable log adds about 1.5 ms of work per second of stream; the credit-scoring pipeline emits 16 records over two training runs.
+Set against the event cadence of the two real cases, the cost is negligible. At the rate of the live MultiFlow run (21.7 events/s, Section~6.6), a verifiable log adds about 1.5 ms of work per second of stream. The credit-scoring pipeline emits only 16 records over two training runs.
 
 \subsection{Cost of ledger anchoring}
 
@@ -70,13 +70,13 @@ The price of batching is the wait for a batch to fill. At the event rate of the 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/F5_anchoring_vs_batch_size.pdf}
-\caption{Anchoring on the Fabric network against records per anchor, $N$. (a) Durable-evidence throughput, with the event rate of the live MultiFlow run as a reference line. (b) Measured latency per record (median and IQR). (c) Expected time from emission to durable evidence at that rate: the measured latency plus the analytic wait to fill the batch; points where serial anchoring is slower than the stream are omitted.}
+\caption{Anchoring on the Fabric network against records per anchor, $N$. (a) Durable-evidence throughput, with the event rate of the live MultiFlow run as a reference line. (b) Measured latency per record (median and IQR). (c) Expected time from emission to durable evidence at that rate: the measured latency plus the analytic wait to fill the batch. Points where serial anchoring is slower than the stream are omitted.}
 \label{fig:anchoring}
 \end{figure*}
 
-Verification is cheap and independent of $N$. \path{VerifyInclusion} takes 1.6 ms (median; 95th percentile 2.3 to 3.1 ms) on both state databases, and an inclusion proof grows with $\log_2 N$, from 337 bytes at $N=10$ to 673 at $N=500$. \path{VerifyChain} over the per-record chain takes 206 ms for 601 records on LevelDB (0.34 ms per record) and 102 ms for 201 records on CouchDB (0.51 ms per record). The CouchDB network held one repetition of the chain, not three, so only the per-record figures compare. The first call of each query paid a warm-up of several seconds, which raises the 95th percentile of \path{VerifyChain} in the 2 s run to 438 ms.
+Verification is cheap and independent of $N$. \path{VerifyInclusion} takes 1.6 ms (median; 95th percentile 2.3 to 3.1 ms) on both state databases, and an inclusion proof grows with $\log_2 N$, from 337 bytes at $N=10$ to 673 at $N=500$. \path{VerifyChain} over the per-record chain takes 206 ms for 601 records on LevelDB (0.34 ms per record) and 102 ms for 201 records on CouchDB (0.51 ms per record). The CouchDB network held one repetition of the chain against three on LevelDB, so only the per-record figures compare. The first call of each query paid a warm-up of several seconds, which raises the 95th percentile of \path{VerifyChain} in the 2 s run to 438 ms.
 
-The endorsement policy held. An anchor endorsed by Org1 alone was refused at validation with \path{ENDORSEMENT_POLICY_FAILURE} on all three networks, and nothing was written.
+The endorsement policy held. An anchor endorsed by Org1 alone was refused at validation with \path{ENDORSEMENT_POLICY_FAILURE} on all three networks. The transaction stays in its block, marked invalid, and the world state did not change.
 
 \subsection{Auditability}
 
@@ -86,9 +86,9 @@ Table~\ref{tab:audit} condenses the answers to the fourteen audit questions of S
 
 Q14, a check that the redacted export discloses nothing it should withhold, applies only to D.
 
-C answers every question, and every answer can be checked without trusting the provider. The chaincode stamps the submitting organisation on each anchor, which answers Q12 (Org1MSP for all 16 records). The contrasts are informative. Q2, who approved the deployment, is answerable only where approvals are signed; A holds a Boolean flag. Q6, whether re-execution reproduces a decision, needs the decision inputs and the policy archive, which only B and C keep. Q11, whether the sequence is complete between two dates, is answerable only in C, because a signed log cannot show that nothing was cut after its last record.
+C answers every question, and every answer can be checked without trusting the provider. The chaincode stamps the submitting organisation on each anchor, which answers Q12 (Org1MSP for all 16 records). Q2, who approved the deployment, is answerable only where approvals are signed, while A holds a Boolean flag. Q6, whether re-execution reproduces a decision, needs the decision inputs and the policy archive, which only B and C keep. Q11, whether the sequence is complete between two dates, is answerable only in C, because a signed log cannot show that nothing was cut after its last record.
 
-The redacted export answers less, by design. From D alone, Q13 (which articles are supported, with which technical outcome) is answerable but not verifiable, since the export carries anchors, not record bodies. For Q14, none of the 56 items searched for appears in the redacted export: artefact names and digests, the subject identifiers derived from them, reasons, metric values, scenario names and the policy's threshold fields.
+The redacted export answers less, by design. From D alone, Q13 (which articles are supported, with which technical outcome) is answerable but not verifiable, since the export carries anchors and no record bodies. For Q14, none of the 60 items checked appears in the redacted export: artefact names and digests, the subject identifiers derived from them, reasons, metric values, scenario names, and the policy's threshold fields and values. The search of Section~5.5 tried all 356,400 candidate policies against the policy commitment and recovered nothing. The same search on the first version of the export, which carried the plain digest, recovered the policy. With the provider's key, the commitment opened against the archived policy.
 
 \subsection{Interoperability and conformance}
 \label{sec:eval-interop}
@@ -99,4 +99,4 @@ That agreement was not there at first. Table~\ref{tab:defects} lists the eight d
 
 \input{tables/defects}
 
-The lesson is general. A canonical form must be specified on bytes, not on one language's data model, and a shared boundary matrix works as a conformance test between implementations.
+A canonical form must therefore be specified on bytes, independently of any one language's data model, and a shared boundary matrix works as a conformance test between implementations.

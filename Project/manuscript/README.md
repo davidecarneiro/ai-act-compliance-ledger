@@ -18,13 +18,16 @@ and is listed, with its source, in section 16 of the article plan.
 
 ## Still to complete (search for TODO and CHECK)
 
-1. Funding statement (required by the journal).
-2. CRediT roles: confirm the proposal in `sections/10-declarations.tex`.
-3. ORCID of each author; Rui Sousa's affiliation.
-4. Biographies (up to 100 words) and passport-style photographs.
-5. Wording of the generative-AI declaration.
-6. Zenodo DOI for the artefacts (`refs.bib`, key `artefacts`).
-7. Table 2: three cells marked CHECK (measured cost in CT/Sigstore, Regueiro et al., Shi et al.).
-8. `refs.bib`: entries marked CHECK; preprints checked for a published version.
-9. Legal review by Rui Sousa: Section 2.1 and Table 1, Table 4 (column "Does not establish"), Section 7.3.
-10. Supplementary material the text refers to: the full audit-question matrix (Section 6.7) and the Annex IV coverage (Section 7.3); planned S1–S6 in the article plan.
+1. Rui Sousa's affiliation (`main.tex`): he is listed under affiliation 3, which
+   is now CIICESI after the affiliations were renumbered.
+2. Passport-style photographs of the four authors (`\bio{figures/<file>}`).
+3. Zenodo DOI for the artefacts (`refs.bib`, key `artefacts`).
+4. Table 2: three cells marked CHECK (measured cost in CT/Sigstore, Regueiro et al., Shi et al.).
+5. `refs.bib`: entries marked CHECK; preprints checked for a published version.
+6. Supplementary material the text refers to: the full audit-question matrix
+   (Section 6.7) and the Annex IV coverage (Section 7.3); planned S1–S6 in the article plan.
+
+Done on 2026-11-19: funding, CRediT, ORCIDs, biographies, generative-AI
+declaration (authors); R. Sousa's review (dates and presumptions of Directive
+2024/2853, qualification under eIDAS, redaction of the policy, Fabric
+validation, style), applied with the keyed policy commitment and the WP5 rerun.
