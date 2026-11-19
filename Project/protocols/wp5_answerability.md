@@ -107,3 +107,12 @@ The changes below are recorded before any run that uses them.
 
 Expected: check (b) recovers the policy from the export of 2026-10-12 and not
 from the new one. Any other outcome is reported as it is.
+
+Note of 2026-11-19, after the first run under the amendment
+(`answerability_20261119T215750Z`) and before the second. Q14 reported
+"metric precision=0.8" as disclosed. The search for metric values was a
+substring search, and "0.8" matched inside a timestamp of the export
+(`21:57:50.887628`). Metric values are now matched as whole numbers, as the
+amendment already does for thresholds, and the run is repeated. The first run's
+files are kept and marked as superseded. Q3 in D reports the policy commitment
+in place of the digest, as Q6 does.
